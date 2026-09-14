@@ -1,5 +1,6 @@
 // Shared layout + data for Piets Technology Solutions static site generator.
 export const SITE = {
+  portalLive: process.env.PORTAL_LIVE === '1',
   name: 'Piets Technology Solutions',
   legalName: 'Piets Technology Solutions Inc',
   url: 'https://pietstechsolutions.com',
@@ -114,7 +115,7 @@ export function nav(current = '') {
       ${item('/services.html', 'Services', 'services')}
       ${item('/locations/', 'Locations', 'locations')}
       ${item('/blog/', 'Blog', 'blog')}
-      ${item('/portal', 'Client Portal', 'portal')}
+      ${SITE.portalLive ? item('/portal', 'Client Portal', 'portal') : ''}
       <li><a class="btn btn-light" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></li>
       <li><a class="btn btn-primary" href="#quote">Get a Free Quote</a></li>
     </ul>
@@ -229,7 +230,7 @@ export function footer() {
           <li><a href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></li>
           <li><a href="sms:${SITE.phoneE164}">Text ${SITE.phone}</a></li>
           <li><a href="mailto:${SITE.email}">${SITE.email}</a></li>
-          <li><a href="/portal">Client Portal</a></li>
+          ${SITE.portalLive ? '<li><a href="/portal">Client Portal</a></li>' : ''}
           <li><a href="/blog/">Blog</a></li>
         </ul>
       </div>

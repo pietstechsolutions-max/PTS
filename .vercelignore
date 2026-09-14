@@ -1,0 +1,4 @@
+server/
+templates/
+*.db
+*.zip
