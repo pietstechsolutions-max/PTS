@@ -1,0 +1,10 @@
+<h1>Quotes</h1>
+<% if (!quotes.length) { %><div class="card"><p class="muted">No estimates yet. <a href="/portal/requests">Request one</a>.</p></div><% } %>
+<% for (const q of quotes) { %>
+<a class="card" href="/portal/quotes/<%= q.id %>" style="display:block;text-decoration:none;color:inherit">
+  <div class="card-head">
+    <div><strong><%= q.number %></strong> &middot; <%= q.title %><br><span class="small muted"><%= q.status === 'Sent' ? 'Valid until ' + fmtDate(q.valid_until) + ' - prices may rise after' : 'Updated ' + fmtDate(q.updated_at) %></span></div>
+    <div class="right"><div style="font-weight:800;color:var(--navy)"><%= money(q.total_cents) %></div><span class="badge <%= q.status.split(' ')[0] %>"><%= q.status %></span></div>
+  </div>
+</a>
+<% } %>

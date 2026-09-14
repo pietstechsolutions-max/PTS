@@ -1,0 +1,48 @@
+<h1>Conversations</h1>
+<div class="grid-2" style="grid-template-columns: 1fr; gap:1rem">
+  <style>@media (min-width:900px){ .conv { display:grid; grid-template-columns: 300px 1fr; gap:1rem; } }</style>
+  <div class="conv">
+    <div class="card" style="max-height:70vh;overflow:auto">
+      <form method="get" action="/admin/contacts" class="mb"><input type="text" name="q" placeholder="Find a contact to text..."></form>
+      <% if (!threads.length) { %><p class="muted small">No conversations yet.</p><% } %>
+      <% for (const t of threads) { %>
+        <a href="/admin/conversations/<%= t.id %>" style="display:block;padding:.5rem;border-radius:8px;text-decoration:none;color:inherit;<%= current && current.id === t.id ? 'background:#e8f6ff' : '' %>">
+          <div class="flex between"><strong style="color:var(--navy)"><%= t.first_name %> <%= t.last_name %></strong><% if (t.unread) { %><span class="badge info"><%= t.unread %> new</span><% } %></div>
+          <div class="small muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><%= t.last_body || prettyPhone(t.phone) %></div>
+          <div class="small muted"><%= t.last_at ? fmtDateTime(t.last_at) : '' %><%= !t.sms_opt_in ? ' · opted out' : '' %></div>
+        </a>
+      <% } %>
+    </div>
+    <div class="card">
+      <% if (!current) { %><p class="muted">Pick a conversation on the left, or open a contact and press "Text".</p><% } else { %>
+        <div class="card-head"><div><strong><a href="/admin/contacts/<%= current.id %>"><%= h.fullName(current) %></a></strong> <span class="small muted"><%= prettyPhone(current.phone) %><%= current.email ? ' · ' + current.email : '' %></span></div><% if (!current.sms_opt_in) { %><span class="badge bad">SMS opted out</span><% } %></div>
+        <div class="chat" id="chat">
+          <% for (const m of msgs) { if (m.status === 'draft') { %>
+            <form method="post" action="/admin/conversations/<%= current.id %>/drafts/<%= m.id %>/send" class="bubble out draft" style="background:#fff7e6;color:var(--ink);border:2px dashed #ffb300;align-self:flex-end;max-width:90%;white-space:normal;margin:0">
+              <div class="small" style="font-weight:700;color:var(--warn)">AI draft (<%= m.subject.replace('ai:', '') %>) - review, edit, then send</div>
+              <textarea name="body" style="min-height:70px;margin:.3rem 0;background:#fff"><%= m.body %></textarea>
+              <div class="flex"><button class="btn xs">Send this reply</button><button class="btn xs danger" formaction="/admin/conversations/<%= current.id %>/drafts/<%= m.id %>/discard" formnovalidate>Discard</button><% if (!current.sms_opt_in) { %><label class="inline small"><input type="checkbox" name="force" value="1"> Send anyway</label><% } %></div>
+              <span class="meta">Drafted <%= fmtDateTime(m.created_at) %> - not sent yet</span>
+            </form>
+          <% } else { %><div class="bubble <%= m.direction %>"><% if (m.channel === 'email') { %><em>[email] <%= m.subject %></em><br><% } %><%= m.body %><span class="meta"><%= m.direction === 'in' ? 'Client' : 'You' %> &middot; <%= fmtDateTime(m.created_at) %> &middot; <%= m.status === 'draft_sent' ? 'sent (AI draft approved)' : m.status %><%= m.campaign_id ? ' · campaign' : '' %></span></div><% } } %>
+        </div>
+        <form method="post" action="/admin/conversations/<%= current.id %>" class="mt">
+          <div class="flex">
+            <select name="channel" style="width:auto"><option value="sms">SMS</option><% if (current.email) { %><option value="email">Email</option><% } %></select>
+            <select id="tpl" style="flex:1"><option value="">Insert template...</option><% for (const t of templates) { %><option value="<%= t.body %>"><%= t.name %> (<%= t.channel %>)</option><% } %></select>
+          </div>
+          <input type="text" name="subject" placeholder="Email subject (email only)" class="mt">
+          <textarea name="body" id="body" required placeholder="Type a message. Merge fields: {{first_name}} {{quote_link}} {{invoice_link}} {{business_phone}}"></textarea>
+          <% if (!current.sms_opt_in) { %><label class="inline"><input type="checkbox" name="force" value="1"> Send anyway (transactional message, client asked for it)</label><% } %>
+          <div class="flex mt"><button class="btn">Send</button>
+          <% if (typeof agents !== 'undefined' && agents.length) { %><button class="btn secondary" form="aidraft" title="Runs the AI agent on the last inbound text and adds a draft above for you to approve">Draft reply with AI</button><select form="aidraft" name="agent" style="width:auto"><% for (const a of agents) { %><option value="<%= a.name %>"><%= a.name %></option><% } %></select><% } %></div>
+        </form>
+        <form id="aidraft" method="post" action="/admin/conversations/<%= current.id %>/ai-draft"></form>
+        <script>
+          const c=document.getElementById('chat'); if(c) c.scrollTop=c.scrollHeight;
+          document.getElementById('tpl').addEventListener('change',e=>{ if(e.target.value){ document.getElementById('body').value=e.target.value; } });
+        </script>
+      <% } %>
+    </div>
+  </div>
+</div>

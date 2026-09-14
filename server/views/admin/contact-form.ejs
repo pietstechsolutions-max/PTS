@@ -1,0 +1,18 @@
+<h1><%= c ? 'Edit contact' : 'New contact' %></h1>
+<form class="card" method="post" action="<%= c ? '/admin/contacts/' + c.id : '/admin/contacts' %>">
+  <div class="field-row">
+    <div><label>First name</label><input type="text" name="first_name" value="<%= c ? c.first_name : '' %>" required></div>
+    <div><label>Last name</label><input type="text" name="last_name" value="<%= c ? c.last_name : '' %>"></div>
+    <div><label>Phone</label><input type="tel" name="phone" value="<%= c ? prettyPhone(c.phone) : '' %>"></div>
+    <div><label>Email</label><input type="email" name="email" value="<%= c ? c.email : '' %>"></div>
+    <div><label>Town</label><input type="text" name="town" value="<%= c ? c.town : '' %>"></div>
+    <div><label>Company (optional)</label><input type="text" name="company" value="<%= c ? c.company : '' %>"></div>
+    <div><label>Source</label><input type="text" name="source" value="<%= c ? c.source : '' %>" placeholder="Google, Referral, Website..."></div>
+    <div><label>Tags (comma separated)</label><input type="text" name="tags" value="<%= c ? c.tags : '' %>" placeholder="customer, cameras, commercial"></div>
+  </div>
+  <% if (c) { %>
+  <label class="inline mt"><input type="checkbox" name="sms_opt_in" value="1" <%= c.sms_opt_in ? 'checked' : '' %>> SMS opt-in (client agreed to receive texts)</label>
+  <label class="inline"><input type="checkbox" name="email_opt_in" value="1" <%= c.email_opt_in ? 'checked' : '' %>> Email opt-in</label>
+  <% } %>
+  <div class="btn-row"><button class="btn">Save contact</button><a class="btn ghost" href="<%= c ? '/admin/contacts/' + c.id : '/admin/contacts' %>">Cancel</a></div>
+</form>

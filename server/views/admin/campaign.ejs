@@ -1,0 +1,38 @@
+<p><a href="/admin/campaigns">&larr; Campaigns</a></p>
+<div class="card-head"><h1><%= c.name %> <span class="badge <%= c.status %>"><%= c.status %></span></h1></div>
+<div class="grid-2">
+  <div class="card">
+    <h2>Message (<%= c.channel.toUpperCase() %>)</h2>
+    <% if (c.subject) { %><p><strong>Subject:</strong> <%= c.subject %></p><% } %>
+    <pre class="wrap"><%= c.body %></pre>
+    <p class="small muted">Preview for first recipient:</p>
+    <div class="bubble out" style="max-width:100%"><%= sampleText %><%= c.channel === 'sms' ? '\n' + settings.sms_footer : '' %></div>
+    <p class="small mt"><strong>Audience:</strong> tags <%= (c.audience.tags || []).join(', ') || 'any' %>; stage <%= c.audience.stage || 'any' %>; opted-in only. <strong>Throttle:</strong> <%= c.throttle_per_minute %>/min.</p>
+    <p class="small"><strong>Matching contacts right now:</strong> <%= preview.length %></p>
+    <div class="kpis mt" style="grid-template-columns:repeat(4,1fr)">
+      <div class="kpi"><div class="label">Sent</div><div class="value"><%= c.sent_count %></div></div>
+      <div class="kpi"><div class="label">Failed</div><div class="value"><%= c.failed_count %></div></div>
+      <div class="kpi"><div class="label">Replies</div><div class="value"><%= c.reply_count %></div></div>
+      <div class="kpi"><div class="label">Opt-outs</div><div class="value"><%= c.opt_out_count %></div></div>
+    </div>
+  </div>
+  <div>
+    <% if (['Draft', 'Done', 'Stopped'].includes(c.status)) { %>
+    <form class="card" method="post" action="/admin/campaigns/<%= c.id %>/send">
+      <h2>Send</h2>
+      <label class="inline"><input type="radio" name="when" value="now" checked> Send now (queued; respects quiet hours)</label><br>
+      <label class="inline"><input type="radio" name="when" value="later"> Schedule for</label> <input type="datetime-local" name="scheduled_at" style="width:auto">
+      <p class="help">Will go to <%= preview.length %> opted-in contact<%= preview.length === 1 ? '' : 's' %>.</p>
+      <button class="btn mt" <%= preview.length ? '' : 'disabled' %>>Send campaign</button>
+    </form>
+    <% } else { %><div class="card"><p>Campaign is <%= c.status.toLowerCase() %>. The scheduler sends <%= c.throttle_per_minute %> per minute between 8am and 8pm ET.</p><form method="post" action="/admin/automations/run-queue"><button class="btn sm secondary">Run scheduler now</button></form></div><% } %>
+    <div class="card table-wrap">
+      <h2>Recipients</h2>
+      <table><thead><tr><th>Contact</th><th>Status</th><th>Sent</th></tr></thead><tbody>
+      <% if (!recipients.length) { %><tr><td colspan="3" class="muted">Not sent yet.</td></tr><% } %>
+      <% for (const r of recipients) { %><tr><td><a href="/admin/contacts/<%= r.contact_id %>"><%= r.first_name %> <%= r.last_name %></a></td><td><span class="badge <%= r.status === 'sent' ? 'ok' : r.status === 'failed' ? 'bad' : '' %>"><%= r.status %></span><%= r.error ? ' ' + r.error : '' %></td><td><%= r.sent_at ? fmtDateTime(r.sent_at) : '' %></td></tr><% } %>
+      </tbody></table>
+    </div>
+    <form class="card" method="post" action="/admin/campaigns/<%= c.id %>/archive" onsubmit="return confirm('Archive (and stop) this campaign?')"><button class="btn sm danger">Archive campaign</button></form>
+  </div>
+</div>

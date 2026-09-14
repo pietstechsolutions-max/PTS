@@ -1,0 +1,56 @@
+<div class="card-head">
+  <div><h1 style="margin:0"><%= c.first_name %> <%= c.last_name %> <% if (c.archived) { %><span class="badge bad">archived</span><% } %></h1>
+    <span class="muted"><%= c.company ? c.company + ' · ' : '' %><%= prettyPhone(c.phone) %><%= c.email ? ' · ' + c.email : '' %><%= c.town ? ' · ' + c.town : '' %> &middot; source: <%= c.source || '-' %></span></div>
+  <div class="btn-row" style="margin:0">
+    <a class="btn sm" href="/admin/conversations/<%= c.id %>">Text</a>
+    <a class="btn sm secondary" href="/admin/quotes/new?contact_id=<%= c.id %>">+ Estimate</a>
+    <a class="btn sm secondary" href="/admin/invoices/new?contact_id=<%= c.id %>">+ Invoice</a>
+    <a class="btn sm secondary" href="/admin/jobs/new?contact_id=<%= c.id %>">+ Job</a>
+    <a class="btn sm ghost" href="/admin/contacts/<%= c.id %>/edit">Edit</a>
+  </div>
+</div>
+<div class="flex mb">
+  <% for (const t of tags) { %><span class="badge"><%= t %></span><% } %>
+  <span class="badge <%= c.sms_opt_in ? 'ok' : 'bad' %>">SMS <%= c.sms_opt_in ? 'opted in' : 'opted OUT' + (c.sms_opt_out_at ? ' ' + fmtDate(c.sms_opt_out_at) : '') %></span>
+  <form method="post" action="/admin/contacts/<%= c.id %>/optin" style="display:inline"><input type="hidden" name="opt_in" value="<%= c.sms_opt_in ? '0' : '1' %>"><button class="btn xs ghost"><%= c.sms_opt_in ? 'Mark opted out' : 'Mark opted in' %></button></form>
+  <span class="badge info">Balance <%= money(balance) %></span>
+  <% if (subs.length && subs[0].status !== 'canceled') { %><span class="badge <%= subs[0].status %>">Plan: <%= subs[0].plan %> (<%= subs[0].status.replace('_', ' ') %>)</span><% } %>
+</div>
+<div class="grid-2 wide-left">
+  <div>
+    <div class="card">
+      <h2>Timeline</h2>
+      <ul class="timeline">
+        <% if (!timeline.length) { %><li class="muted">Nothing yet.</li><% } %>
+        <% for (const t of timeline) { %><li><span class="who"><%= t.kind %></span> <span class="when"><%= fmtDateTime(t.at) %></span><br><% if (t.href) { %><a href="<%= t.href %>"><%= t.text %></a><% } else { %><%= t.text %><% } %></li><% } %>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Documents</h2>
+      <div class="table-wrap"><table>
+        <% for (const q of quotes) { %><tr><td>Estimate</td><td><a href="/admin/quotes/<%= q.id %>"><%= q.number %></a> <%= q.title %></td><td><span class="badge <%= q.status.split(' ')[0] %>"><%= q.status %></span></td><td class="num"><%= money(q.total_cents) %></td></tr><% } %>
+        <% for (const j of jobs) { %><tr><td>Job</td><td><a href="/admin/jobs/<%= j.id %>">#<%= j.id %></a> <%= j.title %></td><td><span class="badge <%= j.status.split(' ')[0] %>"><%= j.status %></span></td><td class="num"><%= j.scheduled_at ? fmtDate(j.scheduled_at) : '' %></td></tr><% } %>
+        <% for (const i of invoices) { %><tr><td>Invoice</td><td><a href="/admin/invoices/<%= i.id %>"><%= i.number %></a></td><td><span class="badge <%= i.status %>"><%= i.status %></span></td><td class="num"><%= money(i.total_cents - i.paid_cents) %> due</td></tr><% } %>
+        <% if (!quotes.length && !jobs.length && !invoices.length) { %><tr><td class="muted">No documents yet.</td></tr><% } %>
+      </table></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>Notes</h2>
+      <form method="post" action="/admin/contacts/<%= c.id %>/notes"><textarea name="body" placeholder="Add a note (gate code, dog, preferences...)" style="min-height:60px"></textarea><button class="btn sm mt">Add note</button></form>
+      <% for (const n of notes) { %><div style="padding:.5rem 0;border-top:1px solid var(--line)"><%= n.body %><br><span class="small muted"><%= fmtDateTime(n.created_at) %></span></div><% } %>
+    </div>
+    <div class="card">
+      <h2>Leads</h2>
+      <% if (!leads.length) { %><p class="muted">No leads.</p><% } %>
+      <% for (const l of leads) { %><div style="padding:.4rem 0;border-bottom:1px solid var(--line)"><span class="badge <%= l.stage.split(' ')[0] %>"><%= l.stage %></span> <strong><%= l.service %></strong> <span class="small muted"><%= money(l.value_cents) %></span><br><span class="small"><%= l.message %></span></div><% } %>
+      <p class="mt small"><a href="/admin/pipeline">Open pipeline</a></p>
+    </div>
+    <div class="card">
+      <h2>Danger zone</h2>
+      <form method="post" action="/admin/contacts/<%= c.id %>/archive"><% if (c.archived) { %><input type="hidden" name="restore" value="1"><button class="btn secondary sm">Restore contact</button><% } else { %><button class="btn danger sm" onclick="return confirm('Archive this contact? Nothing is deleted.')">Archive contact</button><% } %></form>
+      <p class="help">Records are never deleted, only archived.</p>
+    </div>
+  </div>
+</div>

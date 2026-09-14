@@ -1,0 +1,33 @@
+<div class="card-head">
+  <div><h1 style="margin:0">Job #<%= j.id %> <span class="badge <%= j.status.split(' ')[0] %>"><%= j.status %></span></h1><span class="muted"><a href="/admin/contacts/<%= j.contact_id %>"><%= h.fullName(j.contact) %></a> &middot; <%= prettyPhone(j.contact.phone) %><%= j.contact.town ? ' · ' + j.contact.town : '' %><% if (j.quote) { %> &middot; from <a href="/admin/quotes/<%= j.quote.id %>"><%= j.quote.number %></a> (<%= money(j.quote.total_cents) %>)<% } %></span></div>
+  <div class="btn-row" style="margin:0">
+    <a class="btn sm secondary" href="/admin/conversations/<%= j.contact_id %>">Text client</a>
+    <% if (j.status !== 'Complete') { %><form method="post" action="/admin/jobs/<%= j.id %>/complete" onsubmit="return confirm('Mark complete and create the invoice draft?')"><button class="btn sm cyan">Mark complete &rarr; invoice</button></form><% } else if (j.invoice_id) { %><a class="btn sm" href="/admin/invoices/<%= j.invoice_id %>">Open invoice</a><% } %>
+  </div>
+</div>
+<form class="card" method="post" action="/admin/jobs/<%= j.id %>">
+  <div class="field-row three">
+    <div><label>Title</label><input type="text" name="title" value="<%= j.title %>" required></div>
+    <div><label>Scheduled (Eastern)</label><input type="datetime-local" name="scheduled_at" value="<%= h.fmtDateTimeInput(j.scheduled_at) %>"></div>
+    <div><label>Status</label><select name="status"><% for (const s of statuses) { %><option value="<%= s %>" <%= s === j.status ? 'selected' : '' %>><%= s %></option><% } %></select></div>
+  </div>
+  <label>Notes (internal)</label><textarea name="notes"><%= j.notes %></textarea>
+  <div class="grid-2 mt">
+    <div>
+      <h3>Checklist (client can see)</h3>
+      <div id="ck"><% const cks = j.checklist.length ? j.checklist : [{ item: '', done: 0 }]; cks.forEach((c, i) => { %><div class="flex" style="margin-bottom:.4rem"><input type="checkbox" name="checklist_done" value="<%= i %>" <%= c.done ? 'checked' : '' %> class="ckdone"><input type="text" name="checklist_item" value="<%= c.item %>" placeholder="Task" style="flex:1"></div><% }) %></div>
+      <button type="button" class="btn xs secondary" onclick="addRow('ck')">+ Task</button>
+    </div>
+    <div>
+      <h3>Materials</h3>
+      <div id="mat"><% const mats = j.materials.length ? j.materials : [{ item: '', qty: 1 }]; for (const m of mats) { %><div class="flex" style="margin-bottom:.4rem"><input type="text" name="material_item" value="<%= m.item %>" placeholder="Item" style="flex:1"><input type="number" name="material_qty" value="<%= m.qty %>" step="0.01" style="width:90px"></div><% } %></div>
+      <button type="button" class="btn xs secondary" onclick="addRow('mat')">+ Material</button>
+    </div>
+  </div>
+  <div class="btn-row"><button class="btn">Save job</button><form method="post" action="/admin/jobs/<%= j.id %>/archive" onsubmit="return confirm('Archive job?')"><button class="btn ghost">Archive</button></form></div>
+</form>
+<script>
+function addRow(id){const w=document.getElementById(id);const r=w.lastElementChild.cloneNode(true);r.querySelectorAll('input').forEach(i=>{if(i.type==='checkbox'){i.checked=false;}else if(i.type==='number'){i.value=1;}else i.value='';});w.appendChild(r);renumber();}
+function renumber(){document.querySelectorAll('#ck .ckdone').forEach((c,i)=>c.value=i);}
+renumber();
+</script>

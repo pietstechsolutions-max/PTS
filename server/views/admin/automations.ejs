@@ -1,0 +1,45 @@
+<div class="card-head"><h1>Automations</h1><div class="btn-row" style="margin:0"><form method="post" action="/admin/automations/run-queue"><button class="btn sm secondary">Run scheduler now</button></form><a class="btn sm" href="/admin/automations/new">+ New automation</a></div></div>
+<p class="small muted">Triggers fire automatically. "Wait" steps go into the queue and run on schedule (checked every minute). SMS steps respect quiet hours (<%= settings.quiet_hours_start %>:00-<%= settings.quiet_hours_end %>:00 ET) and skip opted-out contacts.</p>
+<% for (const a of rows) { %>
+<div class="card">
+  <div class="card-head">
+    <div><h2 style="margin:0"><%= a.name %> <span class="badge <%= a.enabled ? 'ok' : 'bad' %>"><%= a.enabled ? 'on' : 'off' %></span></h2><span class="small muted">Trigger: <strong><%= a.trigger %></strong><%= a.trigger_keyword ? ' (keyword "' + a.trigger_keyword + '")' : '' %> &middot; ran <%= a.run_count %> time<%= a.run_count === 1 ? '' : 's' %></span></div>
+    <div class="btn-row" style="margin:0">
+      <form method="post" action="/admin/automations/<%= a.id %>/toggle"><button class="btn xs secondary"><%= a.enabled ? 'Turn off' : 'Turn on' %></button></form>
+      <form method="post" action="/admin/automations/<%= a.id %>/test"><button class="btn xs secondary" title="Runs all steps for the first contact (waits are queued)">Test run</button></form>
+      <a class="btn xs ghost" href="/admin/automations/<%= a.id %>/edit">Edit</a>
+      <form method="post" action="/admin/automations/<%= a.id %>/archive" onsubmit="return confirm('Archive?')"><button class="btn xs danger">Archive</button></form>
+    </div>
+  </div>
+  <% a.steps.forEach((s, i) => { %>
+    <div class="step"><span class="n"><%= i + 1 %>.</span>
+      <% if (s.type === 'wait') { %>Wait <%= s.days ? s.days + ' day(s)' : s.hours + ' hour(s)' %>
+      <% } else if (s.type === 'send_sms') { %>Send SMS: <em><%= s.body %></em>
+      <% } else if (s.type === 'send_email') { %>Send email "<%= s.subject %>": <em><%= s.body %></em>
+      <% } else if (s.type === 'add_tag') { %>Add tag <span class="badge"><%= s.tag %></span>
+      <% } else if (s.type === 'move_stage') { %>Move lead to stage <span class="badge"><%= s.stage %></span>
+      <% } else if (s.type === 'notify_owner') { %>Notify owner: <em><%= s.body %></em>
+      <% } else if (s.type === 'stop_if') { %>Stop if <span class="badge"><%= s.condition.replace(/_/g, ' ') %></span>
+      <% } else if (s.type === 'webhook') { %>POST to webhook <span class="mono small"><%= s.url %></span>
+      <% } else if (s.type === 'ai_agent') { %>Run AI agent <span class="badge info"><%= s.agent %></span>
+      <% } else { %><%= JSON.stringify(s) %><% } %>
+    </div>
+  <% }) %>
+</div>
+<% } %>
+<div class="grid-2">
+  <div class="card table-wrap">
+    <h2>Queued steps (<%= queue.length %>)</h2>
+    <table><thead><tr><th>Runs at</th><th>Type</th><th>Details</th><th></th></tr></thead><tbody>
+    <% if (!queue.length) { %><tr><td colspan="4" class="muted">Queue is empty.</td></tr><% } %>
+    <% for (const j of queue) { %><tr><td class="nowrap"><%= fmtDateTime(j.run_at) %></td><td><%= j.type %></td><td class="small">automation #<%= j.payload.automationId %> step <%= (j.payload.stepIndex || 0) + 1 %> &middot; contact #<%= j.payload.ctx && j.payload.ctx.contactId %></td><td><form method="post" action="/admin/automations/run-queue"><input type="hidden" name="job_id" value="<%= j.id %>"><button class="btn xs ghost">Run now</button></form></td></tr><% } %>
+    </tbody></table>
+  </div>
+  <div class="card table-wrap">
+    <h2>Recently processed</h2>
+    <table><thead><tr><th>Done</th><th>Type</th><th>Status</th></tr></thead><tbody>
+    <% if (!recent.length) { %><tr><td colspan="3" class="muted">Nothing yet.</td></tr><% } %>
+    <% for (const j of recent) { %><tr><td class="nowrap"><%= fmtDateTime(j.done_at || j.run_at) %></td><td><%= j.type %> (#<%= j.payload.automationId %>)</td><td><span class="badge <%= j.status === 'done' ? 'ok' : 'bad' %>"><%= j.status %></span> <%= j.last_error || '' %></td></tr><% } %>
+    </tbody></table>
+  </div>
+</div>

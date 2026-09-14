@@ -1,0 +1,27 @@
+<%- include('_doc_head', { docType: 'INVOICE', docNumber: inv.number }) %>
+<div class="meta">
+  <div><b>Bill to</b><br><%= h.fullName(inv.contact) %><% if (inv.contact.company) { %><br><%= inv.contact.company %><% } %><% if (inv.contact.town) { %><br><%= inv.contact.town %>, NY<% } %><% if (inv.contact.phone) { %><br><%= prettyPhone(inv.contact.phone) %><% } %></div>
+  <div style="text-align:right"><b>Invoice date:</b> <%= fmtDate(inv.invoice_date) %><br><b>Service date:</b> <%= fmtDate(inv.service_date) %><br><b>Terms:</b> <%= inv.terms %><br><b>Status:</b> <%= inv.status %></div>
+</div>
+<table>
+  <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Unit price</th><th class="num">Amount</th></tr></thead>
+  <tbody>
+  <% let other = false; for (const it of inv.items) { if (it.section === 'other' && !other) { other = true; %><tr><td colspan="4" class="section">Other</td></tr><% } %>
+    <tr><td><%= it.description %></td><td class="num"><%= it.qty %></td><td class="num"><%= money(it.unit_cents) %></td><td class="num"><%= money(Math.round(it.qty * it.unit_cents)) %></td></tr>
+  <% } %>
+  </tbody>
+</table>
+<table class="totals">
+  <tr><td>Subtotal</td><td class="num"><%= money(inv.subtotal_cents) %></td></tr>
+  <tr><td>Suffolk County sales tax (<%= inv.tax_rate %>%)</td><td class="num"><%= money(inv.tax_cents) %></td></tr>
+  <tr class="grand"><td>Total</td><td class="num"><%= money(inv.total_cents) %></td></tr>
+  <% if (inv.paid_cents > 0) { %><tr><td>Paid</td><td class="num">-<%= money(inv.paid_cents) %></td></tr><tr class="grand"><td>Balance due</td><td class="num"><%= money(inv.due_cents) %></td></tr><% } %>
+</table>
+<div class="box">
+  <b>How to pay (due on receipt)</b><br>
+  Zelle: <%= settings.zelle_handle %> &nbsp;|&nbsp; Venmo: <%= settings.venmo_handle %> &nbsp;|&nbsp; Cash App: <%= settings.cashapp_handle %> &nbsp;|&nbsp; Cash<br>
+  Check payable to <b><%= settings.checks_payable_to %></b><br>
+  Card online at <%= baseUrl %>/portal/invoices/<%= inv.id %> (<%= settings.card_fee_percent %>% card processing fee added on top; no fee for the other methods). Please note <%= inv.number %> in the memo.
+</div>
+<% if (inv.notes) { %><p style="margin-top:14px"><%= inv.notes %></p><% } %>
+<div class="foot"><%= business.name %> &middot; <%= business.phone %> &middot; <%= business.email %> &middot; <%= business.website %></div>

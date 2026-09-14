@@ -1,0 +1,68 @@
+<div class="card-head"><h1>Pipeline</h1><button class="btn sm" onclick="document.getElementById('newLead').hidden=!document.getElementById('newLead').hidden">+ Add lead</button></div>
+<form id="newLead" class="card" method="post" action="/admin/pipeline" hidden>
+  <div class="field-row three">
+    <div><label>Existing contact</label><select name="contact_id"><option value="">- new contact -</option><% for (const c of contacts) { %><option value="<%= c.id %>"><%= c.first_name %> <%= c.last_name %> <%= prettyPhone(c.phone) %></option><% } %></select></div>
+    <div><label>Or name</label><input type="text" name="name" placeholder="New contact name"></div>
+    <div><label>Phone</label><input type="tel" name="phone"></div>
+    <div><label>Email</label><input type="email" name="email"></div>
+    <div><label>Town</label><input type="text" name="town"></div>
+    <div><label>Service</label><input type="text" name="service" placeholder="Cameras, Wi-Fi..."></div>
+    <div><label>Est. value $</label><input type="number" step="0.01" name="value"></div>
+    <div><label>Source</label><input type="text" name="source" value="Phone call"></div>
+    <div><label>Next follow-up</label><input type="date" name="next_follow_up"></div>
+  </div>
+  <label>Notes</label><textarea name="message" style="min-height:60px"></textarea>
+  <button class="btn mt">Add lead</button>
+</form>
+<p class="small muted">Drag cards between columns, or use the buttons. Stage changes are logged and visible to the client in their Quote Requests.</p>
+<div class="kanban">
+<% for (const col of columns) { %>
+  <div class="col" data-stage="<%= col.stage %>">
+    <h3><span><%= col.stage %> (<%= col.leads.length %>)</span><span class="muted"><%= money(col.value) %></span></h3>
+    <% for (const l of col.leads) { %>
+      <div class="lead-card" draggable="true" data-id="<%= l.id %>">
+        <div class="flex between"><a class="name" href="/admin/contacts/<%= l.contact_id %>"><%= l.first_name %> <%= l.last_name %></a><span class="val"><%= l.value_cents ? money(l.value_cents) : '' %></span></div>
+        <div><%= l.service || 'General request' %><%= l.town ? ' · ' + l.town : '' %></div>
+        <div class="small muted">Source: <%= l.source || '-' %><%= l.next_follow_up ? ' · follow up ' + fmtDate(l.next_follow_up) : '' %> &middot; <%= fmtDate(l.created_at) %></div>
+        <details class="small"><summary>Edit</summary>
+          <form method="post" action="/admin/pipeline/<%= l.id %>">
+            <input type="text" name="service" value="<%= l.service %>" placeholder="Service" style="margin-top:.3rem">
+            <input type="number" step="0.01" name="value" value="<%= h.fromCents(l.value_cents) %>" placeholder="Value" style="margin-top:.3rem">
+            <input type="text" name="source" value="<%= l.source %>" placeholder="Source" style="margin-top:.3rem">
+            <input type="date" name="next_follow_up" value="<%= l.next_follow_up || '' %>" style="margin-top:.3rem">
+            <textarea name="message" style="min-height:50px;margin-top:.3rem"><%= l.message %></textarea>
+            <button class="btn xs mt">Save</button>
+          </form>
+          <form method="post" action="/admin/pipeline/<%= l.id %>/reply" class="mt"><input type="text" name="note" placeholder="Note visible to client in change log"><button class="btn xs secondary" style="margin-top:.3rem">Add to change log</button></form>
+          <form method="post" action="/admin/pipeline/<%= l.id %>/archive" class="mt"><button class="btn xs danger">Archive</button></form>
+        </details>
+        <div class="moves">
+          <a class="btn xs secondary" href="/admin/quotes/new?lead_id=<%= l.id %>">Estimate</a>
+          <a class="btn xs ghost" href="/admin/conversations/<%= l.contact_id %>">Text</a>
+          <% const idx = stages.indexOf(l.stage); if (idx > 0) { %><form method="post" action="/admin/pipeline/<%= l.id %>/stage"><input type="hidden" name="stage" value="<%= stages[idx-1] %>"><button class="btn xs ghost" title="Move to <%= stages[idx-1] %>">&larr;</button></form><% } %>
+          <% if (idx < stages.length - 1) { %><form method="post" action="/admin/pipeline/<%= l.id %>/stage"><input type="hidden" name="stage" value="<%= stages[idx+1] %>"><button class="btn xs ghost" title="Move to <%= stages[idx+1] %>">&rarr;</button></form><% } %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+<% } %>
+</div>
+<script>
+(function(){
+  let dragId=null;
+  document.querySelectorAll('.lead-card').forEach(c=>{
+    c.addEventListener('dragstart',e=>{dragId=c.dataset.id;c.classList.add('dragging');});
+    c.addEventListener('dragend',()=>c.classList.remove('dragging'));
+  });
+  document.querySelectorAll('.kanban .col').forEach(col=>{
+    col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('over');});
+    col.addEventListener('dragleave',()=>col.classList.remove('over'));
+    col.addEventListener('drop',async e=>{
+      e.preventDefault();col.classList.remove('over');
+      if(!dragId) return;
+      const r=await fetch('/admin/pipeline/'+dragId+'/stage',{method:'POST',headers:{'content-type':'application/json','accept':'application/json'},body:JSON.stringify({stage:col.dataset.stage})});
+      if(r.ok) location.reload();
+    });
+  });
+})();
+</script>

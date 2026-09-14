@@ -1,0 +1,61 @@
+<h1><%= isNew ? 'New post' : 'Edit: ' + post.title %></h1>
+<% if (errors.length) { %><div class="flash error"><%= errors.join(' ') %></div><% } %>
+<div class="grid-2 wide-left">
+<form class="card" method="post" action="<%= isNew ? '/admin/blog' : '/admin/blog/' + post.slug %>" id="postForm">
+  <label>Title</label><input type="text" name="title" id="title" value="<%= post.title %>" required maxlength="120">
+  <div class="field-row">
+    <div><label>Slug (URL) <span class="muted small">auto from title</span></label><input type="text" name="slug" id="slug" value="<%= post.slug %>" placeholder="auto"><p class="help">Page will be /blog/<span id="slugPreview"><%= post.slug || '...' %></span>.html</p></div>
+    <div><label>Date</label><input type="date" name="date" value="<%= post.date %>" required></div>
+  </div>
+  <label>Description (meta description)</label><input type="text" name="description" id="description" value="<%= post.description %>" maxlength="300">
+  <div class="field-row">
+    <div><label>Tags (comma separated)</label><input type="text" name="tags" value="<%= post.tags.join(', ') %>" placeholder="security cameras, long island"></div>
+    <div><label>Focus keyword</label><input type="text" name="focusKeyword" id="focusKeyword" value="<%= post.focusKeyword %>" placeholder="e.g. security cameras Long Island"></div>
+  </div>
+  <label>Body (Markdown)</label><textarea name="body" id="body" style="min-height:420px;font-family:ui-monospace,Menlo,monospace;font-size:.92rem"><%= post.body %></textarea>
+  <p class="help">Use <span class="mono">## Heading</span> for sections, <span class="mono">**bold**</span>, lists with <span class="mono">-</span>, and links like <span class="mono">[text](https://...)</span>. Never include a street address.</p>
+  <div class="btn-row"><button class="btn"><%= isNew ? 'Publish post' : 'Save & rebuild' %></button><a class="btn ghost" href="/admin/blog">Cancel</a></div>
+</form>
+<div>
+  <div class="card two-col-sticky" id="seoPanel">
+    <h2>SEO check <span class="badge" id="seoScore"><%= seo.score %>%</span></h2>
+    <ul class="checklist" id="seoList"></ul>
+    <p class="help mt">Updates as you type. Green = good.</p>
+  </div>
+</div>
+</div>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const slugify=s=>s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80);
+  let slugTouched = <%= isNew ? 'false' : 'true' %>;
+  $('slug').addEventListener('input',()=>{slugTouched=$('slug').value.trim()!=='';});
+  $('title').addEventListener('input',()=>{ if(!slugTouched){ $('slug').value=slugify($('title').value); } render(); });
+  function seo(){
+    const title=$('title').value.trim(), desc=$('description').value.trim(), kw=$('focusKeyword').value.trim().toLowerCase(), body=$('body').value;
+    const has=s=>!!kw&&(s||'').toLowerCase().includes(kw);
+    const paras=body.split(/\n\s*\n/).map(p=>p.trim()).filter(p=>p&&!p.startsWith('#'));
+    const h2s=[...body.matchAll(/^##\s+(.+)$/gm)].map(m=>m[1]);
+    const words=body.split(/\s+/).filter(Boolean).length;
+    const slug=$('slug').value||slugify(title);
+    return [
+      {l:'Title length '+title.length+'/60',ok:title.length>0&&title.length<=60,h:title.length>60?'Too long - Google cuts around 60 characters.':''},
+      {l:'Description length '+desc.length+'/155',ok:desc.length>0&&desc.length<=155,h:desc.length>155?'Too long - keep under 155.':(!desc?'Add a description.':'')},
+      {l:'Focus keyword set',ok:!!kw,h:kw?'':'Pick the phrase people search for.'},
+      {l:'Keyword in title',ok:has(title),h:''},
+      {l:'Keyword in first paragraph',ok:has(paras[0]),h:''},
+      {l:'Keyword in an H2 heading',ok:h2s.some(has),h:h2s.length?'':'Add ## headings.'},
+      {l:'Word count '+words,ok:words>=600,h:words<600?'Aim for 600+ words.':''},
+      {l:'Slug short and readable',ok:slug.length>0&&slug.length<=60,h:''}
+    ];
+  }
+  function render(){
+    const c=seo(); const ul=$('seoList'); ul.innerHTML='';
+    c.forEach(x=>{ const li=document.createElement('li'); li.innerHTML='<span class="check '+(x.ok?'on':'')+'">'+(x.ok?'&#10003;':'')+'</span><span>'+x.l+(x.h?' <span class="muted small">- '+x.h+'</span>':'')+'</span>'; ul.appendChild(li); });
+    const score=Math.round(100*c.filter(x=>x.ok).length/c.length); const b=$('seoScore'); b.textContent=score+'%'; b.className='badge '+(score>=75?'ok':score>=50?'warn':'bad');
+    $('slugPreview').textContent=$('slug').value||slugify($('title').value)||'...';
+  }
+  ['description','focusKeyword','body','slug'].forEach(id=>$(id).addEventListener('input',render));
+  render();
+})();
+</script>

@@ -1,0 +1,33 @@
+<h1>Account</h1>
+<div class="card">
+  <div class="flex between"><div><span class="muted">Balance due</span><br><strong style="font-size:1.6rem;color:var(--navy)"><%= money(balance) %></strong></div><a class="btn sm" href="/portal/invoices">View invoices</a></div>
+  <% if (unpaid.length) { %><table class="mt"><% for (const inv of unpaid) { %><tr><td><a href="/portal/invoices/<%= inv.id %>"><%= inv.number %></a></td><td><span class="badge <%= inv.status %>"><%= inv.status %></span></td><td class="num"><%= money(inv.total_cents - inv.paid_cents) %></td></tr><% } %></table><% } %>
+</div>
+<div class="card">
+  <h2>How to pay</h2>
+  <div class="pay-methods">
+    <div><strong>Zelle</strong><br><%= settings.zelle_handle %></div>
+    <div><strong>Venmo</strong><br><%= settings.venmo_handle %></div>
+    <div><strong>Cash App</strong><br><%= settings.cashapp_handle %></div>
+    <div><strong>Check</strong><br>Payable to "<%= settings.checks_payable_to %>"</div>
+    <div><strong>Card (Stripe)</strong><br><%= settings.card_fee_percent %>% processing fee added</div>
+    <div><strong>Cash</strong><br>No fee</div>
+  </div>
+</div>
+<div class="card">
+  <h2>Your details</h2>
+  <form method="post" action="/portal/account">
+    <div class="field-row">
+      <div><label>First name</label><input type="text" name="first_name" value="<%= contact.first_name %>"></div>
+      <div><label>Last name</label><input type="text" name="last_name" value="<%= contact.last_name %>"></div>
+    </div>
+    <label>Phone</label><input type="tel" value="<%= prettyPhone(contact.phone) %>" disabled><p class="help">To change your phone number, text or call us at <%= business.phone %>.</p>
+    <label>Email</label><input type="email" name="email" value="<%= contact.email %>">
+    <label>Town</label><input type="text" name="town" value="<%= contact.town %>">
+    <label class="inline mt"><input type="checkbox" name="sms_opt_in" value="1" <%= contact.sms_opt_in ? 'checked' : '' %>> Text me about my jobs, estimates and invoices (reply STOP anytime)</label>
+    <button class="btn mt">Save</button>
+  </form>
+</div>
+<% if (payments.length) { %>
+<div class="card"><h2>Payment history</h2><table><% for (const p of payments) { %><tr><td><%= fmtDate(p.created_at) %></td><td><%= p.number || 'Subscription' %></td><td><%= p.method %></td><td class="num"><%= money(p.amount_cents) %></td></tr><% } %></table></div>
+<% } %>

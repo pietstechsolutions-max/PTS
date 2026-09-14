@@ -1,0 +1,37 @@
+<h1><%= a.id ? 'Edit automation' : 'New automation' %></h1>
+<form class="card" method="post" action="<%= a.id ? '/admin/automations/' + a.id : '/admin/automations' %>">
+  <div class="field-row three">
+    <div><label>Name</label><input type="text" name="name" value="<%= a.name %>" required></div>
+    <div><label>Trigger</label><select name="trigger"><% for (const t of TRIGGERS) { %><option value="<%= t %>" <%= t === a.trigger ? 'selected' : '' %>><%= t.replace(/_/g, ' ') %></option><% } %></select></div>
+    <div><label>Keyword (for inbound SMS keyword trigger)</label><input type="text" name="trigger_keyword" value="<%= a.trigger_keyword %>" placeholder="e.g. PRICE"></div>
+  </div>
+  <label class="inline mt"><input type="checkbox" name="enabled" value="1" <%= a.enabled ? 'checked' : '' %>> Enabled</label>
+  <h3 class="mt">Steps</h3>
+  <p class="help">Merge fields: {{first_name}} {{name}} {{phone}} {{town}} {{service}} {{message}} {{source}} {{quote_number}} {{quote_total}} {{quote_link}} {{invoice_number}} {{invoice_total}} {{invoice_link}} {{business_name}} {{business_phone}} {{review_link}} {{portal_link}}</p>
+  <div id="steps">
+    <% const steps = a.steps.length ? a.steps : [{ type: 'send_sms', body: '' }]; for (const s of steps) { const v = s.type === 'wait' ? (s.days || s.hours || 1) : s.type === 'add_tag' ? s.tag : s.type === 'move_stage' ? s.stage : s.type === 'stop_if' ? s.condition : s.type === 'webhook' ? (s.url || '') : s.type === 'ai_agent' ? (s.agent || '') : (s.body || ''); %>
+    <div class="step">
+      <div class="flex">
+        <select name="step_type" class="stype" style="width:auto"><% for (const t of ACTION_TYPES) { %><option value="<%= t %>" <%= t === s.type ? 'selected' : '' %>><%= t.replace(/_/g, ' ') %></option><% } %></select>
+        <select name="step_unit" class="sunit" style="width:auto"><option value="hours" <%= s.hours ? 'selected' : '' %>>hours</option><option value="days" <%= s.days ? 'selected' : '' %>>days</option></select>
+        <input type="text" name="step_subject" class="ssubject" placeholder="Email subject" value="<%= s.subject || s.secret || '' %>" style="flex:1">
+        <button type="button" class="btn xs danger rm">&times;</button>
+      </div>
+      <textarea name="step_value" class="sval" style="min-height:60px;margin-top:.4rem" placeholder="Message text / tag / stage / hours / condition"><%= v %></textarea>
+      <div class="help shint"></div>
+    </div>
+    <% } %>
+  </div>
+  <button type="button" class="btn sm secondary" id="add">+ Add step</button>
+  <div class="btn-row"><button class="btn">Save automation</button><a class="btn ghost" href="/admin/automations">Cancel</a></div>
+</form>
+<script>
+(function(){
+  const stages = <%- JSON.stringify(stages) %>;
+  const hints = { wait: 'Number of hours or days to wait before the next step.', send_sms: 'Text message body. "Reply STOP to opt out" is appended.', send_email: 'Email body; subject above.', add_tag: 'Tag name, e.g. customer', move_stage: 'One of: ' + stages.join(', '), notify_owner: 'Text sent to OWNER_PHONE.', stop_if: 'One of: quote_not_open, invoice_paid, lead_closed', webhook: 'URL to POST the event JSON to (Zapier Catch Hook, Make, n8n). Optional signing secret in the box above.', ai_agent: 'Agent name from Admin -> Integrations, e.g. sms_reply_drafter. Its autopilot setting decides draft vs send.' };
+  function refresh(step){ const t=step.querySelector('.stype').value; step.querySelector('.sunit').style.display = t==='wait' ? '' : 'none'; step.querySelector('.ssubject').style.display = (t==='send_email' || t==='webhook') ? '' : 'none'; step.querySelector('.ssubject').placeholder = t==='webhook' ? 'Signing secret (optional)' : 'Email subject'; step.querySelector('.shint').textContent = hints[t] || ''; }
+  function wire(step){ step.querySelector('.stype').addEventListener('change',()=>refresh(step)); step.querySelector('.rm').addEventListener('click',()=>{ if(document.querySelectorAll('#steps .step').length>1) step.remove(); }); refresh(step); }
+  document.querySelectorAll('#steps .step').forEach(wire);
+  document.getElementById('add').addEventListener('click',()=>{ const s=document.querySelector('#steps .step').cloneNode(true); s.querySelector('.sval').value=''; s.querySelector('.ssubject').value=''; document.getElementById('steps').appendChild(s); wire(s); });
+})();
+</script>

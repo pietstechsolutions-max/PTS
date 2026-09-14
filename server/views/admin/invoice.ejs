@@ -1,0 +1,55 @@
+<div class="card-head">
+  <div><h1 style="margin:0">Invoice <%= inv.number %> <span class="badge <%= inv.status %>"><%= inv.status %></span></h1><span class="muted"><a href="/admin/contacts/<%= inv.contact_id %>"><%= h.fullName(inv.contact) %></a> &middot; service <%= fmtDate(inv.service_date) %> &middot; invoiced <%= fmtDate(inv.invoice_date) %> &middot; <%= inv.terms %></span></div>
+  <div class="btn-row" style="margin:0">
+    <form method="post" action="/admin/invoices/<%= inv.id %>/send"><button class="btn sm"><%= inv.sent_at ? 'Re-send' : 'Send to client' %></button></form>
+    <a class="btn sm secondary" href="/admin/invoices/<%= inv.id %>/edit">Edit</a>
+    <a class="btn sm ghost" href="/admin/invoices/<%= inv.id %>/print" target="_blank" rel="noopener">Print</a>
+    <a class="btn sm ghost" href="/portal/invoices/<%= inv.id %>" target="_blank" rel="noopener">Client view</a>
+  </div>
+</div>
+<div class="grid-2 wide-left">
+  <div class="card">
+    <div class="table-wrap"><table>
+      <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Unit</th><th class="num">Total</th></tr></thead>
+      <tbody><% let other=false; for (const it of inv.items) { if (it.section==='other' && !other) { other=true; %><tr><td colspan="4" style="background:#e8f6ff;font-weight:700">Other</td></tr><% } %><tr><td><%= it.description %></td><td class="num"><%= it.qty %></td><td class="num"><%= money(it.unit_cents) %></td><td class="num"><%= money(Math.round(it.qty*it.unit_cents)) %></td></tr><% } %></tbody>
+    </table></div>
+    <table class="totals" style="max-width:320px;margin-left:auto">
+      <tr><td>Subtotal</td><td class="num"><%= money(inv.subtotal_cents) %></td></tr>
+      <tr><td>Suffolk County sales tax (<%= inv.tax_rate %>%)</td><td class="num"><%= money(inv.tax_cents) %></td></tr>
+      <tr class="total"><td>Total</td><td class="num"><%= money(inv.total_cents) %></td></tr>
+      <tr><td>Paid</td><td class="num"><%= money(inv.paid_cents) %></td></tr>
+      <tr class="total"><td>Balance due</td><td class="num"><%= money(inv.due_cents) %></td></tr>
+    </table>
+    <% if (inv.notes) { %><p class="mt small"><%= inv.notes %></p><% } %>
+    <h3 class="mt">Payments</h3>
+    <% if (!inv.payments.length) { %><p class="muted small">No payments yet.</p><% } %>
+    <table><% for (const p of inv.payments) { %><tr><td><%= fmtDateTime(p.created_at) %></td><td><%= p.method %><%= p.reference ? ' - ' + p.reference : '' %><%= p.fee_cents ? ' (fee ' + money(p.fee_cents) + ')' : '' %></td><td class="num"><%= money(p.amount_cents) %></td></tr><% } %></table>
+  </div>
+  <div>
+    <% if (inv.due_cents > 0) { %>
+    <div class="card">
+      <h2>Record a payment</h2>
+      <form method="post" action="/admin/invoices/<%= inv.id %>/payment">
+        <div class="field-row">
+          <div><label>Amount $</label><input type="number" step="0.01" name="amount" value="<%= h.fromCents(inv.due_cents) %>" required></div>
+          <div><label>Method</label><select name="method"><% for (const m of methods.filter(m => m !== 'Card')) { %><option><%= m %></option><% } %></select></div>
+        </div>
+        <label>Reference (Zelle conf #, check #...)</label><input type="text" name="reference">
+        <button class="btn mt">Record payment</button>
+      </form>
+    </div>
+    <div class="card">
+      <h2>Card payment link</h2>
+      <p class="small">Stripe Checkout for <%= money(inv.due_cents) %> + <%= settings.card_fee_percent %>% fee (<%= money(fee) %>) = <strong><%= money(inv.due_cents + fee) %></strong>.</p>
+      <div class="btn-row">
+        <form method="post" action="/admin/invoices/<%= inv.id %>/card-link"><input type="hidden" name="send" value="1"><button class="btn sm">Text link to client</button></form>
+        <form method="post" action="/admin/invoices/<%= inv.id %>/card-link"><button class="btn sm secondary">Create link only</button></form>
+      </div>
+    </div>
+    <% } %>
+    <div class="card">
+      <h2>Other</h2>
+      <form method="post" action="/admin/invoices/<%= inv.id %>/archive" onsubmit="return confirm('Archive invoice?')"><button class="btn sm danger">Archive</button></form>
+    </div>
+  </div>
+</div>

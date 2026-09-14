@@ -1,0 +1,19 @@
+<h1><%= isNew ? 'New estimate' : 'Revise ' + q.number %></h1>
+<form class="card" method="post" action="<%= isNew ? '/admin/quotes' : '/admin/quotes/' + q.id %>">
+  <% if (isNew) { %>
+    <input type="hidden" name="lead_id" value="<%= q.lead_id || '' %>">
+    <label>Client</label>
+    <select name="contact_id" required><option value="">- choose -</option><% for (const c of contacts) { %><option value="<%= c.id %>" <%= String(c.id) === String(q.contact_id) ? 'selected' : '' %>><%= c.first_name %> <%= c.last_name %> <%= prettyPhone(c.phone) %></option><% } %></select>
+  <% } else { %><p class="muted">Client: <strong><%= h.fullName(q.contact) %></strong>. Saving creates revision <%= q.revision + 1 %> (the client sees every change in the log).</p><% } %>
+  <label>Title</label><input type="text" name="title" value="<%= q.title %>" placeholder="e.g. Security camera system (4 cameras)" required>
+  <h3 class="mt">Line items</h3>
+  <p class="help">Use section "Other" for optional add-ons; they show under a separate heading. Tax is applied once at the bottom.</p>
+  <%- include('../partials/line-items', { items: q.items, taxRate: q.tax_rate }) %>
+  <div class="field-row mt">
+    <div><label>Valid until (7 days by default)</label><input type="date" name="valid_until" value="<%= h.fmtDateInput(q.valid_until) %>"></div>
+    <% if (!isNew) { %><div><label>What changed? (shown to client)</label><input type="text" name="change_summary" placeholder="e.g. Added doorbell camera per request"></div><% } %>
+  </div>
+  <label>Notes (shown on the estimate)</label><textarea name="notes"><%= q.notes %></textarea>
+  <p class="help">Do not add a "thank you for the opportunity" line; estimates are kept plain and factual.</p>
+  <div class="btn-row"><button class="btn"><%= isNew ? 'Save draft' : 'Save revision' %></button><a class="btn ghost" href="<%= isNew ? '/admin/quotes' : '/admin/quotes/' + q.id %>">Cancel</a></div>
+</form>

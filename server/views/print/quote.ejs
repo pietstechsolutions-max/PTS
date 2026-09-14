@@ -1,0 +1,22 @@
+<%- include('_doc_head', { docType: 'ESTIMATE', docNumber: q.number }) %>
+<div class="meta">
+  <div><b>Prepared for</b><br><%= h.fullName(q.contact) %><% if (q.contact.company) { %><br><%= q.contact.company %><% } %><% if (q.contact.town) { %><br><%= q.contact.town %>, NY<% } %><% if (q.contact.phone) { %><br><%= prettyPhone(q.contact.phone) %><% } %></div>
+  <div style="text-align:right"><b>Date:</b> <%= fmtDate(q.updated_at) %><br><b>Valid until:</b> <%= fmtDate(q.valid_until) %><br><b>Revision:</b> <%= q.revision %><br><b>Status:</b> <%= q.status %></div>
+</div>
+<h2 style="color:#011F5D;margin:0 0 4px"><%= q.title %></h2>
+<table>
+  <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Unit price</th><th class="num">Amount</th></tr></thead>
+  <tbody>
+  <% let other = false; for (const it of q.items) { if (it.section === 'other' && !other) { other = true; %><tr><td colspan="4" class="section">Other / optional</td></tr><% } %>
+    <tr><td><%= it.description %></td><td class="num"><%= it.qty %></td><td class="num"><%= money(it.unit_cents) %></td><td class="num"><%= money(Math.round(it.qty * it.unit_cents)) %></td></tr>
+  <% } %>
+  </tbody>
+</table>
+<table class="totals">
+  <tr><td>Subtotal</td><td class="num"><%= money(q.subtotal_cents) %></td></tr>
+  <tr><td>Suffolk County sales tax (<%= q.tax_rate %>%)</td><td class="num"><%= money(q.tax_cents) %></td></tr>
+  <tr class="grand"><td>Total</td><td class="num"><%= money(q.total_cents) %></td></tr>
+</table>
+<% if (q.notes) { %><p style="margin-top:14px"><b>Notes:</b> <%= q.notes %></p><% } %>
+<div class="box">This estimate is valid for 7 days (until <%= fmtDate(q.valid_until) %>). Prices may rise after. Sales tax applied once on the total. Payment due on receipt of invoice: Zelle, Venmo, Cash App, cash or check (payable to <%= settings.checks_payable_to %>) at no charge; card via Stripe with a <%= settings.card_fee_percent %>% processing fee.<% if (q.approved_by) { %><br><b>Approved by <%= q.approved_by %> on <%= fmtDate(q.approved_at) %>.</b><% } %></div>
+<div class="foot"><%= business.name %> &middot; <%= business.phone %> &middot; <%= business.email %> &middot; <%= business.website %></div>

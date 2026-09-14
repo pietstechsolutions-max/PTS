@@ -1,0 +1,49 @@
+<p><a href="/portal/invoices">&larr; All invoices</a></p>
+<% if (paidJustNow && inv.status === 'Paid') { %><div class="flash ok">Payment received - thank you!</div><% } %>
+<div class="card">
+  <div class="doc-head">
+    <div><img src="/assets/brand/logo-lockup.png" alt="<%= business.name %>" onerror="this.onerror=null;this.src='/brand/logo-lockup.png'"><div class="small muted"><%= business.phone %> &middot; <%= business.email %> &middot; <%= business.website %></div></div>
+    <div class="doc-meta"><div class="num">Invoice <%= inv.number %></div><span class="badge <%= inv.status %>"><%= inv.status %></span><br><span class="small">Invoice date <%= fmtDate(inv.invoice_date) %><br>Service date <%= fmtDate(inv.service_date) %><br>Terms: <%= inv.terms %></span></div>
+  </div>
+  <p class="small mt">Bill to <strong><%= h.fullName(inv.contact) %></strong><%= inv.contact.town ? ', ' + inv.contact.town : '' %></p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Total</th></tr></thead>
+    <tbody>
+    <% let hasOther = false; for (const it of inv.items) { if (it.section === 'other' && !hasOther) { hasOther = true; %><tr><td colspan="4" style="background:#e8f6ff;font-weight:700;color:var(--navy)">Other</td></tr><% } %>
+      <tr><td><%= it.description %></td><td class="num"><%= it.qty %></td><td class="num"><%= money(it.unit_cents) %></td><td class="num"><%= money(Math.round(it.qty * it.unit_cents)) %></td></tr>
+    <% } %>
+    </tbody>
+  </table>
+  </div>
+  <table class="totals" style="max-width:340px;margin-left:auto">
+    <tr><td>Subtotal</td><td class="num"><%= money(inv.subtotal_cents) %></td></tr>
+    <tr><td>Suffolk County sales tax (<%= inv.tax_rate %>%)</td><td class="num"><%= money(inv.tax_cents) %></td></tr>
+    <tr class="total"><td>Total</td><td class="num"><%= money(inv.total_cents) %></td></tr>
+    <% if (inv.paid_cents > 0) { %><tr><td>Paid</td><td class="num">-<%= money(inv.paid_cents) %></td></tr><tr class="total"><td>Balance due</td><td class="num"><%= money(inv.due_cents) %></td></tr><% } %>
+  </table>
+  <% if (inv.notes) { %><p class="mt small"><%= inv.notes %></p><% } %>
+  <p class="mt"><a class="btn ghost sm" href="/portal/invoices/<%= inv.id %>/print" target="_blank" rel="noopener">Print / download</a></p>
+</div>
+
+<% if (inv.due_cents > 0) { %>
+<div class="pay-box mb">
+  <h2>Pay <%= money(inv.due_cents) %></h2>
+  <form method="post" action="/portal/invoices/<%= inv.id %>/pay">
+    <button class="btn big">Pay by card (<%= money(inv.due_cents + fee) %>)</button>
+    <p class="help">Card payments are processed securely by Stripe. A <%= settings.card_fee_percent %>% card processing fee of <strong><%= money(fee) %></strong> is added, so the card total is <strong><%= money(inv.due_cents + fee) %></strong>.</p>
+  </form>
+  <h3 class="mt">Or pay with no fee</h3>
+  <div class="pay-methods">
+    <div><strong>Zelle</strong><br><%= settings.zelle_handle %></div>
+    <div><strong>Venmo</strong><br><%= settings.venmo_handle %></div>
+    <div><strong>Cash App</strong><br><%= settings.cashapp_handle %></div>
+    <div><strong>Check</strong><br>Payable to "<%= settings.checks_payable_to %>"</div>
+    <div><strong>Cash</strong><br>At time of service</div>
+  </div>
+  <p class="small muted mt">Please put <strong><%= inv.number %></strong> in the memo. We will mark it paid as soon as it arrives.</p>
+</div>
+<% } %>
+<% if (inv.payments.length) { %>
+<div class="card"><h3>Payments</h3><table><% for (const p of inv.payments) { %><tr><td><%= fmtDate(p.created_at) %></td><td><%= p.method %><%= p.reference ? ' - ' + p.reference : '' %></td><td class="num"><%= money(p.amount_cents) %></td></tr><% } %></table></div>
+<% } %>

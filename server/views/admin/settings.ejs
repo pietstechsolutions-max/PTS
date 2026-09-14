@@ -1,0 +1,83 @@
+<h1>Settings</h1>
+<div class="grid-2">
+<form class="card" method="post" action="/admin/settings">
+  <h2>Business</h2>
+  <div class="field-row">
+    <div><label>Business name</label><input type="text" name="business_name" value="<%= s.business_name %>"></div>
+    <div><label>Legal name (checks payable to)</label><input type="text" name="checks_payable_to" value="<%= s.checks_payable_to %>"></div>
+    <div><label>Phone</label><input type="text" name="business_phone" value="<%= s.business_phone %>"></div>
+    <div><label>Email</label><input type="text" name="business_email" value="<%= s.business_email %>"></div>
+    <div><label>Website</label><input type="text" name="business_website" value="<%= s.business_website %>"></div>
+    <div><label>Service area</label><input type="text" name="service_area" value="<%= s.service_area %>"></div>
+    <div><label>Owner alert phone (SMS)</label><input type="tel" name="owner_phone" value="<%= s.owner_phone || config.owner.phone %>"><p class="help">Defaults to OWNER_PHONE from .env.</p></div>
+    <div><label>Google review link</label><input type="url" name="review_link" value="<%= s.review_link %>"></div>
+  </div>
+  <p class="help">No street address is shown anywhere. Only phone, email and website appear on documents.</p>
+  <h2 class="mt">Money</h2>
+  <div class="field-row three">
+    <div><label>Sales tax %</label><input type="number" step="0.001" name="tax_rate" value="<%= s.tax_rate %>"></div>
+    <div><label>Card fee %</label><input type="number" step="0.1" name="card_fee_percent" value="<%= s.card_fee_percent %>"></div>
+    <div><label>Quote valid (days)</label><input type="number" name="quote_valid_days" value="<%= s.quote_valid_days %>"></div>
+    <div><label>Invoice terms</label><input type="text" name="invoice_terms" value="<%= s.invoice_terms %>"></div>
+    <div><label>Zelle</label><input type="text" name="zelle_handle" value="<%= s.zelle_handle %>"></div>
+    <div><label>Venmo</label><input type="text" name="venmo_handle" value="<%= s.venmo_handle %>"></div>
+    <div><label>Cash App</label><input type="text" name="cashapp_handle" value="<%= s.cashapp_handle %>"></div>
+  </div>
+  <h2 class="mt">Managed services plans (monthly $)</h2>
+  <% for (const p of ['basic', 'pro', 'business']) { %>
+    <div class="field-row" style="grid-template-columns:140px 1fr">
+      <div><label><%= p.charAt(0).toUpperCase() + p.slice(1) %> $/mo</label><input type="number" step="0.01" name="plan_<%= p %>_price" value="<%= s['plan_' + p + '_price'] %>" placeholder="set your price"><% if (Number(s['plan_' + p + '_price']) <= 0) { %><span class="badge warn">set your price</span><% } %></div>
+      <div><label>Description</label><input type="text" name="plan_<%= p %>_desc" value="<%= s['plan_' + p + '_desc'] %>"></div>
+    </div>
+  <% } %>
+  <p class="help">Plans priced at $0 show "Call for pricing" in the client hub and cannot be subscribed to online.</p>
+  <h2 class="mt">Texting</h2>
+  <div class="field-row three">
+    <div><label>Twilio number</label><input type="text" name="twilio_number" value="<%= s.twilio_number || config.twilio.phoneNumber %>"></div>
+    <div><label>Quiet hours start (hour, ET)</label><input type="number" min="0" max="23" name="quiet_hours_start" value="<%= s.quiet_hours_start %>"></div>
+    <div><label>Quiet hours end (hour, ET)</label><input type="number" min="1" max="24" name="quiet_hours_end" value="<%= s.quiet_hours_end %>"></div>
+  </div>
+  <label>SMS footer (appended to marketing texts)</label><input type="text" name="sms_footer" value="<%= s.sms_footer %>">
+  <h3 class="mt">A2P 10DLC registration checklist</h3>
+  <ul class="a2p" style="list-style:none;padding:0">
+    <li><label class="inline"><input type="checkbox" name="a2p_brand_registered" value="1" <%= s.a2p_brand_registered === '1' ? 'checked' : '' %>> Brand registered (EIN + business info) - <a href="https://www.twilio.com/docs/messaging/compliance/a2p-10dlc" target="_blank" rel="noopener">Twilio docs</a></label></li>
+    <li><label class="inline"><input type="checkbox" name="a2p_campaign_approved" value="1" <%= s.a2p_campaign_approved === '1' ? 'checked' : '' %>> Campaign use case approved (Mixed / Customer Care + Marketing) - <a href="https://console.twilio.com/us1/develop/sms/regulatory-compliance/campaigns" target="_blank" rel="noopener">Twilio console</a></label></li>
+    <li><label class="inline"><input type="checkbox" name="a2p_number_linked" value="1" <%= s.a2p_number_linked === '1' ? 'checked' : '' %>> Phone number linked to the messaging service / campaign - <a href="https://console.twilio.com/us1/service/sms" target="_blank" rel="noopener">Messaging services</a></label></li>
+  </ul>
+  <button class="btn mt">Save settings</button>
+</form>
+<div>
+  <div class="card">
+    <h2>Provider status</h2>
+    <table>
+      <tr><td>Mode</td><td><span class="badge <%= sandbox ? 'warn' : 'ok' %>"><%= sandbox ? 'SANDBOX' : 'LIVE' %></span></td></tr>
+      <tr><td>Stripe</td><td><span class="badge <%= providers.stripe === 'stripe' ? 'ok' : 'warn' %>"><%= providers.stripe %></span> <span class="small muted"><%= config.stripe.webhookSecret ? 'webhook secret set' : 'no webhook secret' %></span></td></tr>
+      <tr><td>Twilio SMS</td><td><span class="badge <%= providers.sms === 'twilio' ? 'ok' : 'warn' %>"><%= providers.sms %></span> <span class="small muted"><%= config.twilio.phoneNumber || 'no number' %></span></td></tr>
+      <tr><td>Email (SMTP)</td><td><span class="badge <%= providers.email === 'smtp' ? 'ok' : 'warn' %>"><%= providers.email %></span> <span class="small muted"><%= config.smtp.host || 'no host' %></span></td></tr>
+      <tr><td>Base URL</td><td class="mono small"><%= baseUrl %></td></tr>
+    </table>
+    <p class="small mt"><strong>Webhook URLs</strong><br>Twilio: <span class="mono"><%= baseUrl %>/webhooks/twilio/sms</span><br>Stripe: <span class="mono"><%= baseUrl %>/webhooks/stripe</span></p>
+    <p class="help">Set keys in <span class="mono">server/.env</span> (see .env.example) and restart to go live.</p>
+  </div>
+  <div class="card" id="templates">
+    <h2>Message templates</h2>
+    <% for (const t of templates) { %>
+      <details><summary><%= t.name %> <span class="badge"><%= t.channel %></span></summary>
+        <form method="post" action="/admin/templates"><input type="hidden" name="id" value="<%= t.id %>">
+          <input type="text" name="name" value="<%= t.name %>" class="mt"><select name="channel" class="mt"><option value="sms" <%= t.channel === 'sms' ? 'selected' : '' %>>SMS</option><option value="email" <%= t.channel === 'email' ? 'selected' : '' %>>Email</option></select>
+          <input type="text" name="subject" value="<%= t.subject %>" placeholder="Subject (email)" class="mt"><textarea name="body" class="mt"><%= t.body %></textarea>
+          <div class="btn-row"><button class="btn xs">Save</button></div>
+        </form>
+        <form method="post" action="/admin/templates/<%= t.id %>/archive"><button class="btn xs danger">Archive</button></form>
+      </details>
+    <% } %>
+    <details class="mt"><summary>+ New template</summary>
+      <form method="post" action="/admin/templates">
+        <input type="text" name="name" placeholder="Name" required class="mt"><select name="channel" class="mt"><option value="sms">SMS</option><option value="email">Email</option></select>
+        <input type="text" name="subject" placeholder="Subject (email)" class="mt"><textarea name="body" placeholder="Hi {{first_name}}, ..." required class="mt"></textarea>
+        <button class="btn xs mt">Create</button>
+      </form>
+    </details>
+  </div>
+</div>
+</div>

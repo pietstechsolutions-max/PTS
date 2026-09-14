@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Piets Technology Solutions Blog</title>
+  <link>https://pietstechsolutions.com/blog/</link>
+  <atom:link href="https://pietstechsolutions.com/rss.xml" rel="self" type="application/rss+xml"/>
+  <description>Tech tips on security cameras, Wi-Fi, cabling, POS and IT for New York homes and small businesses.</description>
+  <language>en-us</language>
+  <lastBuildDate>Mon, 14 Sep 2026 14:11:42 GMT</lastBuildDate>
+  <item>
+    <title><![CDATA[What a Small Business POS Setup Actually Costs (and What to Ask)]]></title>
+    <link>https://pietstechsolutions.com/blog/small-business-pos-setup-cost.html</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/small-business-pos-setup-cost.html</guid>
+    <pubDate>Wed, 02 Sep 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[The real line items behind a restaurant or retail POS install — hardware, processing, software, network — and the questions that keep you from overpaying.]]></description>
+    <category>point of sale</category><category>restaurants</category><category>small business</category>
+  </item>
+  <item>
+    <title><![CDATA[Wi-Fi Dead Zones: Why Your Router Isn't Enough]]></title>
+    <link>https://pietstechsolutions.com/blog/wifi-dead-zones-why-your-router-isnt-enough.html</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/wifi-dead-zones-why-your-router-isnt-enough.html</guid>
+    <pubDate>Tue, 25 Aug 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Why one router can't cover a Long Island or Hudson Valley home, why mesh kits disappoint, and what a real whole-home Wi-Fi upgrade looks like.]]></description>
+    <category>wi-fi</category><category>networking</category><category>home network</category>
+  </item>
+  <item>
+    <title><![CDATA[How Many Security Cameras Does a Long Island Home Need?]]></title>
+    <link>https://pietstechsolutions.com/blog/how-many-security-cameras-long-island-home.html</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/how-many-security-cameras-long-island-home.html</guid>
+    <pubDate>Tue, 18 Aug 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[A practical guide to camera counts for Suffolk and Nassau County homes: which spots matter, what 4K and night vision really buy you, and how to avoid overpaying.]]></description>
+    <category>security cameras</category><category>long island</category><category>home security</category>
+  </item>
+</channel>
+</rss>

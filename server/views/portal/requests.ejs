@@ -1,0 +1,35 @@
+<h1>Quote requests</h1>
+<div class="card">
+  <h2>Ask for a new quote</h2>
+  <form method="post" action="/portal/requests">
+    <label>What do you need?</label>
+    <input type="text" name="service" placeholder="e.g. Security cameras, Wi-Fi, TV mounting, smart home" maxlength="120">
+    <label>Details</label>
+    <textarea name="message" placeholder="Tell us about the job, how many cameras/rooms, timing, etc."></textarea>
+    <button class="btn big mt">Send request</button>
+  </form>
+</div>
+<% if (!leads.length) { %><p class="muted">No requests yet.</p><% } %>
+<% for (const l of leads) { %>
+<div class="card">
+  <div class="card-head">
+    <h2 style="margin:0">Request #<%= l.id %><%= l.service ? ' - ' + l.service : '' %></h2>
+    <span class="badge <%= l.stage.split(' ')[0] %>"><%= l.stage === 'Won' ? 'Approved' : l.stage === 'Lost' ? 'Closed' : l.stage %></span>
+  </div>
+  <% if (l.message) { %><p><%= l.message %></p><% } %>
+  <p class="small muted">Submitted <%= fmtDateTime(l.created_at) %></p>
+  <details open>
+    <summary>Change log (<%= l.log.length %>)</summary>
+    <ul class="timeline mt">
+      <% for (const e of l.log) { %>
+        <li><span class="who"><%= e.author === 'client' ? 'You' : e.author === 'owner' ? business.name : 'System' %></span> <span class="when"><%= fmtDateTime(e.created_at) %></span><br><%= e.message %></li>
+      <% } %>
+    </ul>
+  </details>
+  <form method="post" action="/portal/requests/<%= l.id %>/note" class="mt">
+    <label>Add a note or change request</label>
+    <textarea name="note" placeholder="e.g. Please add one more camera on the garage." maxlength="1000" style="min-height:70px"></textarea>
+    <button class="btn secondary sm mt">Add note</button>
+  </form>
+</div>
+<% } %>

@@ -1,0 +1,27 @@
+<div class="login-hero">
+  <img src="/assets/brand/logo-lockup.png" alt="<%= business.name %>" onerror="this.onerror=null;this.src='/brand/logo-lockup.png'">
+  <h1 style="margin-top:.75rem">Client Hub</h1>
+  <p class="muted">See your estimates, jobs and invoices. Pay online. No password needed.</p>
+</div>
+<div class="card">
+<% if (step === 'identify') { %>
+  <form method="post" action="/portal/login">
+    <label for="identifier">Your phone number or email</label>
+    <input id="identifier" name="identifier" type="text" inputmode="email" autocomplete="username" placeholder="631-555-0100 or you@example.com" required autofocus>
+    <p class="help">We will text or email you a 6-digit code to sign in.</p>
+    <button class="btn big mt" type="submit">Send my code</button>
+  </form>
+<% } else { %>
+  <p><strong>Enter the 6-digit code</strong> we sent to <span class="mono"><%= dest %></span>.</p>
+  <% if (sandbox) { %><div class="notice warn small">Sandbox mode: the code is not really sent. Find it in <a href="/admin/outbox">Admin &rarr; Outbox</a> or the server console.</div><% } %>
+  <% if (error) { %><div class="flash error mt"><%= error %></div><% } %>
+  <form method="post" action="/portal/login/verify">
+    <input type="hidden" name="identifier" value="<%= dest %>">
+    <label for="code">Code</label>
+    <input id="code" name="code" class="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" required autofocus>
+    <button class="btn big mt" type="submit">Sign in</button>
+  </form>
+  <p class="mt small muted">Didn't get it? <a href="/portal/login">Try again</a> or call <a href="tel:+16318715957"><%= business.phone %></a>.</p>
+<% } %>
+</div>
+<p class="small muted" style="text-align:center">New customer? <a href="/#quote">Request a free estimate</a>.</p>

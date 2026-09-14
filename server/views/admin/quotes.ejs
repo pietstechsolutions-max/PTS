@@ -1,0 +1,8 @@
+<div class="card-head"><h1>Quotes</h1><a class="btn sm" href="/admin/quotes/new">+ New estimate</a></div>
+<div class="card table-wrap"><table>
+  <thead><tr><th>#</th><th>Client</th><th>Title</th><th>Status</th><th>Valid until</th><th>Rev</th><th class="num">Total</th></tr></thead>
+  <tbody>
+  <% if (!rows.length) { %><tr><td colspan="7" class="muted">No estimates yet.</td></tr><% } %>
+  <% for (const q of rows) { %><tr><td><a href="/admin/quotes/<%= q.id %>"><strong><%= q.number %></strong></a></td><td><a href="/admin/contacts/<%= q.contact_id %>"><%= q.first_name %> <%= q.last_name %></a></td><td><%= q.title %></td><td><span class="badge <%= q.status.split(' ')[0] %>"><%= q.status %></span></td><td><%= fmtDate(q.valid_until) %></td><td><%= q.revision %></td><td class="num"><%= money(q.total_cents) %></td></tr><% } %>
+  </tbody>
+</table></div>

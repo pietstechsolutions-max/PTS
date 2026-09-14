@@ -1,0 +1,30 @@
+<div class="card-head"><h1>Campaigns</h1></div>
+<div class="grid-2 wide-left">
+  <div class="card table-wrap">
+    <h2>All campaigns</h2>
+    <table>
+      <thead><tr><th>Name</th><th>Channel</th><th>Status</th><th>Scheduled</th><th class="num">Recipients</th><th class="num">Sent</th><th class="num">Failed</th><th class="num">Replies</th><th class="num">Opt-outs</th></tr></thead>
+      <tbody>
+      <% if (!rows.length) { %><tr><td colspan="9" class="muted">No campaigns yet.</td></tr><% } %>
+      <% for (const c of rows) { %><tr><td><a href="/admin/campaigns/<%= c.id %>"><strong><%= c.name %></strong></a></td><td><%= c.channel.toUpperCase() %></td><td><span class="badge <%= c.status %>"><%= c.status %></span></td><td><%= c.scheduled_at ? fmtDateTime(c.scheduled_at) : '-' %></td><td class="num"><%= c.recipients %></td><td class="num"><%= c.sent_count %></td><td class="num"><%= c.failed_count %></td><td class="num"><%= c.reply_count %></td><td class="num"><%= c.opt_out_count %></td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+  <form class="card" method="post" action="/admin/campaigns">
+    <h2>New campaign</h2>
+    <label>Name</label><input type="text" name="name" required placeholder="Spring camera check-up">
+    <label>Channel</label><select name="channel"><option value="sms">SMS</option><option value="email">Email</option></select>
+    <label>Audience: tags (any of)</label>
+    <div><% if (!tags.length) { %><span class="muted small">No tags yet.</span><% } %><% for (const t of tags) { %><label class="inline"><input type="checkbox" name="tags" value="<%= t %>"> <%= t %></label><% } %></div>
+    <label>Audience: pipeline stage (optional)</label><select name="stage"><option value="">Any</option><% for (const s of stages) { %><option><%= s %></option><% } %></select>
+    <p class="help">Only opted-in contacts are ever included. "Reply STOP to opt out" is appended to SMS. Sends only 8am-8pm ET.</p>
+    <label>Email subject (email only)</label><input type="text" name="subject">
+    <label>Message</label>
+    <select id="tpl" class="mb"><option value="">Insert template...</option><% for (const t of templates) { %><option value="<%= t.body %>"><%= t.name %></option><% } %></select>
+    <textarea name="body" id="body" required placeholder="Hi {{first_name}}, ..."></textarea>
+    <p class="help">Merge fields: {{first_name}} {{name}} {{town}} {{business_name}} {{business_phone}} {{portal_link}} {{review_link}}</p>
+    <label>Throttle (messages per minute)</label><input type="number" name="throttle" value="10" min="1" max="60">
+    <button class="btn mt">Save draft</button>
+    <script>document.getElementById('tpl').addEventListener('change',e=>{ if(e.target.value) document.getElementById('body').value=e.target.value; });</script>
+  </form>
+</div>

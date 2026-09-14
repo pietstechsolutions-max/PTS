@@ -1,0 +1,22 @@
+<div class="card-head"><h1>Blog</h1><div class="btn-row" style="margin:0"><form method="post" action="/admin/blog-rebuild"><button class="btn sm secondary">Rebuild site</button></form><a class="btn sm" href="/admin/blog/new">+ New post</a></div></div>
+<p class="small muted">Posts are markdown files in <span class="mono">content/blog/</span>. Saving runs the site build so <span class="mono">/blog</span> updates right away. Archiving moves the file to <span class="mono">content/blog/_archive/</span> - nothing is deleted.</p>
+<% if (buildResult) { %><div class="notice <%= buildResult.ok ? '' : 'warn' %> mb"><strong>Build <%= buildResult.ok ? 'OK' : 'failed' %>.</strong> <span class="mono small"><%= buildResult.output.slice(0, 400) %></span></div><% } %>
+<div class="card table-wrap"><table>
+  <thead><tr><th>Title</th><th>Date</th><th>Tags</th><th>Keyword</th><th class="num">Words</th><th></th></tr></thead>
+  <tbody>
+  <% if (!posts.length) { %><tr><td colspan="6" class="muted">No posts yet.</td></tr><% } %>
+  <% for (const p of posts) { %><tr>
+    <td><a href="/admin/blog/<%= p.slug %>/edit"><strong><%= p.title %></strong></a><br><span class="small muted mono">/blog/<%= p.slug %>.html</span></td>
+    <td class="nowrap"><%= p.date %></td>
+    <td><% for (const t of p.tags) { %><span class="badge"><%= t %></span> <% } %></td>
+    <td class="small"><%= p.focusKeyword %></td>
+    <td class="num"><%= p.words %></td>
+    <td class="nowrap"><a class="btn xs ghost" href="/blog/<%= p.slug %>.html" target="_blank" rel="noopener">View</a> <form method="post" action="/admin/blog/<%= p.slug %>/archive" style="display:inline" onsubmit="return confirm('Archive this post? It moves to _archive and comes off the site.')"><button class="btn xs danger">Archive</button></form></td>
+  </tr><% } %>
+  </tbody>
+</table></div>
+<% if (archived.length) { %>
+<div class="card table-wrap"><h2>Archived</h2><table>
+  <% for (const p of archived) { %><tr><td><strong><%= p.title %></strong> <span class="small muted mono"><%= p.file %></span></td><td class="nowrap"><%= p.date %></td><td class="nowrap"><form method="post" action="/admin/blog/<%= p.slug %>/restore" style="display:inline"><button class="btn xs secondary">Restore</button></form></td></tr><% } %>
+</table></div>
+<% } %>

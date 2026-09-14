@@ -1,0 +1,38 @@
+<h1>Hi <%= contact.first_name || 'there' %>!</h1>
+<p class="muted">Here is where things stand with <%= business.name %>.</p>
+<div class="tiles">
+  <a class="tile" href="/portal/invoices"><div class="big"><%= money(balance) %></div><div class="lbl">Balance due</div><div class="sub"><%= unpaid.length %> open invoice<%= unpaid.length === 1 ? '' : 's' %></div></a>
+  <a class="tile" href="/portal/quotes"><div class="big"><%= openQuotes.length %></div><div class="lbl">Quotes to review</div><div class="sub">approve or ask for changes</div></a>
+  <a class="tile" href="/portal/jobs"><div class="big"><%= nextJob ? (nextJob.scheduled_at ? fmtDate(nextJob.scheduled_at) : 'TBD') : '-' %></div><div class="lbl">Next job</div><div class="sub"><%= nextJob ? nextJob.title : 'nothing scheduled' %></div></a>
+  <a class="tile" href="/portal/plans"><div class="big"><%= sub ? sub.plan : 'None' %></div><div class="lbl">Managed services</div><div class="sub"><%= sub ? sub.status.replace('_', ' ') : 'see plans' %></div></a>
+</div>
+<% if (unpaid.length) { %>
+<div class="card mt">
+  <h2>Pay an invoice</h2>
+  <% for (const inv of unpaid) { %>
+    <div class="flex between" style="padding:.5rem 0;border-bottom:1px solid var(--line)">
+      <div><strong><%= inv.number %></strong> <span class="badge <%= inv.status %>"><%= inv.status %></span><br><span class="small muted">Service date <%= fmtDate(inv.service_date) %> &middot; Due on receipt</span></div>
+      <a class="btn sm" href="/portal/invoices/<%= inv.id %>">Pay <%= money(inv.total_cents - inv.paid_cents) %></a>
+    </div>
+  <% } %>
+</div>
+<% } %>
+<% if (openQuotes.length) { %>
+<div class="card">
+  <h2>Estimates waiting for you</h2>
+  <% for (const q of openQuotes) { %>
+    <div class="flex between" style="padding:.5rem 0;border-bottom:1px solid var(--line)">
+      <div><strong><%= q.number %></strong> <%= q.title %><br><span class="small muted"><%= money(q.total_cents) %> &middot; valid until <%= fmtDate(q.valid_until) %></span></div>
+      <a class="btn sm cyan" href="/portal/quotes/<%= q.id %>">Review</a>
+    </div>
+  <% } %>
+</div>
+<% } %>
+<div class="card">
+  <h2>Need something?</h2>
+  <div class="btn-row">
+    <a class="btn secondary" href="/portal/requests">Request a quote</a>
+    <a class="btn secondary" href="/portal/messages">Message us<%= unread ? ' (' + unread + ' new)' : '' %></a>
+    <a class="btn secondary" href="tel:+16318715957">Call <%= business.phone %></a>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="card-head">
+  <div><h1 style="margin:0">Estimate <%= q.number %> <span class="badge <%= q.status.split(' ')[0] %>"><%= q.status %></span></h1><span class="muted"><a href="/admin/contacts/<%= q.contact_id %>"><%= h.fullName(q.contact) %></a> &middot; rev <%= q.revision %> &middot; valid until <%= fmtDate(q.valid_until) %></span></div>
+  <div class="btn-row" style="margin:0">
+    <form method="post" action="/admin/quotes/<%= q.id %>/send"><button class="btn sm"><%= q.sent_at ? 'Re-send' : 'Send to client' %></button></form>
+    <a class="btn sm secondary" href="/admin/quotes/<%= q.id %>/edit">Revise</a>
+    <a class="btn sm ghost" href="/admin/quotes/<%= q.id %>/print" target="_blank" rel="noopener">Print</a>
+    <a class="btn sm ghost" href="/portal/quotes/<%= q.id %>" target="_blank" rel="noopener">Client view</a>
+  </div>
+</div>
+<div class="grid-2 wide-left">
+  <div>
+    <div class="card">
+      <h2><%= q.title %></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Unit</th><th class="num">Total</th></tr></thead>
+        <tbody><% let other=false; for (const it of q.items) { if (it.section==='other' && !other) { other=true; %><tr><td colspan="4" style="background:#e8f6ff;font-weight:700">Other / optional</td></tr><% } %><tr><td><%= it.description %></td><td class="num"><%= it.qty %></td><td class="num"><%= money(it.unit_cents) %></td><td class="num"><%= money(Math.round(it.qty*it.unit_cents)) %></td></tr><% } %></tbody>
+      </table></div>
+      <table class="totals" style="max-width:320px;margin-left:auto"><tr><td>Subtotal</td><td class="num"><%= money(q.subtotal_cents) %></td></tr><tr><td>Tax (<%= q.tax_rate %>%)</td><td class="num"><%= money(q.tax_cents) %></td></tr><tr class="total"><td>Total</td><td class="num"><%= money(q.total_cents) %></td></tr></table>
+      <% if (q.notes) { %><p class="mt"><strong>Notes:</strong> <%= q.notes %></p><% } %>
+      <% if (q.approved_by) { %><div class="notice mt">Approved by <strong><%= q.approved_by %></strong> on <%= fmtDateTime(q.approved_at) %>.</div><% } %>
+    </div>
+    <div class="card">
+      <h2>Next steps</h2>
+      <div class="btn-row">
+        <% if (q.status !== 'Approved') { %><form method="post" action="/admin/quotes/<%= q.id %>/approve"><input type="hidden" name="signed_name" value="Approved verbally (office)"><button class="btn sm secondary">Mark approved (verbal)</button></form><% } %>
+        <% if (q.job_id) { %><a class="btn sm secondary" href="/admin/jobs/<%= q.job_id %>">Open job #<%= q.job_id %></a><% } else { %><form method="post" action="/admin/quotes/<%= q.id %>/convert"><button class="btn sm secondary">Create job</button></form><% } %>
+        <% if (q.invoice_id) { %><a class="btn sm secondary" href="/admin/invoices/<%= q.invoice_id %>">Open invoice</a><% } else { %><form method="post" action="/admin/quotes/<%= q.id %>/invoice"><button class="btn sm secondary">Create invoice</button></form><% } %>
+        <form method="post" action="/admin/quotes/<%= q.id %>/archive" onsubmit="return confirm('Archive this estimate?')"><button class="btn sm danger">Archive</button></form>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>Change log (client-visible)</h2>
+      <ul class="timeline"><% for (const e of q.log) { %><li><span class="who"><%= e.author %></span> <span class="when"><%= fmtDateTime(e.created_at) %></span><br><%= e.message %></li><% } %></ul>
+    </div>
+    <div class="card">
+      <h2>Revision history</h2>
+      <% for (const r of q.revisions) { %>
+        <details><summary>Rev <%= r.revision %> &middot; <%= fmtDateTime(r.created_at) %> &middot; <%= money(r.snapshot.total_cents || 0) %></summary>
+          <p class="small"><%= r.summary %></p>
+          <table class="small"><% for (const it of (r.snapshot.items || [])) { %><tr><td><%= it.description %></td><td class="num"><%= it.qty %> x <%= money(it.unit_cents) %></td></tr><% } %></table>
+        </details>
+      <% } %>
+    </div>
+  </div>
+</div>

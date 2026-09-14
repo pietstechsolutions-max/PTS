@@ -1,0 +1,15 @@
+<div class="card-head"><h1>Outbox</h1><div class="flex"><a class="btn xs <%= !channel ? '' : 'ghost' %>" href="/admin/outbox">All</a><a class="btn xs <%= channel === 'sms' ? '' : 'ghost' %>" href="/admin/outbox?channel=sms">SMS</a><a class="btn xs <%= channel === 'email' ? '' : 'ghost' %>" href="/admin/outbox?channel=email">Email</a><a class="btn xs <%= channel === 'payment' ? '' : 'ghost' %>" href="/admin/outbox?channel=payment">Payment links</a><a class="btn xs <%= channel === 'webhook' ? '' : 'ghost' %>" href="/admin/outbox?channel=webhook">Webhooks</a><a class="btn xs <%= channel === 'ai' ? '' : 'ghost' %>" href="/admin/outbox?channel=ai">AI</a></div></div>
+<% if (sandbox) { %><div class="notice warn mb">Sandbox mode: nothing here was really delivered. Texts, emails and Stripe links are recorded so you can see exactly what would go out. Portal login codes appear here too.</div><% } else { %><div class="notice mb">Live mode: this list only contains items recorded by mock providers (if any).</div><% } %>
+<div class="card table-wrap"><table>
+  <thead><tr><th>When</th><th>Channel</th><th>To</th><th>Subject / details</th><th>Body</th></tr></thead>
+  <tbody>
+  <% if (!rows.length) { %><tr><td colspan="5" class="muted">Empty.</td></tr><% } %>
+  <% for (const r of rows) { %><tr>
+    <td class="nowrap small"><%= fmtDateTime(r.created_at) %></td>
+    <td><span class="badge <%= r.channel === 'payment' ? 'info' : r.channel === 'webhook' ? (r.meta.ok ? 'ok' : 'bad') : r.channel === 'ai' ? 'warn' : '' %>"><%= r.channel %></span><% if (r.meta.login_code) { %> <span class="badge warn">login code <%= r.meta.login_code %></span><% } %><% if (r.meta.owner_alert) { %> <span class="badge">owner</span><% } %></td>
+    <td class="small"><%= r.to_addr %></td>
+    <td class="small"><%= r.subject %><% if (r.channel === 'payment') { %><br><span class="muted"><%= r.meta.mode %> <%= r.meta.total_cents ? money(r.meta.total_cents) : '' %></span><% } %></td>
+    <td class="small" style="white-space:pre-wrap;max-width:480px"><% if (r.channel === 'payment') { %><a href="<%= r.body %>"><%= r.body %></a><% } else if (r.channel === 'webhook') { %><details><summary class="muted">JSON payload (<%= r.body.length %> chars)</summary><pre class="mono" style="max-height:260px;overflow:auto;font-size:.75rem"><%= r.body %></pre></details><% } else { %><%= r.body %><% } %></td>
+  </tr><% } %>
+  </tbody>
+</table></div>

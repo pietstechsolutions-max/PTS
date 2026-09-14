@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title ? title + ' | ' : '' %><%= business.name %> Client Hub</title>
+<link rel="icon" href="/assets/brand/favicon-64.png">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="inner">
+    <a class="logo" href="/portal"><img src="/assets/brand/logo-mark.png" alt="" onerror="this.onerror=null;this.src='/brand/logo-mark.png'"><span><%= business.name %></span></a>
+    <% if (sandbox) { %><span class="sandbox-pill" title="No live Stripe/Twilio/SMTP keys - messages go to the Outbox">Sandbox</span><% } %>
+    <span class="spacer"></span>
+    <span class="contact">Call/text <a href="tel:+16318715957"><%= business.phone %></a></span>
+  </div>
+</header>
+<% if (typeof contact !== 'undefined' && contact) { %>
+<nav class="nav"><div class="inner">
+  <a href="/portal" class="<%= path === '/' ? 'active' : '' %>">Home</a>
+  <a href="/portal/requests" class="<%= path.startsWith('/requests') ? 'active' : '' %>">Quote requests</a>
+  <a href="/portal/quotes" class="<%= path.startsWith('/quotes') ? 'active' : '' %>">Quotes</a>
+  <a href="/portal/jobs" class="<%= path.startsWith('/jobs') ? 'active' : '' %>">Jobs</a>
+  <a href="/portal/invoices" class="<%= path.startsWith('/invoices') ? 'active' : '' %>">Invoices</a>
+  <a href="/portal/plans" class="<%= path.startsWith('/plans') ? 'active' : '' %>">Managed services</a>
+  <a href="/portal/messages" class="<%= path.startsWith('/messages') ? 'active' : '' %>">Messages</a>
+  <a href="/portal/account" class="<%= path.startsWith('/account') ? 'active' : '' %>">Account</a>
+  <a href="/portal/logout">Sign out</a>
+</div></nav>
+<% } %>
+<main class="wrap narrow">
+<% if (flash) { %><div class="flash <%= flash.type %>"><%= flash.text %></div><% } %>
+<%- body %>
+</main>
+<footer class="foot">
+  <%= business.name %> &middot; <a href="tel:+16318715957"><%= business.phone %></a> &middot; <a href="mailto:<%= business.email %>"><%= business.email %></a> &middot; <a href="https://<%= business.website %>"><%= business.website %></a>
+</footer>
+</body>
+</html>

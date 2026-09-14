@@ -1,0 +1,44 @@
+<%# expects: items (array of {section, description, qty, unit_cents}), taxRate %>
+<div class="table-wrap">
+<table class="lines" id="lines">
+  <thead><tr><th style="width:110px">Section</th><th>Description</th><th style="width:90px" class="num">Qty</th><th style="width:130px" class="num">Unit price $</th><th style="width:110px" class="num">Total</th><th style="width:40px"></th></tr></thead>
+  <tbody>
+  <% const rows = (items && items.length) ? items : [{ section: 'main', description: '', qty: 1, unit_cents: 0 }]; for (const it of rows) { %>
+    <tr>
+      <td><select name="item_section"><option value="main" <%= it.section !== 'other' ? 'selected' : '' %>>Main</option><option value="other" <%= it.section === 'other' ? 'selected' : '' %>>Other</option></select></td>
+      <td><input type="text" name="item_description" value="<%= it.description %>" placeholder="Description" required></td>
+      <td><input type="number" name="item_qty" value="<%= it.qty %>" step="0.01" min="0" class="num"></td>
+      <td><input type="number" name="item_price" value="<%= h.fromCents(it.unit_cents) %>" step="0.01" min="0" class="num"></td>
+      <td class="num line-total">-</td>
+      <td><button type="button" class="btn xs danger rm" title="Remove">&times;</button></td>
+    </tr>
+  <% } %>
+  </tbody>
+</table>
+</div>
+<button type="button" class="btn sm secondary mt" id="addLine">+ Add line</button>
+<table class="totals mt" style="max-width:340px;margin-left:auto">
+  <tr><td>Subtotal</td><td class="num" id="tSub">-</td></tr>
+  <tr><td>Sales tax <input type="number" name="tax_rate" value="<%= taxRate %>" step="0.01" min="0" style="width:80px;display:inline;padding:.3rem"> %</td><td class="num" id="tTax">-</td></tr>
+  <tr class="total"><td>Total</td><td class="num" id="tTot">-</td></tr>
+</table>
+<script>
+(function(){
+  const tb=document.querySelector('#lines tbody');
+  const fmt=n=>(n/100).toLocaleString('en-US',{style:'currency',currency:'USD'});
+  function calc(){
+    let sub=0;
+    tb.querySelectorAll('tr').forEach(tr=>{
+      const q=parseFloat(tr.querySelector('[name=item_qty]').value)||0, p=Math.round((parseFloat(tr.querySelector('[name=item_price]').value)||0)*100);
+      const t=Math.round(q*p); sub+=t; tr.querySelector('.line-total').textContent=fmt(t);
+    });
+    const rate=parseFloat(document.querySelector('[name=tax_rate]').value)||0, tax=Math.round(sub*rate/100);
+    document.getElementById('tSub').textContent=fmt(sub); document.getElementById('tTax').textContent=fmt(tax); document.getElementById('tTot').textContent=fmt(sub+tax);
+  }
+  function wire(tr){ tr.querySelectorAll('input,select').forEach(i=>i.addEventListener('input',calc)); tr.querySelector('.rm').addEventListener('click',()=>{ if(tb.children.length>1){tr.remove();calc();} }); }
+  tb.querySelectorAll('tr').forEach(wire);
+  document.getElementById('addLine').addEventListener('click',()=>{ const tr=tb.lastElementChild.cloneNode(true); tr.querySelectorAll('input').forEach(i=>{ i.value = i.name==='item_qty' ? 1 : ''; }); tb.appendChild(tr); wire(tr); calc(); tr.querySelector('[name=item_description]').focus(); });
+  document.querySelector('[name=tax_rate]').addEventListener('input',calc);
+  calc();
+})();
+</script>

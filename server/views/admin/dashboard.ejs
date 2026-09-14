@@ -1,0 +1,29 @@
+<div class="card-head"><h1>Dashboard</h1><div class="btn-row" style="margin:0"><a class="btn sm" href="/admin/quotes/new">+ Estimate</a><a class="btn sm secondary" href="/admin/invoices/new">+ Invoice</a><a class="btn sm secondary" href="/admin/contacts/new">+ Contact</a></div></div>
+<div class="kpis">
+  <a class="kpi" href="/admin/pipeline" style="text-decoration:none"><div class="label">New leads (7 days)</div><div class="value"><%= kpi.newLeads %></div><div class="sub">in pipeline</div></a>
+  <a class="kpi" href="/admin/quotes" style="text-decoration:none"><div class="label">Open quotes</div><div class="value"><%= money(kpi.openQuotes.total) %></div><div class="sub"><%= kpi.openQuotes.n %> waiting on client</div></a>
+  <a class="kpi" href="/admin/invoices" style="text-decoration:none"><div class="label">Unpaid invoices</div><div class="value"><%= money(kpi.unpaid.total) %></div><div class="sub"><%= kpi.unpaid.n %> open</div></a>
+  <a class="kpi" href="/admin/settings" style="text-decoration:none"><div class="label">MRR</div><div class="value"><%= money(kpi.mrr) %></div><div class="sub"><%= kpi.subs %> subscription<%= kpi.subs === 1 ? '' : 's' %></div></a>
+  <a class="kpi" href="/admin/jobs" style="text-decoration:none"><div class="label">Jobs this week</div><div class="value"><%= kpi.jobsWeek %></div><div class="sub"><%= kpi.unreadSms %> unread texts</div></a>
+</div>
+<div class="grid-2 mt">
+  <div>
+    <div class="card">
+      <h2>Follow-ups due</h2>
+      <% if (!followUps.length) { %><p class="muted">Nothing due. Nice.</p><% } %>
+      <% for (const l of followUps) { %><div class="flex between" style="padding:.4rem 0;border-bottom:1px solid var(--line)"><div><a href="/admin/contacts/<%= l.contact_id %>"><strong><%= l.first_name %> <%= l.last_name %></strong></a> &middot; <%= l.service %><br><span class="small muted">Due <%= fmtDate(l.next_follow_up) %> &middot; <%= l.stage %></span></div><a class="btn xs secondary" href="/admin/conversations/<%= l.contact_id %>">Text</a></div><% } %>
+    </div>
+    <div class="card">
+      <h2>Upcoming jobs</h2>
+      <% if (!upcoming.length) { %><p class="muted">No scheduled jobs.</p><% } %>
+      <% for (const j of upcoming) { %><div class="flex between" style="padding:.4rem 0;border-bottom:1px solid var(--line)"><div><a href="/admin/jobs/<%= j.id %>"><strong><%= j.title %></strong></a><br><span class="small muted"><%= j.first_name %> <%= j.last_name %> &middot; <%= j.scheduled_at ? fmtDateTime(j.scheduled_at) : 'not scheduled yet' %></span></div><span class="badge <%= j.status.split(' ')[0] %>"><%= j.status %></span></div><% } %>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Recent activity</h2>
+    <ul class="timeline">
+      <% for (const a of activity) { %><li><span class="who"><%= a.actor %></span> <span class="when"><%= fmtDateTime(a.created_at) %></span><br><%= a.action.replace(/_/g, ' ') %><%= a.entity_type ? ' - ' + a.entity_type + (a.entity_id ? ' #' + a.entity_id : '') : '' %></li><% } %>
+    </ul>
+    <p class="small mt"><a href="/admin/audit">Full audit log</a></p>
+  </div>
+</div>

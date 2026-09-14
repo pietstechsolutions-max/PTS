@@ -1,0 +1,67 @@
+<p><a href="/portal/quotes">&larr; All quotes</a></p>
+<div class="card">
+  <div class="doc-head">
+    <div><img src="/assets/brand/logo-lockup.png" alt="<%= business.name %>" onerror="this.onerror=null;this.src='/brand/logo-lockup.png'"><div class="small muted"><%= business.phone %> &middot; <%= business.email %> &middot; <%= business.website %></div></div>
+    <div class="doc-meta"><div class="num">Estimate <%= q.number %></div><span class="badge <%= q.status.split(' ')[0] %>"><%= q.status %></span><br><span class="small">Revision <%= q.revision %> &middot; <%= fmtDate(q.updated_at) %></span></div>
+  </div>
+  <h2 class="mt"><%= q.title %></h2>
+  <p class="small">Prepared for <strong><%= h.fullName(q.contact) %></strong><%= q.contact.town ? ', ' + q.contact.town : '' %></p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Total</th></tr></thead>
+    <tbody>
+    <% let hasOther = false; for (const it of q.items) { if (it.section === 'other' && !hasOther) { hasOther = true; %><tr><td colspan="4" style="background:#e8f6ff;font-weight:700;color:var(--navy)">Other / optional</td></tr><% } %>
+      <tr><td><%= it.description %></td><td class="num"><%= it.qty %></td><td class="num"><%= money(it.unit_cents) %></td><td class="num"><%= money(Math.round(it.qty * it.unit_cents)) %></td></tr>
+    <% } %>
+    </tbody>
+  </table>
+  </div>
+  <table class="totals" style="max-width:340px;margin-left:auto">
+    <tr><td>Subtotal</td><td class="num"><%= money(q.subtotal_cents) %></td></tr>
+    <tr><td>Suffolk County sales tax (<%= q.tax_rate %>%)</td><td class="num"><%= money(q.tax_cents) %></td></tr>
+    <tr class="total"><td>Total</td><td class="num"><%= money(q.total_cents) %></td></tr>
+  </table>
+  <% if (q.notes) { %><p class="mt"><strong>Notes:</strong> <%= q.notes %></p><% } %>
+  <div class="notice small mt">This estimate is valid for 7 days (until <%= fmtDate(q.valid_until) %>). Prices may rise after. Sales tax is applied once on the total. Card payments carry a <%= settings.card_fee_percent %>% processing fee; Zelle, Venmo, Cash App, cash and check have no fee.</div>
+  <p class="mt"><a class="btn ghost sm" href="/portal/quotes/<%= q.id %>/print" target="_blank" rel="noopener">Print view</a></p>
+</div>
+
+<% if (q.status === 'Sent' || q.status === 'Changes Requested') { %>
+<div class="card">
+  <% if (q.expired) { %><div class="notice warn">This estimate has passed its valid-until date. You can still approve it, and we will confirm pricing before scheduling.</div><% } %>
+  <h2>Approve this estimate</h2>
+  <form method="post" action="/portal/quotes/<%= q.id %>/approve">
+    <label>Type your full name to approve</label>
+    <input type="text" name="signed_name" placeholder="Your name" required maxlength="120">
+    <p class="help">By typing your name you agree to the work and pricing above. Nothing is charged now.</p>
+    <button class="btn big cyan mt">Approve estimate <%= money(q.total_cents) %></button>
+  </form>
+  <details class="mt"><summary>Request changes</summary>
+    <form method="post" action="/portal/quotes/<%= q.id %>/changes">
+      <label>What would you like changed?</label>
+      <textarea name="note" required maxlength="1000"></textarea>
+      <button class="btn secondary mt">Send change request</button>
+    </form>
+  </details>
+  <details class="mt"><summary>Decline</summary>
+    <form method="post" action="/portal/quotes/<%= q.id %>/decline">
+      <label>Type your name</label>
+      <input type="text" name="signed_name" required maxlength="120">
+      <label>Reason (optional)</label>
+      <input type="text" name="reason" maxlength="500">
+      <button class="btn danger mt">Decline estimate</button>
+    </form>
+  </details>
+</div>
+<% } else if (q.status === 'Approved') { %>
+<div class="card"><h2>Approved</h2><p>Approved by <strong><%= q.approved_by %></strong> on <%= fmtDateTime(q.approved_at) %>. We will reach out to schedule the work. <a href="/portal/jobs">See jobs</a>.</p></div>
+<% } %>
+
+<div class="card">
+  <h2>Change log</h2>
+  <ul class="timeline">
+    <% for (const e of q.log) { %>
+      <li><span class="who"><%= e.author === 'client' ? 'You' : e.author === 'system' ? 'System' : business.name %></span> <span class="when"><%= fmtDateTime(e.created_at) %></span><br><%= e.message %></li>
+    <% } %>
+  </ul>
+</div>

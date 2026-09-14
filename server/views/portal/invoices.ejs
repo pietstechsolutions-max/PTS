@@ -1,0 +1,11 @@
+<h1>Invoices</h1>
+<div class="card tight flex between"><div><span class="muted">Balance due</span><br><strong style="font-size:1.5rem;color:var(--navy)"><%= money(balance) %></strong></div><% if (balance > 0) { %><a class="btn" href="/portal/account">How to pay</a><% } %></div>
+<% if (!invoices.length) { %><div class="card"><p class="muted">No invoices yet.</p></div><% } %>
+<% for (const inv of invoices) { %>
+<a class="card" href="/portal/invoices/<%= inv.id %>" style="display:block;text-decoration:none;color:inherit">
+  <div class="card-head">
+    <div><strong><%= inv.number %></strong><br><span class="small muted">Service date <%= fmtDate(inv.service_date) %> &middot; Invoice date <%= fmtDate(inv.invoice_date) %> &middot; Due on receipt</span></div>
+    <div class="right"><div style="font-weight:800;color:var(--navy)"><%= money(inv.total_cents - inv.paid_cents) %><% if (inv.paid_cents > 0 && inv.paid_cents < inv.total_cents) { %> <span class="small muted">of <%= money(inv.total_cents) %></span><% } %></div><span class="badge <%= inv.status %>"><%= inv.status %></span></div>
+  </div>
+</a>
+<% } %>

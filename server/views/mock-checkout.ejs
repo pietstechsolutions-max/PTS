@@ -1,0 +1,18 @@
+<div class="card" style="border-top:6px solid #635bff">
+  <h1>Mock Stripe Checkout</h1>
+  <div class="notice warn small">Sandbox mode: no real card is charged. This page stands in for Stripe Checkout. Click "Pay" to simulate a successful <code>checkout.session.completed</code> webhook.</div>
+  <table class="mt">
+    <% if (meta.mode === 'payment') { %>
+      <tr><td>Invoice payment</td><td class="num"><%= money(meta.amount_cents) %></td></tr>
+      <tr><td>Card processing fee (<%= settings.card_fee_percent %>%)</td><td class="num"><%= money(meta.fee_cents) %></td></tr>
+      <tr class="total"><td>Total charged</td><td class="num"><%= money(meta.total_cents) %></td></tr>
+    <% } else { %>
+      <tr><td>Managed Services - <%= meta.plan %></td><td class="num"><%= money(meta.price_cents) %> / month</td></tr>
+    <% } %>
+  </table>
+  <form method="post" action="/mock/stripe/checkout/<%= sessionId %>/pay" class="mt">
+    <label>Card number</label><input type="text" value="4242 4242 4242 4242" disabled>
+    <button class="btn big mt" style="background:#635bff;border-color:#635bff">Pay (simulated)</button>
+  </form>
+  <p class="small muted mt">Session: <span class="mono"><%= sessionId %></span></p>
+</div>

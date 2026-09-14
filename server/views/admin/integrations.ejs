@@ -1,0 +1,294 @@
+<%
+const apiBase = baseUrl + '/api/v1';
+const keyHint = 'YOUR_API_KEY';
+const pretty = (o) => JSON.stringify(o, null, 2);
+const recipes = [
+  {
+    id: 'sheets', title: '(a) New lead -> Google Sheets row + Slack / Gmail alert', kind: 'Piets HQ -> Zapier (Catch Hook)',
+    steps: [
+      'In Zapier: Create Zap -> Trigger "Webhooks by Zapier" -> Event "Catch Hook" -> Continue. Copy the webhook URL Zapier shows (https://hooks.zapier.com/hooks/catch/...).',
+      'Here, under Outbound webhooks: Name "Zapier new lead", paste that URL, tick only new_lead, Save. Press "Send test" - Zapier will find the sample request.',
+      'Action 1: Google Sheets -> "Create Spreadsheet Row". Map: Name = data contact name, Phone = data contact phone, Town = data contact town, Service = data lead service, Message = data lead message, Link = links admin.',
+      'Action 2: Slack "Send Channel Message" or Gmail "Send Email" with the same fields. Turn the Zap on.'
+    ],
+    filter: ['new_lead'], sample: { event: 'new_lead', timestamp: '2026-09-12T14:03:00.000Z', id: 41, data: { contact: { id: 7, name: 'Maria Lopez', phone: '+16315550101', email: 'maria@example.com', town: 'Huntington', tags: ['lead'] }, lead: { id: 12, stage: 'New', service: 'Security cameras', message: '4 cameras, driveway + backyard', source: 'Website' } }, links: { portal: baseUrl + '/portal', admin: baseUrl + '/admin/pipeline' } }
+  },
+  {
+    id: 'fbleads', title: '(b) Facebook Lead Ads -> new lead in the pipeline', kind: 'Zapier -> Piets HQ (POST /leads)',
+    steps: [
+      'Trigger: "Facebook Lead Ads" -> "New Lead" -> pick your page and form.',
+      'Action: "Webhooks by Zapier" -> "POST". URL below, Payload Type = json. Add the Authorization header. Data fields: name, phone, email, service, message, source = "Facebook Lead Ads".',
+      'Test: the lead shows up in Admin -> Pipeline (New) and the "New lead" automation texts them.'
+    ],
+    method: 'POST', url: apiBase + '/leads', body: { name: 'Jane Smith', phone: '631-555-0123', email: 'jane@example.com', town: 'Smithtown', service: 'Security cameras', message: 'Interested in 4 cameras', source: 'Facebook Lead Ads' }
+  },
+  {
+    id: 'gcal', title: '(c) Google Calendar event -> Job on the schedule', kind: 'Zapier -> Piets HQ (POST /jobs)',
+    steps: [
+      'Trigger: "Google Calendar" -> "New Event" (or "Event Start") on your work calendar.',
+      'Action: "Webhooks by Zapier" -> "POST" to the URL below. Map phone or email from the event description/attendees (the contact is matched or created), title = event summary, scheduled_at = event start (ISO), notes = description.',
+      'The job appears in Admin -> Jobs and the client sees it in their hub.'
+    ],
+    method: 'POST', url: apiBase + '/jobs', body: { phone: '631-555-0100', name: 'Demo Customer', title: 'Camera install - 4 cameras', scheduled_at: '2026-10-02T14:00:00-04:00', notes: 'Gate code 1234. Dog in yard.' }
+  },
+  {
+    id: 'books', title: '(d) invoice_paid -> QuickBooks / Wave', kind: 'Piets HQ -> Zapier (Catch Hook)',
+    steps: [
+      'Trigger: "Webhooks by Zapier" -> "Catch Hook". Paste its URL into a new Outbound webhook here and tick invoice_paid (and payment_recorded if you want every partial payment).',
+      'Action: "QuickBooks Online" -> "Create Sales Receipt" (or "Create Invoice" + "Create Payment"), or "Wave" -> "Create Invoice". Map customer = data contact name / email, amount = data invoice total_cents divided by 100 (use a Formatter "Numbers" step), memo = data invoice number, line items = data invoice items.',
+      'Record a test payment in Admin -> Invoices to fire it.'
+    ],
+    filter: ['invoice_paid', 'payment_recorded'], sample: { event: 'invoice_paid', timestamp: '2026-09-12T15:00:00.000Z', id: 58, data: { contact: { id: 1, name: 'Demo Customer', email: 'demo@example.com', phone: '+16315550100' }, invoice: { id: 2, number: 'INV-1002', status: 'Paid', total_cents: 23925, paid_cents: 23925, due_cents: 0, tax_cents: 1925, items: [{ description: 'Service call', qty: 1, unit_cents: 12500 }] } }, links: { portal: baseUrl + '/portal/invoices/2', admin: baseUrl + '/admin/invoices/2' } }
+  },
+  {
+    id: 'missedcall', title: '(e) Twilio missed call -> follow-up text', kind: 'Zapier -> Piets HQ (POST /messages/sms)',
+    steps: [
+      'Trigger: "Twilio" -> "New Call" (filter: Status = no-answer or busy) - or use a Twilio Studio flow that calls a Zapier Catch Hook.',
+      'Action: "Webhooks by Zapier" -> "POST" to the URL below with phone = caller number and a friendly body. The contact is created if new; opted-out numbers are refused (HTTP 409); outside 8am-8pm ET the text is queued unless "urgent": true.',
+      'Optional second action: POST /leads with source "Missed call" so it lands in the pipeline.'
+    ],
+    method: 'POST', url: apiBase + '/messages/sms', body: { phone: '{{caller_number}}', body: 'Hi, this is Pete at Piets Technology Solutions - sorry I missed your call! Text me what you need (cameras, Wi-Fi, TV mount, smart home) and your town and I will get right back to you. 631-871-5957', urgent: false }
+  },
+  {
+    id: 'review', title: '(f) New Google Business review -> thank-you text', kind: 'Zapier -> Piets HQ (POST /messages/sms + /contacts/:id/tags)',
+    steps: [
+      'Trigger: "Google Business Profile" -> "New Review".',
+      'Action 1: "Webhooks by Zapier" -> "GET" ' + apiBase + '/contacts?q={{reviewer name}} with the Authorization header, to find the contact (response data.contacts[0].id and phone).',
+      'Action 2 (Filter: rating >= 4 and a contact was found): POST /messages/sms with contactId and a thank-you body. Action 3: POST /contacts/{{id}}/tags with tags ["reviewer"].',
+      'Low ratings: skip the text and instead POST /contacts/{{id}}/notes so you see it, or Slack yourself.'
+    ],
+    method: 'POST', url: apiBase + '/messages/sms', body: { contactId: 1, body: 'Thank you so much for the kind review! It really helps a small local business. If you ever need anything, just text me. - Pete, 631-871-5957' }
+  }
+];
+%>
+<style>
+  .integrations .grid-2 > * { min-width: 0; }
+  .integrations pre { overflow: auto; max-width: 100%; white-space: pre; }
+  .integrations .wrapany { word-break: break-all; overflow-wrap: anywhere; }
+  .integrations details > summary { line-height: 1.5; }
+  .integrations .kpi .value { word-break: break-all; }
+  .integrations summary .badge { white-space: normal; }
+</style>
+<div class="integrations">
+<div class="card-head"><h1>Integrations</h1><div class="flex small"><a class="btn xs ghost" href="#keys">API keys</a><a class="btn xs ghost" href="#webhooks">Outbound webhooks</a><a class="btn xs ghost" href="#agents">AI agents</a><a class="btn xs ghost" href="#recipes">Zapier recipes</a><a class="btn xs ghost" href="#events">Event feed</a></div></div>
+<p class="small muted">Connect Zapier, Make, n8n, Google Sheets, QuickBooks or your own scripts. <strong>Outbound webhooks</strong> push events out of Piets HQ; the <strong>API</strong> lets other tools push data in; <strong>AI agents</strong> read and act on the CRM. Full instructions: <span class="mono">server/ZAPIER_AND_AI.md</span>.</p>
+
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+  <div class="kpi"><div class="label">API</div><div class="value" style="font-size:1.1rem"><%= envToken || keys.some((k) => !k.archived) ? 'ON' : 'OFF' %></div><div class="sub"><%= envToken ? 'API_TOKEN set in .env' : '' %><%= envToken && keys.some((k) => !k.archived) ? ' + ' : '' %><%= keys.filter((k) => !k.archived).length %> named key(s)</div></div>
+  <div class="kpi"><div class="label">Base URL</div><div class="value mono" style="font-size:.85rem;word-break:break-all"><%= apiBase %></div><div class="sub">Header: Authorization: Bearer &lt;key&gt;</div></div>
+  <div class="kpi"><div class="label">Webhooks</div><div class="value" style="font-size:1.1rem"><%= hooks.filter((h) => h.enabled).length %> on</div><div class="sub"><%= hooks.length %> configured</div></div>
+  <div class="kpi"><div class="label">AI: Anthropic</div><div class="value" style="font-size:1.1rem"><%= ai.anthropic === 'live' ? 'LIVE' : 'MOCK' %></div><div class="sub"><%= ai.anthropic === 'live' ? 'ANTHROPIC_API_KEY set' : 'no ANTHROPIC_API_KEY' %></div></div>
+  <div class="kpi"><div class="label">AI: OpenAI / local</div><div class="value" style="font-size:1.1rem"><%= ai.openai === 'live' ? 'LIVE' : 'MOCK' %></div><div class="sub mono" style="font-size:.7rem;word-break:break-all"><%= ai.openaiBaseUrl %></div></div>
+</div>
+
+<!-- ============================ API KEYS ============================ -->
+<div class="card mt" id="keys">
+  <div class="card-head"><h2>API keys</h2><span class="small muted">120 requests / minute per key &middot; keys are shown once</span></div>
+  <% if (newKey) { %>
+    <div class="notice warn mb"><strong>Copy this key now - it will not be shown again.</strong><br>
+      <span class="small"><%= newKey.name %>:</span> <input type="text" readonly value="<%= newKey.key %>" class="mono" style="max-width:520px" onclick="this.select()"> <button class="btn xs secondary" type="button" onclick="navigator.clipboard.writeText('<%= newKey.key %>');this.textContent='Copied'">Copy</button>
+      <div class="small mt">Use it in Zapier as a header: <span class="mono">Authorization</span> = <span class="mono">Bearer <%= newKey.key %></span></div>
+    </div>
+  <% } %>
+  <div class="grid-2 wide-left">
+    <div class="table-wrap">
+      <table><thead><tr><th>Name</th><th>Prefix</th><th>Created</th><th>Last used</th><th>Uses</th><th></th></tr></thead><tbody>
+        <% if (envToken) { %><tr><td>API_TOKEN (server/.env)</td><td class="mono">env</td><td class="muted small">-</td><td class="muted small">-</td><td>-</td><td class="small muted">edit .env to change</td></tr><% } %>
+        <% if (!keys.length && !envToken) { %><tr><td colspan="6" class="muted">No keys yet. The API answers 401 until you create one (or set API_TOKEN in server/.env).</td></tr><% } %>
+        <% for (const k of keys) { %><tr style="<%= k.archived ? 'opacity:.55' : '' %>"><td><%= k.name %> <% if (k.archived) { %><span class="badge bad">revoked</span><% } %></td><td class="mono"><%= k.prefix %>...</td><td class="small nowrap"><%= fmtDate(k.created_at) %></td><td class="small nowrap"><%= k.last_used_at ? fmtDateTime(k.last_used_at) : 'never' %></td><td><%= k.use_count %></td><td><% if (!k.archived) { %><form method="post" action="/admin/integrations/keys/<%= k.id %>/revoke" onsubmit="return confirm('Revoke this key? Zaps using it will get 401.')"><button class="btn xs danger">Revoke</button></form><% } %></td></tr><% } %>
+      </tbody></table>
+    </div>
+    <form method="post" action="/admin/integrations/keys" class="card tight" style="background:#f7f9fd;box-shadow:none;margin:0">
+      <label>New key name</label><input type="text" name="name" placeholder="e.g. Zapier, Make, Pete's laptop" required>
+      <button class="btn sm mt">Create key</button>
+      <p class="help wrapany">Test it: <span class="mono">curl -H "Authorization: Bearer KEY" <%= apiBase %>/ping</span></p>
+    </form>
+  </div>
+</div>
+
+<!-- ============================ WEBHOOKS ============================ -->
+<div class="card" id="webhooks">
+  <div class="card-head"><h2>Outbound webhooks</h2><span class="small muted">Piets HQ -&gt; Zapier "Catch Hook" / Make / n8n / your script</span></div>
+  <p class="small muted">Every event below is POSTed as JSON <span class="mono">{ event, timestamp, id, data: { contact, lead | quote | invoice | job | message ... }, links: { portal, admin } }</span>. With a secret, the header <span class="mono">X-Piets-Signature: sha256=&lt;HMAC of body&gt;</span> is added. Failed deliveries retry after 1, 5 and 30 minutes.<% if (sandbox) { %> Sandbox: every delivery is also copied to <a href="/admin/outbox?channel=webhook">Outbox -&gt; Webhooks</a>.<% } %></p>
+  <% if (!hooks.length) { %><p class="muted">No webhooks yet. Add one below - in Zapier pick "Webhooks by Zapier -> Catch Hook" and paste the URL it gives you.</p><% } %>
+  <% for (const w of hooks) { %>
+    <details class="card tight" style="background:#f7f9fd;box-shadow:none" <%= hooks.length <= 2 ? 'open' : '' %>>
+      <summary style="cursor:pointer"><strong><%= w.name %></strong> <span class="badge <%= w.enabled ? 'ok' : 'bad' %>"><%= w.enabled ? 'on' : 'off' %></span> <span class="small muted mono wrapany"><%= w.url %></span>
+        <span class="small muted">&middot; <%= w.events.includes('*') ? 'all events' : w.events.join(', ') %> &middot; last: <%= w.last_status || 'never fired' %><%= w.last_fired_at ? ' (' + fmtDateTime(w.last_fired_at) + ')' : '' %><%= w.fail_count ? ' · ' + w.fail_count + ' consecutive failures' : '' %></span></summary>
+      <div class="btn-row">
+        <form method="post" action="/admin/integrations/webhooks/<%= w.id %>/test"><select name="event" style="width:auto;padding:.35rem"><% for (const e of EVENT_NAMES) { %><option value="<%= e %>" <%= w.events.includes(e) ? 'selected' : '' %>><%= e %></option><% } %></select> <button class="btn xs secondary">Send test</button></form>
+        <form method="post" action="/admin/integrations/webhooks/<%= w.id %>/toggle"><button class="btn xs ghost"><%= w.enabled ? 'Turn off' : 'Turn on' %></button></form>
+        <form method="post" action="/admin/integrations/webhooks/<%= w.id %>/archive" onsubmit="return confirm('Archive this webhook?')"><button class="btn xs danger">Archive</button></form>
+      </div>
+      <form method="post" action="/admin/integrations/webhooks/<%= w.id %>" class="mt">
+        <div class="field-row three">
+          <div><label>Name</label><input type="text" name="name" value="<%= w.name %>" required></div>
+          <div style="grid-column:span 2"><label>URL</label><input type="url" name="url" value="<%= w.url %>" required></div>
+          <div><label>Signing secret (optional)</label><input type="text" name="secret" value="<%= w.secret %>" placeholder="any long random string"></div>
+          <div><label>&nbsp;</label><label class="inline"><input type="checkbox" name="enabled" value="1" <%= w.enabled ? 'checked' : '' %>> Enabled</label></div>
+        </div>
+        <label>Events</label>
+        <div class="flex small"><label class="inline"><input type="checkbox" name="events" value="*" <%= w.events.includes('*') ? 'checked' : '' %>> <strong>all events</strong></label><% for (const e of EVENT_NAMES) { %><label class="inline"><input type="checkbox" name="events" value="<%= e %>" <%= w.events.includes(e) ? 'checked' : '' %>> <%= e %></label><% } %></div>
+        <button class="btn xs mt">Save webhook</button>
+      </form>
+      <details class="mt"><summary class="small">Delivery log (last 10)</summary>
+        <div class="table-wrap"><table class="small"><thead><tr><th>When</th><th>Event</th><th>Attempt</th><th>Result</th><th>Response</th></tr></thead><tbody>
+          <% if (!w.deliveries.length) { %><tr><td colspan="5" class="muted">Nothing delivered yet.</td></tr><% } %>
+          <% for (const d of w.deliveries) { %><tr><td class="nowrap"><%= fmtDateTime(d.created_at) %></td><td><%= d.event %></td><td><%= d.attempt %></td><td><span class="badge <%= d.status === 'ok' ? 'ok' : 'bad' %>"><%= d.status %></span> <%= d.response_code || '' %> <%= d.duration_ms != null ? d.duration_ms + ' ms' : '' %></td><td class="mono" style="max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="<%= d.error || d.response_body %>"><%= d.error || d.response_body.slice(0, 120) %></td></tr><% } %>
+        </tbody></table></div>
+      </details>
+    </details>
+  <% } %>
+  <details class="mt" <%= hooks.length ? '' : 'open' %>><summary><strong>+ Add outbound webhook</strong></summary>
+    <form method="post" action="/admin/integrations/webhooks" class="mt">
+      <div class="field-row three">
+        <div><label>Name</label><input type="text" name="name" placeholder="Zapier - new leads" required></div>
+        <div style="grid-column:span 2"><label>URL (from Zapier "Catch Hook")</label><input type="url" name="url" placeholder="https://hooks.zapier.com/hooks/catch/123456/abcdef/" required></div>
+        <div><label>Signing secret (optional)</label><input type="text" name="secret" placeholder="leave blank for Zapier"></div>
+        <div><label>&nbsp;</label><label class="inline"><input type="checkbox" name="enabled" value="1" checked> Enabled</label></div>
+      </div>
+      <label>Events to send</label>
+      <div class="flex small"><label class="inline"><input type="checkbox" name="events" value="*"> <strong>all events</strong></label><% for (const e of EVENT_NAMES) { %><label class="inline"><input type="checkbox" name="events" value="<%= e %>" <%= e === 'new_lead' ? 'checked' : '' %>> <%= e %></label><% } %></div>
+      <button class="btn sm mt">Add webhook</button>
+    </form>
+  </details>
+</div>
+
+<!-- ============================ AI AGENTS ============================ -->
+<div class="card" id="agents">
+  <div class="card-head"><h2>AI agents</h2><span class="small muted">POST <span class="mono"><%= apiBase %>/ai/run</span> &middot; automation step "ai_agent" &middot; inbound texts -&gt; lead_qualifier</span></div>
+  <p class="small muted">Each agent has a provider, a model, a system prompt and the tools it may use. <strong>Autopilot</strong>: <em>off</em> = only returns text; <em>draft-only</em> = the reply is saved as a draft you approve in <a href="/admin/conversations">Conversations</a>; <em>auto-send</em> = texted right away (opt-out and quiet hours still apply). Without an API key agents return a mock reply and log to <a href="/admin/outbox?channel=ai">Outbox -&gt; AI</a>.</p>
+  <% for (const a of agents) { %>
+    <details class="card tight" id="agent-<%= a.id %>" style="background:#f7f9fd;box-shadow:none" <%= (testResult && testResult.agentId === a.id) ? 'open' : '' %>>
+      <summary style="cursor:pointer"><strong class="mono"><%= a.name %></strong> <span class="badge <%= a.enabled ? 'ok' : 'bad' %>"><%= a.enabled ? 'on' : 'off' %></span> <span class="badge <%= a.autopilot === 'auto' ? 'warn' : a.autopilot === 'draft' ? 'info' : '' %>">autopilot: <%= a.autopilot === 'draft' ? 'draft-only' : a.autopilot === 'auto' ? 'auto-send' : 'off' %></span> <span class="badge"><%= a.resolved.provider %><%= a.resolved.model ? ' · ' + a.resolved.model : '' %><%= a.resolved.mock ? ' · MOCK' : '' %></span> <span class="small muted"><%= a.description %> &middot; ran <%= a.run_count %>x</span></summary>
+      <div class="grid-2 wide-left mt">
+        <form method="post" action="/admin/integrations/agents/<%= a.id %>">
+          <div class="field-row three">
+            <div><label>Name (used in API / automations)</label><input type="text" name="name" value="<%= a.name %>" required pattern="[a-z0-9_]+"></div>
+            <div style="grid-column:span 2"><label>Description</label><input type="text" name="description" value="<%= a.description %>"></div>
+            <div><label>Provider</label><select name="provider"><% for (const p of AI_PROVIDERS) { %><option value="<%= p %>" <%= a.provider === p ? 'selected' : '' %>><%= p === 'openai' ? 'openai (or compatible)' : p %></option><% } %></select></div>
+            <div><label>Model (blank = default)</label><input type="text" name="model" value="<%= a.model %>" placeholder="claude-sonnet-4-5 / gpt-4o-mini / llama3.1"></div>
+            <div><label>Temperature (0-1)</label><input type="number" step="0.1" min="0" max="1" name="temperature" value="<%= a.temperature %>"></div>
+            <div style="grid-column:span 2"><label>Custom URL (custom_url provider, or Ollama/LM Studio base URL)</label><input type="text" name="custom_url" value="<%= a.custom_url %>" placeholder="https://hooks.zapier.com/... or http://localhost:11434/v1"></div>
+            <div><label>Autopilot</label><select name="autopilot"><% for (const m of AUTOPILOT_MODES) { %><option value="<%= m %>" <%= a.autopilot === m ? 'selected' : '' %>><%= m === 'draft' ? 'draft-only (you approve)' : m === 'auto' ? 'auto-send' : 'off' %></option><% } %></select></div>
+          </div>
+          <label>Tools this agent may use</label>
+          <div class="flex small"><% for (const t of tools) { %><label class="inline" title="<%= t.description %>"><input type="checkbox" name="tools" value="<%= t.name %>" <%= a.tools.includes(t.name) ? 'checked' : '' %>> <%= t.name %></label><% } %></div>
+          <label>System prompt</label><textarea name="system_prompt" style="min-height:220px;font-size:.9rem"><%= a.system_prompt %></textarea>
+          <div class="flex mt"><label class="inline"><input type="checkbox" name="enabled" value="1" <%= a.enabled ? 'checked' : '' %>> Enabled</label><button class="btn sm">Save agent</button></div>
+        </form>
+        <div>
+          <form method="post" action="/admin/integrations/agents/<%= a.id %>/test" class="card tight" style="margin:0">
+            <h3>Test this agent</h3>
+            <label>Sample input (plain text, or JSON like {"text": "..."})</label>
+            <textarea name="input" style="min-height:80px" placeholder="<%= a.name === 'quote_summarizer' ? 'Job notes: mount 65in TV in den over fireplace, hide HDMI in wall, add doorbell cam reusing chime wiring' : 'Hi, do you install cameras? I am in Smithtown, need it done before the holidays' %>"><%= testResult && testResult.agentId === a.id ? (typeof testResult.input === 'object' && testResult.input.text && Object.keys(testResult.input).length === 1 ? testResult.input.text : JSON.stringify(testResult.input)) : '' %></textarea>
+            <div class="field-row"><div><label>Contact id (optional)</label><input type="number" name="contact_id" placeholder="e.g. 1" value="<%= testResult && testResult.agentId === a.id && testResult.contactId ? testResult.contactId : '' %>"></div><div><label>&nbsp;</label><label class="inline small"><input type="checkbox" name="apply" value="1"> Apply autopilot (create the draft / send)</label></div></div>
+            <p class="help">Tools DO run for real (a create_lead call creates a lead). Autopilot is skipped unless ticked.</p>
+            <button class="btn sm secondary">Run test</button>
+          </form>
+          <% if (testResult && testResult.agentId === a.id) { %>
+            <div class="notice <%= testResult.ok ? '' : 'warn' %> mt">
+              <strong>Result</strong> <span class="badge <%= testResult.ok ? 'ok' : 'bad' %>"><%= testResult.ok ? 'ok' : 'error' %></span> <span class="badge"><%= testResult.provider %><%= testResult.mock ? ' · mock' : '' %></span> <span class="small muted">run #<%= testResult.run_id %></span>
+              <% if (testResult.error) { %><div class="small" style="color:var(--bad)"><%= testResult.error %></div><% } %>
+              <div class="bubble out mt" style="max-width:100%;align-self:auto"><%= testResult.output || '(no text)' %></div>
+              <div class="small mt"><strong>Tool calls (<%= (testResult.tool_calls || []).length %>)</strong>
+                <% for (const t of testResult.tool_calls || []) { %><div class="mono" style="font-size:.78rem;margin:.2rem 0;padding:.3rem .5rem;background:#fff;border-radius:6px"><%= t.name %>(<%= JSON.stringify(t.input) %>) &rarr; <%= JSON.stringify(t.result).slice(0, 240) %></div><% } %>
+              </div>
+              <% if (testResult.autopilot) { const ap = testResult.autopilot; %><div class="small mt">Autopilot: <strong><%= ap.mode === 'draft' ? 'draft-only' : ap.mode === 'auto' ? 'auto-send' : 'off' %></strong><%= ap.message_id ? ' - draft #' + ap.message_id + ' saved in Conversations' : ap.sent ? ' - text sent' : ap.queued ? ' - queued for ' + fmtDateTime(ap.send_at) : ap.skipped ? ' - skipped (' + ap.skipped + ')' : ap.error ? ' - ' + ap.error : ' (not applied in this test)' %></div><% } %>
+            </div>
+          <% } %>
+          <details class="mt"><summary class="small">Recent runs</summary>
+            <% if (!a.runs.length) { %><p class="small muted">None yet.</p><% } %>
+            <% for (const r of a.runs) { %><div class="small" style="border-top:1px solid var(--line);padding:.35rem 0"><span class="badge <%= r.status === 'ok' ? 'ok' : 'bad' %>"><%= r.status %></span> <%= fmtDateTime(r.created_at) %> &middot; <%= r.provider %><%= r.mock ? ' (mock)' : '' %> &middot; <%= r.duration_ms %> ms &middot; <%= r.actor %><% if (r.contact_id) { %> &middot; <a href="/admin/contacts/<%= r.contact_id %>">contact #<%= r.contact_id %></a><% } %><br><span class="muted"><%= r.output.slice(0, 160) %></span><% if (r.tool_calls.length) { %><br><span class="mono" style="font-size:.75rem">tools: <%= r.tool_calls.map((t) => t.name).join(', ') %></span><% } %></div><% } %>
+          </details>
+        </div>
+      </div>
+      <form method="post" action="/admin/integrations/agents/<%= a.id %>/archive" class="mt" onsubmit="return confirm('Archive this agent?')"><button class="btn xs danger">Archive agent</button></form>
+    </details>
+  <% } %>
+  <details class="mt"><summary><strong>+ New agent</strong></summary>
+    <form method="post" action="/admin/integrations/agents" class="mt">
+      <div class="field-row three">
+        <div><label>Name</label><input type="text" name="name" placeholder="review_responder" required pattern="[a-z0-9_]+"></div>
+        <div style="grid-column:span 2"><label>Description</label><input type="text" name="description"></div>
+        <div><label>Provider</label><select name="provider"><% for (const p of AI_PROVIDERS) { %><option value="<%= p %>"><%= p %></option><% } %></select></div>
+        <div><label>Model</label><input type="text" name="model" placeholder="blank = default"></div>
+        <div><label>Autopilot</label><select name="autopilot"><option value="off">off</option><option value="draft" selected>draft-only</option><option value="auto">auto-send</option></select></div>
+        <div style="grid-column:span 3"><label>Custom URL (for custom_url / ollama)</label><input type="text" name="custom_url"></div>
+      </div>
+      <input type="hidden" name="temperature" value="0.3">
+      <label>Tools</label><div class="flex small"><% for (const t of tools) { %><label class="inline"><input type="checkbox" name="tools" value="<%= t.name %>" <%= t.name === 'lookup_contact' ? 'checked' : '' %>> <%= t.name %></label><% } %></div>
+      <label>System prompt</label><textarea name="system_prompt" placeholder="You are ..." required></textarea>
+      <label class="inline mt"><input type="checkbox" name="enabled" value="1" checked> Enabled</label>
+      <div><button class="btn sm mt">Create agent</button></div>
+    </form>
+  </details>
+  <div class="notice mt small wrapany"><strong>Curl example</strong><br><span class="mono">curl -X POST <%= apiBase %>/ai/run -H "Authorization: Bearer <%= keyHint %>" -H "Content-Type: application/json" -d '{"agent":"sms_reply_drafter","contactId":1,"input":{"text":"Do you do doorbell cameras?"}}'</span></div>
+</div>
+
+<!-- ============================ ZAPIER RECIPES ============================ -->
+<div class="card" id="recipes">
+  <div class="card-head"><h2>Zapier recipes</h2><span class="small muted">Copy-paste. Replace <span class="mono"><%= keyHint %></span> with a key from above.</span></div>
+  <p class="small muted">Two directions. <strong>Piets HQ -&gt; Zapier</strong>: add an outbound webhook pointed at a Zapier "Catch Hook" and filter on the event name. <strong>Zapier -&gt; Piets HQ</strong>: a "Webhooks by Zapier" POST action to one of the URLs below with header <span class="mono">Authorization: Bearer <%= keyHint %></span> and <span class="mono">Content-Type: application/json</span>.</p>
+  <% for (const r of recipes) { %>
+    <details class="card tight" style="background:#f7f9fd;box-shadow:none">
+      <summary style="cursor:pointer"><strong><%= r.title %></strong> <span class="badge info"><%= r.kind %></span></summary>
+      <ol class="small" style="padding-left:1.2rem;margin:.5rem 0">
+        <% for (const st of r.steps) { %><li style="margin:.25rem 0"><%= st %></li><% } %>
+      </ol>
+      <% if (r.filter) { %>
+        <div class="small"><strong>Outbound webhook events to tick:</strong> <% for (const e of r.filter) { %><span class="badge"><%= e %></span> <% } %> &nbsp; <strong>Zapier Filter (optional):</strong> <span class="mono">event</span> (Text) Exactly matches <span class="mono"><%= r.filter[0] %></span></div>
+        <div class="small mt"><strong>Sample payload Zapier receives:</strong></div>
+        <pre class="mono" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:.6rem;font-size:.75rem;overflow:auto;max-height:280px"><%= pretty(r.sample) %></pre>
+      <% } else { %>
+        <div class="grid-2">
+          <div class="small">
+            <div><strong>Method:</strong> <span class="mono"><%= r.method %></span></div>
+            <div><strong>URL:</strong> <input type="text" readonly value="<%= r.url %>" class="mono" onclick="this.select()"></div>
+            <div class="mt"><strong>Headers:</strong></div>
+            <pre class="mono" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:.6rem;font-size:.75rem;margin:0">Authorization: Bearer <%= keyHint %>
+Content-Type: application/json</pre>
+            <div class="mt"><strong>Zapier settings:</strong> Payload Type = <span class="mono">json</span>, Wrap Request In Array = <span class="mono">no</span>, Unflatten = <span class="mono">yes</span>.</div>
+          </div>
+          <div class="small"><strong>Body (JSON):</strong>
+            <pre class="mono" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:.6rem;font-size:.75rem;overflow:auto;margin:0"><%= pretty(r.body) %></pre>
+            <div class="mt"><strong>Response:</strong> <span class="mono">{ "ok": true, "data": { ... } }</span> or <span class="mono">{ "ok": false, "error": "..." }</span></div>
+          </div>
+        </div>
+      <% } %>
+    </details>
+  <% } %>
+  <details class="mt"><summary><strong>All API endpoints</strong> (Authorization: Bearer key)</summary>
+    <div class="table-wrap small mt"><table>
+      <thead><tr><th>Method + path</th><th>What it does</th><th>Body / query</th></tr></thead><tbody>
+      <tr><td class="mono nowrap">POST /contacts</td><td>Create or update a contact (matched by phone or email)</td><td class="mono">name, phone, email, town, company, tags[], source, note</td></tr>
+      <tr><td class="mono nowrap">GET /contacts?q=</td><td>Search contacts</td><td class="mono">q, limit</td></tr>
+      <tr><td class="mono nowrap">GET /contacts/:id</td><td>Contact with leads, quotes, invoices, jobs, notes, messages</td><td></td></tr>
+      <tr><td class="mono nowrap">POST /contacts/:id/notes</td><td>Add a note</td><td class="mono">body</td></tr>
+      <tr><td class="mono nowrap">POST /contacts/:id/tags</td><td>Add / remove tags</td><td class="mono">tags[], tag, remove[]</td></tr>
+      <tr><td class="mono nowrap">POST /leads</td><td>New quote request in the pipeline (fires new_lead automation)</td><td class="mono">name, phone|email|contactId, town, service, message, source, value</td></tr>
+      <tr><td class="mono nowrap">POST /leads/:id/stage</td><td>Move a lead</td><td class="mono">stage: New|Contacted|Estimate Sent|Won|Lost</td></tr>
+      <tr><td class="mono nowrap">POST /messages/sms</td><td>Text a contact (opt-out + quiet hours respected)</td><td class="mono">contactId|phone, body, urgent</td></tr>
+      <tr><td class="mono nowrap">POST /messages/email</td><td>Email a contact</td><td class="mono">contactId|email, subject, body</td></tr>
+      <tr><td class="mono nowrap">GET /quotes &middot; POST /quotes &middot; POST /quotes/:id/send</td><td>Estimates</td><td class="mono">contactId, title, items[{description, qty, unit_price}], notes, send</td></tr>
+      <tr><td class="mono nowrap">GET /invoices &middot; POST /invoices &middot; POST /invoices/:id/send &middot; POST /invoices/:id/payments</td><td>Invoices and manual payments</td><td class="mono">contactId, items[], service_date; payments: amount, method, reference</td></tr>
+      <tr><td class="mono nowrap">GET /jobs &middot; POST /jobs &middot; POST /jobs/:id/complete</td><td>Jobs / schedule</td><td class="mono">contactId|phone|email, title, scheduled_at (ISO), notes, checklist[]</td></tr>
+      <tr><td class="mono nowrap">POST /automations/:id/trigger</td><td>Run an automation for a contact</td><td class="mono">contactId|phone|email, leadId, quoteId, invoiceId, text</td></tr>
+      <tr><td class="mono nowrap">POST /campaigns/:id/send</td><td>Send / schedule a campaign</td><td class="mono">scheduled_at</td></tr>
+      <tr><td class="mono nowrap">GET /events?since=</td><td>Polling trigger: events after an id (or ISO time). Add <span class="mono">&amp;flat=1</span> for a bare array (Zapier "Retrieve Poll").</td><td class="mono">since, event, limit, flat</td></tr>
+      <tr><td class="mono nowrap">POST /blog</td><td>Publish a blog post (same as /api/blog)</td><td class="mono">title, description, slug, tags[], focusKeyword, body</td></tr>
+      <tr><td class="mono nowrap">POST /ai/run &middot; GET /ai/agents</td><td>Run an AI agent</td><td class="mono">agent, input{}, contactId|phone, dryRun</td></tr>
+      </tbody></table></div>
+  </details>
+</div>
+
+<!-- ============================ EVENT FEED ============================ -->
+<div class="card" id="events">
+  <div class="card-head"><h2>Recent events</h2><span class="small muted">What outbound webhooks and <span class="mono">GET /events</span> see &middot; <%= EVENT_NAMES.length %> event types</span></div>
+  <div class="flex small mb"><% for (const e of EVENT_NAMES) { %><span class="badge"><%= e %></span><% } %></div>
+  <div class="table-wrap"><table class="small"><thead><tr><th>#</th><th>When</th><th>Event</th><th>Contact</th><th>Summary</th></tr></thead><tbody>
+    <% if (!recentEvents.length) { %><tr><td colspan="5" class="muted">No events yet. Submit the website form or move a lead to see one.</td></tr><% } %>
+    <% for (const ev of recentEvents) { const d = ev.data || {}; %><tr><td class="mono"><%= ev.id %></td><td class="nowrap"><%= fmtDateTime(ev.timestamp) %></td><td><span class="badge info"><%= ev.event %></span></td><td><% if (d.contact) { %><a href="/admin/contacts/<%= d.contact.id %>"><%= d.contact.name || d.contact.phone %></a><% } %></td><td class="muted"><%= d.lead ? 'Lead: ' + d.lead.service + ' (' + d.lead.stage + ')' : d.quote ? d.quote.number + ' ' + d.quote.status : d.invoice ? d.invoice.number + ' ' + d.invoice.status : d.job ? 'Job #' + d.job.id + ' ' + d.job.title : d.message ? '"' + String(d.message.body).slice(0, 80) + '"' : d.post ? d.post.title : d.campaign ? d.campaign.name : d.change ? d.change.from + ' -> ' + d.change.to : '' %></td></tr><% } %>
+  </tbody></table></div>
+</div>
+</div>

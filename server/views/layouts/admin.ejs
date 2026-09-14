@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %> | Piets HQ</title>
+<link rel="icon" href="/assets/brand/favicon-64.png">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="inner">
+    <a class="logo" href="/admin"><img src="/assets/brand/logo-mark.png" alt="" onerror="this.onerror=null;this.src='/brand/logo-mark.png'"><span>Piets HQ</span></a>
+    <% if (sandbox) { %><a class="sandbox-pill" href="/admin/outbox" style="text-decoration:none" title="Mock providers: texts, emails and payment links land in the Outbox">Sandbox</a><% } %>
+    <span class="spacer"></span>
+    <span class="contact"><a href="/portal" target="_blank" rel="noopener">Client hub &nearr;</a> &nbsp; <a href="/" target="_blank" rel="noopener">Website &nearr;</a></span>
+    <form method="post" action="/admin/logout" style="margin:0"><button class="btn ghost xs" style="color:#fff;border-color:rgba(255,255,255,.4)">Sign out</button></form>
+  </div>
+</header>
+<nav class="nav"><div class="inner">
+  <% const items = [['/admin','Dashboard',''],['/admin/contacts','Contacts','/contacts'],['/admin/pipeline','Pipeline','/pipeline'],['/admin/quotes','Quotes','/quotes'],['/admin/jobs','Jobs','/jobs'],['/admin/invoices','Invoices','/invoices'],['/admin/conversations','Conversations','/conversations'],['/admin/campaigns','Campaigns','/campaigns'],['/admin/automations','Automations','/automations'],['/admin/blog','Blog','/blog'],['/admin/integrations','Integrations','/integrations'],['/admin/settings','Settings','/settings'],['/admin/outbox','Outbox','/outbox'],['/admin/audit','Audit log','/audit']]; %>
+  <% for (const [href, label, p] of items) { const active = p === '' ? path === '/' : path.startsWith(p); %>
+    <a href="<%= href %>" class="<%= active ? 'active' : '' %>"><%= label %></a>
+  <% } %>
+</div></nav>
+<main class="wrap">
+<% if (flash) { %><div class="flash <%= flash.type %>"><%= flash.text %></div><% } %>
+<%- body %>
+</main>
+<footer class="foot">Piets HQ &middot; <%= business.name %> &middot; <%= business.phone %> &middot; <%= business.email %> &middot; <%= business.website %></footer>
+</body>
+</html>

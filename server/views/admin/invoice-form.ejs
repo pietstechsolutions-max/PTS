@@ -1,0 +1,16 @@
+<h1><%= isNew ? 'New invoice' : 'Edit ' + inv.number %></h1>
+<form class="card" method="post" action="<%= isNew ? '/admin/invoices' : '/admin/invoices/' + inv.id %>">
+  <% if (isNew) { %>
+    <label>Client</label>
+    <select name="contact_id" required><option value="">- choose -</option><% for (const c of contacts) { %><option value="<%= c.id %>" <%= String(c.id) === String(inv.contact_id) ? 'selected' : '' %>><%= c.first_name %> <%= c.last_name %> <%= prettyPhone(c.phone) %></option><% } %></select>
+  <% } else { %><p class="muted">Client: <strong><%= h.fullName(inv.contact) %></strong></p><% } %>
+  <div class="field-row">
+    <div><label>Service date</label><input type="date" name="service_date" value="<%= h.fmtDateInput(inv.service_date) %>" required></div>
+    <div><label>Invoice date</label><input type="date" name="invoice_date" value="<%= h.fmtDateInput(inv.invoice_date) %>" required></div>
+  </div>
+  <p class="help">Terms are always "Due on receipt". Checks payable to "<%= settings.checks_payable_to %>".</p>
+  <h3 class="mt">Line items</h3>
+  <%- include('../partials/line-items', { items: inv.items, taxRate: inv.tax_rate }) %>
+  <label>Notes</label><textarea name="notes"><%= inv.notes %></textarea>
+  <div class="btn-row"><button class="btn">Save invoice</button><a class="btn ghost" href="<%= isNew ? '/admin/invoices' : '/admin/invoices/' + inv.id %>">Cancel</a></div>
+</form>

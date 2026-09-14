@@ -1,0 +1,9 @@
+<h1>New job</h1>
+<form class="card" method="post" action="/admin/jobs">
+  <label>Client</label>
+  <select name="contact_id" required><option value="">- choose -</option><% for (const c of contacts) { %><option value="<%= c.id %>" <%= String(c.id) === String(contact_id) ? 'selected' : '' %>><%= c.first_name %> <%= c.last_name %> <%= prettyPhone(c.phone) %></option><% } %></select>
+  <label>Title</label><input type="text" name="title" required placeholder="e.g. Service call - camera offline">
+  <label>Scheduled (Eastern time)</label><input type="datetime-local" name="scheduled_at">
+  <label>Notes</label><textarea name="notes"></textarea>
+  <div class="btn-row"><button class="btn">Create job</button><a class="btn ghost" href="/admin/jobs">Cancel</a></div>
+</form>

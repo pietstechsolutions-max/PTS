@@ -1,0 +1,18 @@
+<h1>Jobs</h1>
+<% if (!jobs.length) { %><div class="card"><p class="muted">No jobs yet. Approved estimates become jobs.</p></div><% } %>
+<% for (const j of jobs) { %>
+<div class="card">
+  <div class="card-head">
+    <h2 style="margin:0"><%= j.title %></h2>
+    <span class="badge <%= j.status.split(' ')[0] %>"><%= j.status %></span>
+  </div>
+  <p><strong>When:</strong> <%= j.scheduled_at ? fmtDateTime(j.scheduled_at) + ' ET' : 'To be scheduled - we will text you' %><% if (j.quote) { %> &middot; <strong>Estimate:</strong> <%= j.quote.number %> (<%= money(j.quote.total_cents) %>)<% } %></p>
+  <% if (j.checklist.length) { %>
+  <h3>Work checklist</h3>
+  <ul class="checklist">
+    <% for (const c of j.checklist) { %><li><span class="check <%= c.done ? 'on' : '' %>"><%= c.done ? '&#10003;' : '' %></span><span class="<%= c.done ? 'done' : '' %>"><%= c.item %></span></li><% } %>
+  </ul>
+  <% } %>
+  <% if (j.status === 'Complete' && j.invoice_id) { %><p class="mt"><a class="btn sm" href="/portal/invoices/<%= j.invoice_id %>">View invoice</a></p><% } %>
+</div>
+<% } %>

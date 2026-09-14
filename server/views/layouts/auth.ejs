@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %> | <%= business.name %></title>
+<link rel="icon" href="/assets/brand/favicon-64.png">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<main class="wrap narrow">
+<% if (flash) { %><div class="flash <%= flash.type %>"><%= flash.text %></div><% } %>
+<%- body %>
+</main>
+<footer class="foot"><%= business.name %> &middot; <%= business.phone %> &middot; <%= business.email %></footer>
+</body>
+</html>

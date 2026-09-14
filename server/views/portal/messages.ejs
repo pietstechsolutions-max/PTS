@@ -1,0 +1,15 @@
+<h1>Messages</h1>
+<p class="muted small">Chat with <%= business.name %>. Replies also go to your phone by text.</p>
+<div class="card">
+  <div class="chat" id="chat">
+    <% if (!msgs.length) { %><p class="muted">No messages yet. Say hi!</p><% } %>
+    <% for (const m of msgs) { %>
+      <div class="bubble <%= m.direction === 'in' ? 'out' : 'in' %>"><%= m.body %><span class="meta"><%= m.direction === 'in' ? 'You' : business.name %> &middot; <%= fmtDateTime(m.created_at) %></span></div>
+    <% } %>
+  </div>
+  <form method="post" action="/portal/messages" class="mt">
+    <textarea name="body" placeholder="Type your message" required maxlength="1000" style="min-height:70px"></textarea>
+    <button class="btn big mt">Send message</button>
+  </form>
+</div>
+<script>const c=document.getElementById('chat'); if(c) c.scrollTop=c.scrollHeight;</script>

@@ -1,0 +1,25 @@
+<div class="card-head"><h1>Contacts</h1><a class="btn sm" href="/admin/contacts/new">+ New contact</a></div>
+<form class="card tight flex" method="get" action="/admin/contacts">
+  <input type="text" name="q" value="<%= q %>" placeholder="Search name, phone, email, town, tag" style="flex:1;min-width:200px">
+  <button class="btn sm">Search</button>
+  <a class="btn ghost sm" href="/admin/contacts<%= showArchived ? '' : '?archived=1' %>"><%= showArchived ? 'Show active' : 'Show archived' %></a>
+</form>
+<div class="card table-wrap">
+<table>
+  <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Town</th><th>Tags</th><th>SMS</th><th class="num">Balance</th></tr></thead>
+  <tbody>
+  <% if (!rows.length) { %><tr><td colspan="7" class="muted">No contacts found.</td></tr><% } %>
+  <% for (const c of rows) { %>
+    <tr>
+      <td><a href="/admin/contacts/<%= c.id %>"><strong><%= c.first_name %> <%= c.last_name %></strong></a><% if (c.company) { %><br><span class="small muted"><%= c.company %></span><% } %></td>
+      <td class="nowrap"><%= prettyPhone(c.phone) %></td>
+      <td><%= c.email %></td>
+      <td><%= c.town %></td>
+      <td><% for (const t of h.parseJson(c.tags, [])) { %><span class="badge"><%= t %></span> <% } %></td>
+      <td><span class="badge <%= c.sms_opt_in ? 'ok' : 'bad' %>"><%= c.sms_opt_in ? 'opted in' : 'opted out' %></span></td>
+      <td class="num"><%= c.balance ? money(c.balance) : '-' %></td>
+    </tr>
+  <% } %>
+  </tbody>
+</table>
+</div>

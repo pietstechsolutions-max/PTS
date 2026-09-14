@@ -1,0 +1,22 @@
+<h1>Managed services</h1>
+<% if (subscribed) { %><div class="flash ok">You are subscribed - thank you!</div><% } %>
+<p class="muted">Monthly plans that keep your cameras, network and smart-home gear working. Cancel anytime.</p>
+<% if (sub) { %>
+<div class="card tight"><strong>Current plan: <%= sub.plan %></strong> <span class="badge <%= sub.status %>"><%= sub.status.replace('_', ' ') %></span>
+  <% if (sub.started_at) { %><span class="small muted">since <%= fmtDate(sub.started_at) %></span><% } %>
+  <% if (sub.status !== 'cancel_requested') { %><form method="post" action="/portal/plans/cancel" style="display:inline;margin-left:.5rem" onsubmit="return confirm('Request to cancel your plan?')"><button class="btn ghost xs">Request cancellation</button></form><% } else { %><span class="small muted">- cancellation requested <%= fmtDate(sub.cancel_requested_at) %></span><% } %>
+</div>
+<% } %>
+<div class="plans">
+<% for (const name of PLANS) { const p = plans[name]; const isCurrent = sub && sub.plan === name && sub.status !== 'canceled'; %>
+  <div class="plan <%= isCurrent ? 'current' : '' %>">
+    <h2><%= name %></h2>
+    <div class="price"><% if (p.price_cents > 0) { %><%= money(p.price_cents) %><small>/month</small><% } else { %><small>Call for pricing</small><% } %></div>
+    <p class="small"><%= p.desc %></p>
+    <% if (isCurrent) { %><span class="btn secondary" style="pointer-events:none">Your plan</span>
+    <% } else if (p.price_cents > 0) { %><form method="post" action="/portal/plans/subscribe"><input type="hidden" name="plan" value="<%= name %>"><button class="btn big">Subscribe</button></form>
+    <% } else { %><a class="btn secondary" href="tel:+16318715957">Call <%= business.phone %></a><% } %>
+  </div>
+<% } %>
+</div>
+<p class="small muted mt">Subscriptions are billed monthly by card through Stripe. Sales tax is added where required.</p>
