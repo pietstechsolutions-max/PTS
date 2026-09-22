@@ -155,4 +155,25 @@ ${posts.map(p => `  <item>
 </rss>
 `);
 
+/* ---- clean URLs: Vercel (cleanUrls:true) and the Node server (extensions:['html']) both serve
+   /services for /services.html, and Vercel 308-redirects the .html form. Rewrite every internal
+   link, canonical, og:url, sitemap/RSS entry and JSON-LD url so nothing points at a redirect. ---- */
+function cleanUrls(s) {
+  const site = SITE.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return s
+    .replace(new RegExp(`(${site})?/index\\.html(?=["'#?\\s<])`, 'g'), '$1/')
+    .replace(new RegExp(`((?:${site})?/[A-Za-z0-9_\\-/]+?)/index\\.html(?=["'#?\\s<])`, 'g'), '$1/')
+    .replace(new RegExp(`((?:${site})?/[A-Za-z0-9_\\-/]+?)\\.html(?=["'#?\\s<])`, 'g'), '$1')
+    // trailingSlash:false on Vercel — /blog/ redirects to /blog, so drop trailing slashes (root "/" stays)
+    .replace(new RegExp(`((?:${site})?/[A-Za-z0-9_\\-]+(?:/[A-Za-z0-9_\\-]+)*)/(?=["'#?\\s<])`, 'g'), '$1');
+}
+function walk(dir) {
+  for (const f of readdirSync(dir)) {
+    const fp = join(dir, f);
+    if (statSync(fp).isDirectory()) walk(fp);
+    else if (/\.(html|xml)$/.test(f)) writeFileSync(fp, cleanUrls(readFileSync(fp, 'utf8')));
+  }
+}
+walk(PUB);
+
 console.log(`Built ${pageFiles.length} pages, ${posts.length} posts, blog/index.html, sitemap.xml, rss.xml`);
