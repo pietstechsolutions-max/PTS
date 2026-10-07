@@ -90,12 +90,12 @@ ${rel.length ? `<section class="section" style="padding-bottom:0"><div class="se
 <section class="section section-soft" id="quote"><div class="wrap"><div class="section-head"><div class="eyebrow">Free quote</div><h2>Ready to talk about your project?</h2><p>Call or text <a href="tel:${SITE.phoneE164}">${SITE.phone}</a>, email <a href="mailto:${SITE.email}">${SITE.email}</a>, or <a href="/#quote">send the quote form</a>. ${esc(SITE.clientLine)}</p></div><div class="btn-row"><a class="btn btn-navy" href="/#quote">Get a free quote</a><a class="btn btn-outline" href="/services.html">See all services</a></div></div></section>
 </main>
 ${footer()}`;
-  return head({ title: p.title.length <= 60 ? p.title : p.title.slice(0, 57) + '…', description: p.description.slice(0, 155), path, type: 'article', extraLd: ld, published: p.date, modified: p.modified }) + body;
+  return head({ title: p.seoTitle || (p.title.length <= 50 ? p.title + ' | Piets Tech' : p.title), description: trimWords(p.description, 158), path, type: 'article', extraLd: ld, published: p.date, modified: p.modified }) + body;
 }
 
 function renderIndex() {
   const path = '/blog/';
-  const tags = [...new Set(posts.flatMap(p => p.tags))].sort();
+  const tags = [...new Map(posts.flatMap(p => p.tags).map(t => [slugify(t), t])).values()].sort((a, b) => a.localeCompare(b));
   const ld = [breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Blog', path }]),
     { '@context': 'https://schema.org', '@type': 'Blog', name: `${SITE.name} Blog`, url: SITE.url + path, blogPost: posts.map(p => ({ '@type': 'BlogPosting', headline: p.title, url: SITE.url + '/blog/' + p.slug + '.html', datePublished: p.date })) }];
   const body = `${banner()}
@@ -118,15 +118,22 @@ const pageFiles = buildPages(PUB);
 for (const p of posts) writeFileSync(join(BLOG, `${p.slug}.html`), renderPost(p));
 writeFileSync(join(BLOG, 'index.html'), renderIndex());
 
+function trimWords(t, n) { t = String(t || ''); if (t.length <= n) return t; const cut = t.slice(0, n - 1); return cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:\s]+$/, '') + '…'; }
 const today = new Date().toISOString().slice(0, 10);
-const urls = [
-  { loc: '/', priority: '1.0', changefreq: 'weekly' },
-  { loc: '/services.html', priority: '0.9', changefreq: 'monthly' },
-  { loc: '/locations/', priority: '0.7', changefreq: 'monthly' },
-  ...pageFiles.filter(f => f.startsWith('locations/') && !f.endsWith('index.html')).map(f => ({ loc: '/' + f, priority: '0.8', changefreq: 'monthly' })),
-  { loc: '/blog/', priority: '0.7', changefreq: 'weekly', lastmod: posts[0]?.modified },
-  ...posts.map(p => ({ loc: `/blog/${p.slug}.html`, priority: '0.6', changefreq: 'yearly', lastmod: p.modified })),
-];
+    const urls = [
+      { loc: '/', priority: '1.0', changefreq: 'weekly' },
+      { loc: '/services.html', priority: '0.9', changefreq: 'monthly' },
+      { loc: '/plan.html', priority: '0.9', changefreq: 'monthly' },
+      { loc: '/coverage.html', priority: '0.8', changefreq: 'monthly' },
+      { loc: '/commercial.html', priority: '0.8', changefreq: 'monthly' },
+      { loc: '/plans.html', priority: '0.8', changefreq: 'monthly' },
+      { loc: '/remote-support.html', priority: '0.8', changefreq: 'monthly' },
+      { loc: '/about.html', priority: '0.8', changefreq: 'monthly' },
+      { loc: '/locations/', priority: '0.7', changefreq: 'monthly' },
+      ...pageFiles.filter(f => f.startsWith('locations/') && !f.endsWith('index.html')).map(f => ({ loc: '/' + f, priority: '0.8', changefreq: 'monthly' })),
+      { loc: '/blog/', priority: '0.7', changefreq: 'weekly', lastmod: posts[0]?.modified },
+      ...posts.map(p => ({ loc: `/blog/${p.slug}.html`, priority: '0.6', changefreq: 'yearly', lastmod: p.modified })),
+    ];
 writeFileSync(join(PUB, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${SITE.url}${u.loc}</loc><lastmod>${u.lastmod || today}</lastmod><changefreq>${u.changefreq}</changefreq><priority>${u.priority}</priority></url>`).join('\n')}

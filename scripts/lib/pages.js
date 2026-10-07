@@ -1,18 +1,37 @@
 // Generates index.html, services.html and locations/*.html into public/.
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { SITE, SERVICES, LOCATIONS, esc, head, banner, nav, footer, quoteForm, faqBlock, faqLd, breadcrumbLd, orgLd, localBusinessLd, pageHead } from './site.js';
+import { SITE, SERVICES, LOCATIONS, esc, head, banner, nav, footer, quoteForm, faqBlock, faqLd, breadcrumbLd, orgLd, localBusinessLd, pageHead, planner, icon } from './site.js';
+import { heroSection, worksWith, statsBand, servicesBlock, industryTabs, commercialBand, compareBlock, howItWorks, coverageTeaser, plansBlock, brochureGate, reviewsSlot, HOME_FAQ, finalCta, areasBlock as homeAreas, plannerSection } from './home.js';
 
 const write = (pub, rel, html) => { const f = join(pub, rel); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, html); return rel; };
 
+// Local areasBlock function since the one in home.js doesn't import LOCATIONS
+const areasBlock = () => {
+  return `
+<section class="section" id="service-area">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Service area</div>
+      <h2>Based in Suffolk County. Serving New York.</h2>
+      <p>On-site across Long Island, NYC, the Hudson Valley and the Johnstown / Capital Region. Remote support anywhere.</p>
+    </div>
+    <div class="areas-grid">
+      ${LOCATIONS.map(loc => `
+        <div class="area-card">
+          <h3>${loc.name}</h3>
+          <p>${loc.short}</p>
+        </div>
+      `).join('')}
+    </div>
+    <p class="areas-note">Larger commercial projects anywhere in the US on request</p>
+  </div>
+</section>
+`;
+};
+
 /* ---------------- HOME ---------------- */
-const HOME_FAQ = [
-  { q: 'Do you really answer 24/7?', a: "Yes. Call or text 631-871-5957 any time. Emergencies get handled right away; routine requests get a fast callback. Questions? We're here 24/7." },
-  { q: 'Is the demo really free?', a: 'Yes. We can walk you through a camera system, Wi-Fi upgrade or POS setup in person or on a video call, with no obligation. We also share references from similar jobs.' },
-  { q: 'Which areas do you cover?', a: 'Suffolk and Nassau County on Long Island, all five NYC boroughs, the Hudson Valley (Westchester, Putnam, Dutchess, Orange) and the Johnstown / Capital Region. Remote support is available anywhere.' },
-  { q: 'What camera brand do you install?', a: 'We install InVid Tech Paramont series IP cameras and recorders: 4K resolution, excellent night vision, remote viewing from your phone, and no required monthly cloud fees.' },
-  { q: 'Do I need a monthly plan?', a: 'No. Every install comes with a warranty and support. Monthly managed plans are optional for people who want remote monitoring, priority response and regular camera health checks.' },
-];
+// HOME_FAQ imported from home.js
 
 function homePage() {
   const title = 'Security Cameras, IT & Wi-Fi Support | Piets Tech Solutions';
@@ -20,100 +39,29 @@ function homePage() {
   const ld = [orgLd(), localBusinessLd({ areaServed: ['Suffolk County, NY', 'Nassau County, NY', 'New York City, NY', 'Westchester County, NY', 'Putnam County, NY', 'Dutchess County, NY', 'Orange County, NY', 'Johnstown, NY', 'Albany, NY', 'Saratoga Springs, NY'] }), faqLd(HOME_FAQ),
     { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: SITE.url }];
 
-  const serviceCards = SERVICES.map(s => `<article class="card"><div class="icon" aria-hidden="true">${s.icon}</div><h3>${esc(s.name)}</h3><p>${esc(s.pitch)}</p><a class="more" href="/services.html#${s.id}">Learn more →</a></article>`).join('\n      ');
-
-  const plans = [
-    { key: 'basic', name: 'Basic', tag: '', note: 'For homes and small offices that want someone watching the basics.', items: ['Remote monitoring of your network & cameras', 'Monthly camera health check', 'Remote support during business hours', 'Discounted on-site rates'] },
-    { key: 'pro', name: 'Pro', tag: 'Most popular', note: 'For busy small businesses that can’t afford downtime.', items: ['Everything in Basic', 'Priority response, 7 days a week', 'Quarterly on-site checkup', 'Patching, backups & security updates', 'Vendor coordination (ISP, POS, phones)'] },
-    { key: 'business', name: 'Business', tag: '', note: 'For multi-location or high-traffic operations.', items: ['Everything in Pro', '24/7 priority support line', 'Monthly on-site visit', 'Camera, access control & phone system management', 'Custom SLA and reporting'] },
-  ].map(p => `<div class="plan${p.key === 'pro' ? ' featured' : ''}" data-plan="${p.key}">${p.tag ? `<span class="tag">${p.tag}</span>` : ''}<h3>${p.name}</h3>
-        <div class="price">from $<span data-plan-price="${p.key}">__</span><small>/mo</small></div>
-        <p class="note">${p.note}</p>
-        <ul>${p.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
-        <a class="btn ${p.key === 'pro' ? 'btn-navy' : 'btn-outline'}" href="#quote" data-plan-cta="${p.key}">Ask about ${p.name}</a></div>`).join('\n      ');
-
-  const areas = LOCATIONS.map(l => `<a class="area" href="/locations/${l.slug}.html"><strong>${esc(l.name)}</strong><span>${esc(l.short)}</span></a>`).join('\n      ');
-
-  const testimonials = [1, 2, 3].map(i => `<figure class="quote"><div class="stars" aria-hidden="true">★★★★★</div><blockquote><p>[Client testimonial ${i} — replace with a real, permissioned review.]</p></blockquote><figcaption><footer>[Client name], [Town] — [Service] <span class="placeholder">Placeholder</span></footer></figcaption></figure>`).join('\n      ');
-
   const body = `${banner()}
 ${nav('home')}
 <main id="main">
-<section class="hero">
-  <div class="wrap">
-    <span class="kicker">${esc(SITE.clientLine)}</span>
-    <h1>Cameras, Wi-Fi, Cabling &amp; IT Support — <em>Done Right</em>, Locally.</h1>
-    <p class="lead">${esc(SITE.name)} installs and supports the tech that keeps your home and business running: InVid Tech Paramont security cameras, dead-zone-free Wi-Fi, clean cabling, POS, phones and smart home automation. Straight answers, free demos, references on request.</p>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a>
-      <a class="btn btn-light" href="sms:${SITE.phoneE164}">Text us</a>
-      <a class="btn btn-light" href="#quote">Get a free quote</a>
-    </div>
-  </div>
-</section>
-<div class="trust"><div class="wrap"><ul>
-  <li>24/7 tech support</li>
-  <li>Licensed &amp; insured</li>
-  <li>Free demos — in person or video call</li>
-  <li>References available</li>
-  <li>Solutions tailored to you</li>
-</ul></div></div>
-
-<section class="section" id="services">
-  <div class="wrap">
-    <div class="section-head"><div class="eyebrow">What we do</div><h2>One call for all your low-voltage tech</h2><p>From a single camera to a full restaurant build-out. If it has a wire or a Wi-Fi signal, we handle it.</p></div>
-    <div class="grid">
-      ${serviceCards}
-    </div>
-    <div class="btn-row"><a class="btn btn-navy" href="/services.html">See all services</a><a class="btn btn-outline" href="#quote">Get a free quote</a></div>
-  </div>
-</section>
-
-<section class="section section-soft" id="how-it-works">
-  <div class="wrap">
-    <div class="section-head"><div class="eyebrow">How it works</div><h2>Three steps. No runaround.</h2></div>
-    <div class="steps">
-      <div class="step"><h3>Tell us what’s going on</h3><p>Call, text or send the form. We’ll ask a few quick questions and set up a free demo or walkthrough — in person or on a video call.</p></div>
-      <div class="step"><h3>Get a clear, tailored plan</h3><p>You get a straight quote with the exact gear and labor, plus references from similar jobs. No upsell, no mystery line items.</p></div>
-      <div class="step"><h3>We install, you relax</h3><p>Clean install, everything tested and labeled, and a walkthrough so you know how to use it. Then we’re a call away, 24/7.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section section-navy" id="plans">
-  <div class="wrap">
-    <div class="section-head"><div class="eyebrow">Managed services</div><h2>Monthly plans that catch problems before you do</h2><p>Remote monitoring, priority support and camera health checks for one flat monthly fee. Pick the level that fits, cancel any time.</p></div>
-    <div class="plans">
-      ${plans}
-    </div>
-  </div>
-</section>
-
-<section class="section" id="service-area">
-  <div class="wrap">
-    <div class="section-head"><div class="eyebrow">Service area</div><h2>Based in Suffolk County. Serving New York.</h2><p>On-site across Long Island, NYC, the Hudson Valley and the Johnstown / Capital Region. Remote support anywhere.</p></div>
-    <div class="areas">
-      ${areas}
-    </div>
-  </div>
-</section>
-
-<section class="section section-soft" id="testimonials">
-  <div class="wrap">
-    <div class="section-head"><div class="eyebrow">What clients say</div><h2>References available on request</h2><p>Ask us for references from jobs like yours — we’re happy to connect you.</p></div>
-    <div class="grid grid-3">
-      ${testimonials}
-    </div>
-  </div>
-</section>
-
+${heroSection()}
+${worksWith()}
+${statsBand()}
+${servicesBlock()}
+${industryTabs()}
+${commercialBand()}
+${compareBlock()}
+${howItWorks()}
+${coverageTeaser()}
+${plansBlock()}
+${brochureGate()}
+${reviewsSlot()}
+${homeAreas()}
+${plannerSection(planner({source:'Planner - home', heading:'Plan your project in 4 quick steps', id:'quote'}))}
 ${faqBlock(HOME_FAQ)}
-
-${quoteForm({ source: 'home' })}
+${finalCta()}
 </main>
 ${footer()}`;
 
-  return head({ title, description, path: '/', extraLd: ld }) + body;
+    return head({ title, description, path: '/', extraLd: ld, bodyClass: 'home-page', extraScripts: '<script src="/assets/js/hero.js" defer></script><script src="/assets/js/planner.js" defer></script>' }) + body;
 }
 
 /* ---------------- SERVICES ---------------- */
@@ -135,22 +83,139 @@ const SERVICE_DETAIL = {
 
 function servicesPage() {
   const title = 'Services — Cameras, IT, Wi-Fi, Cabling, POS | Piets Tech';
-  const description = 'Paramont security cameras, IT support, Wi-Fi upgrades, structured cabling, smart home, POS, IP phones, access control and 24/7 support. Free demos.';
+  const description = 'InVid Tech Paramont cameras, IT support, Wi-Fi, cabling, smart home, POS, business phones, access control and 24/7 support. Free demos.';
   const ld = [breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services.html' }]),
     ...SERVICES.map(s => ({ '@context': 'https://schema.org', '@type': 'Service', name: s.name, description: s.pitch, url: SITE.url + '/services.html#' + s.id, serviceType: s.name,
       provider: { '@type': 'LocalBusiness', name: SITE.name, telephone: SITE.phoneE164, url: SITE.url },
       areaServed: LOCATIONS.map(l => ({ '@type': 'Place', name: l.region })) }))];
-  const subnav = `<nav class="subnav" aria-label="Services"><div class="wrap"><ul>${SERVICES.map(s => `<li><a href="#${s.id}">${esc(s.short)}</a></li>`).join('')}</ul></div></nav>`;
-  const sections = SERVICES.map(s => { const d = SERVICE_DETAIL[s.id]; return `<section class="service" id="${s.id}">
-  <div class="wrap inner">
-    <div>
-      <div class="eyebrow">${esc(s.short)}</div>
-      <h2>${esc(s.name)}</h2>
-      <p>${esc(s.pitch)}</p>
-      <ul>${d.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
-      <div class="btn-row"><a class="btn btn-navy" href="#quote">Get a free quote</a><a class="btn btn-outline" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></div>
+  const subnav = `<nav class="subnav sticky" aria-label="Services"><div class="wrap"><ul>${SERVICES.map(s => `<li><a href="#${s.id}">${esc(s.short)}</a></li>`).join('')}</ul></div></nav>`;
+  
+  // Service-specific checklists based ONLY on FACTS.md
+  const SERVICE_CHECKLISTS = {
+    'security-cameras': [
+      'InVid Tech Paramont IP camera systems',
+      '4K options available',
+      'Night vision',
+      'View from your phone',
+      'Designed and installed locally',
+      'Recorder sized for your storage needs'
+    ],
+    'networking-wifi': [
+      'Business-grade access points',
+      'Business-grade routers and switches',
+      'Dead zones eliminated',
+      'Guest networks supported',
+      'Clean, documented network closets'
+    ],
+    'structured-cabling': [
+      'Cat6/Cat6A cabling',
+      'Fiber optic cabling',
+      'Labeled and tested installations',
+      'New construction projects',
+      'Retrofit projects',
+      'Serves offices, warehouses, restaurants, homes'
+    ],
+    'access-control': [
+      'Keypad entry systems',
+      'Fob-based credentials',
+      'Mobile device credentials',
+      'Video intercom systems',
+      'For offices',
+      'For multi-family buildings',
+      'For commercial doors'
+    ],
+    'ip-phones': [
+      'Auto-attendant features',
+      'Call routing capabilities',
+      'Mobile apps included',
+      'Voicemail-to-email functionality',
+      'Keep your existing number'
+    ],
+    'pos': [
+      'Restaurant POS systems',
+      'Retail POS systems',
+      'Payment terminal setup',
+      'Kitchen printer integration',
+      'Network infrastructure behind POS',
+      'Hands-on payment-processing experience'
+    ],
+    'menu-boards': [
+      'TV menu boards',
+      'Updated from your phone',
+      'Commercial displays',
+      'Clean mounting and wiring',
+      'Single screen or full wall'
+    ],
+    'ghost-kitchen': [
+      'Order tablets for delivery platforms',
+      'Kitchen printers',
+      'KDS screens (Kitchen Display Systems)',
+      'Fast, reliable Wi-Fi and wired network',
+      'Cameras for security and food safety',
+      'Phones, intercom and door access'
+    ],
+    'smart-home': [
+      'Local, private Home Assistant setup',
+      'Lighting automation',
+      'Shades',
+      'Thermostats',
+      'Smart locks',
+      'Camera integration',
+      'No required cloud fees'
+    ],
+    'it-support': [
+      'PC repair and tune-ups',
+      'Printer setup and repair',
+      'Email troubleshooting',
+      'Malware cleanup',
+      'On-site support available',
+      'Remote support available'
+    ],
+    'remote-support': [
+      'Secure RustDesk screen-share sessions',
+      'No account needed',
+      'Software fixes assistance',
+      'Printer setup help',
+      'Email support',
+      'Available to clients anywhere'
+    ],
+    'tech-support-247': [
+      'Call any hour, any day',
+      'Text any hour, any day',
+      'Emergency support available',
+      'Camera system support',
+      'Network support',
+      'Phone system support',
+      'Questions? We\'re here 24/7'
+    ],
+    'managed-services': [
+      'Remote monitoring of networks and cameras',
+      'Monthly camera health checks',
+      'Priority support options',
+      'Basic tier available',
+      'Pro tier available (most popular)',
+      'Business tier available'
+    ]
+  };
+
+  const sections = SERVICES.map(s => {
+    const checklist = SERVICE_CHECKLISTS[s.id] || [];
+    return `<section class="service" id="${s.id}">
+  <div class="wrap">
+    <div class="service-content">
+      <div class="service-icon">${icon(s.icon)}</div>
+      <div class="service-info">
+        <h2>${esc(s.name)}</h2>
+        <p>${esc(s.pitch)}</p>
+        <ul class="check-list">
+          ${checklist.map(item => `<li>${esc(item)}</li>`).join('')}
+        </ul>
+        <div class="service-actions">
+          <a href="/plan.html?service=${s.id}" class="btn btn-outline">Plan this</a>
+          <a href="tel:${SITE.phoneE164}" class="btn btn-navy">Call ${SITE.phone}</a>
+        </div>
+      </div>
     </div>
-    <aside class="cta-box"><h3>${esc(d.cta)}</h3><p>${esc(d.ctaText)}</p><a class="btn btn-primary" href="sms:${SITE.phoneE164}">Text ${SITE.phone}</a></aside>
   </div>
 </section>`; }).join('\n');
 
@@ -160,73 +225,73 @@ ${nav('services')}
 ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Services', path: '/services.html' }], h1: 'Services', intro: 'Everything low-voltage, from one local team. Every service comes with a free demo, references and a solution tailored to your space.' })}
 ${subnav}
 ${sections}
-${quoteForm({ source: 'services' })}
+  ${planner({source:'Planner - services', heading:'Get a tailored plan', id:'services-planner'})}
 </main>
 ${footer()}`;
-  return head({ title, description, path: '/services.html', extraLd: ld }) + body;
+    return head({ title, description, path: '/services.html', extraLd: ld, bodyClass: '', extraScripts: '<script src="/assets/js/planner.js" defer></script>' }) + body;
 }
 
 /* ---------------- LOCATIONS ---------------- */
 const LOC_COPY = {
-  'long-island': {
-    title: 'Security Cameras & IT Support Long Island | Suffolk & Nassau',
-    description: 'Security camera installation, IT support, Wi-Fi upgrades, cabling and POS across Suffolk and Nassau County. Free demos, 24/7 support. Call 631-871-5957.',
-    h1: 'Security Cameras, IT Support &amp; Wi-Fi on Long Island',
-    intro: 'Piets Technology Solutions is based right here in Suffolk County. From Huntington to Riverhead and across Nassau, we install Paramont camera systems, fix Wi-Fi dead zones, run clean cabling and support small businesses 24/7.',
-    para: 'Long Island homes and businesses have their own tech challenges: big split-levels with Wi-Fi that dies upstairs, waterfront properties that need weatherproof cameras, strip-mall restaurants that need POS and menu boards running through the dinner rush. We live and work here, so response is fast and pricing is local. Whether you’re a homeowner in Smithtown, a deli in Bay Shore or an office in Hauppauge, you get the same thing: a free demo, a straight quote and a clean install.',
-    faq: [
-      { q: 'How fast can you get to me on Long Island?', a: 'Same-day or next-day in most of Suffolk County and western Nassau. Emergencies (cameras down, network outage, POS not working) get priority any day of the week.' },
-      { q: 'Do you install cameras in Suffolk County homes?', a: 'Yes. Most Long Island homes need 4 to 8 InVid Tech Paramont cameras covering the driveway, front door, backyard and side yards. We’ll walk the property and show you a live demo first.' },
-      { q: 'Can you fix Wi-Fi in a large Long Island house?', a: 'That’s one of our most common jobs. We survey the house, wire access points where they belong and eliminate dead zones in the basement, upstairs bedrooms and the backyard.' },
-      { q: 'Do you support restaurants and delis?', a: 'Absolutely. POS, kitchen printers, TV menu boards, cameras, phones and Wi-Fi for staff and guests. We understand you can’t be down during a rush.' },
-    ] },
-  'nyc': {
-    title: 'Security Cameras & IT Support NYC | All Five Boroughs',
-    description: 'Security cameras, IT support, networking, cabling, POS and access control in Manhattan, Brooklyn, Queens, the Bronx & Staten Island. Free demos, 24/7.',
-    h1: 'Security Cameras, IT &amp; Networking in New York City',
-    intro: 'Piets Technology Solutions serves all five boroughs with InVid Tech Paramont camera systems, access control, business Wi-Fi, structured cabling, POS and 24/7 support for storefronts, offices, restaurants and multi-family buildings.',
-    para: 'City jobs need a crew that respects building rules, tight schedules and tighter spaces. We work with property managers and small business owners across Manhattan, Brooklyn, Queens, the Bronx and Staten Island: cameras and video intercoms for walk-ups and lobbies, access control for offices, POS and menu boards for restaurants, and networks that hold up in dense buildings full of interference. Free video-call demos make it easy to plan before we ever set foot on site.',
-    faq: [
-      { q: 'Do you install cameras in NYC apartment buildings?', a: 'Yes. Paramont cameras and NVRs for lobbies, hallways, entrances, roofs and basements, plus video intercoms and access control so residents and managers can see and control entry from a phone.' },
-      { q: 'Can you work around building management requirements?', a: 'Yes. We provide certificates of insurance, coordinate with supers and management, and schedule around building rules and quiet hours.' },
-      { q: 'Do you support NYC restaurants and ghost kitchens?', a: 'Yes. POS, kitchen printers, order tablets, menu boards, cameras and reliable Wi-Fi. We’ve set up delivery-only kitchens that need to be taking orders on day one.' },
-      { q: 'Is remote support available in NYC?', a: 'Yes. Most software, email, printer and network issues are solved remotely via RustDesk in under an hour, so you don’t wait for a truck.' },
-    ] },
-  'hudson-valley': {
-    title: 'Security Cameras & IT Support Hudson Valley | Westchester+',
-    description: 'Camera installation, Wi-Fi upgrades, cabling, smart home and IT support in Westchester, Putnam, Dutchess and Orange County. Free demos, 24/7 support.',
-    h1: 'Security Cameras, Wi-Fi &amp; IT Support in the Hudson Valley',
-    intro: 'From White Plains to Poughkeepsie and Newburgh, Piets Technology Solutions brings Paramont security cameras, whole-home Wi-Fi, structured cabling, Home Assistant smart home automation and small business IT to the Hudson Valley.',
-    para: 'Hudson Valley properties are bigger, older and more spread out: stone walls that kill Wi-Fi, long driveways that need cameras with real range, barns and detached garages that need fiber or point-to-point links. We plan for all of it. For businesses in Westchester, Putnam, Dutchess and Orange County, we deliver the same POS, phones, cabling and managed support we provide on Long Island, with free demos on a video call so planning is easy.',
-    faq: [
-      { q: 'Do you cover Westchester and Putnam County?', a: 'Yes. Westchester, Putnam, Dutchess and Orange County are all in our regular service area, with on-site visits scheduled in efficient routes to keep travel costs low.' },
-      { q: 'Can you get Wi-Fi to a detached garage or barn?', a: 'Yes. Depending on distance we run fiber, direct-burial Cat6 or a wireless point-to-point bridge, then add an access point in the outbuilding.' },
-      { q: 'Do you do smart home installs in the Hudson Valley?', a: 'Yes. Home Assistant automation for lighting, shades, thermostats, locks, cameras and gates, running locally on your own hardware with no required subscriptions.' },
-      { q: 'What about long driveways and gates?', a: 'Paramont cameras with long-range night vision and license plate capture, plus gate intercoms and access control you manage from your phone.' },
-    ] },
-  'johnstown-capital-region': {
-    title: 'Security Cameras & IT Support Johnstown NY | Capital Region',
-    description: 'Security cameras, IT support, Wi-Fi, cabling and POS in Johnstown, Gloversville, Amsterdam, Albany and Saratoga Springs. Free demos, 24/7 support.',
-    h1: 'Security Cameras &amp; IT Support in Johnstown, Gloversville, Amsterdam, Albany &amp; Saratoga',
-    intro: 'Piets Technology Solutions serves Fulton and Montgomery County and the greater Capital Region with InVid Tech Paramont camera systems, business Wi-Fi, structured cabling, POS, IP phones and 24/7 tech support.',
-    para: 'Johnstown, Gloversville and Amsterdam businesses deserve the same tier of tech as Albany and Saratoga Springs. We bring it: camera systems for shops, farms and warehouses; Wi-Fi and cabling for offices, schools and churches; POS and menu boards for restaurants; and managed support so a small team never has to worry about IT. Remote support and video-call demos mean you get fast answers even when we’re not on site.',
-    faq: [
-      { q: 'Do you really come to Johnstown and Gloversville?', a: 'Yes. Fulton and Montgomery County are a regular part of our route, along with Albany, Schenectady, Troy and Saratoga. We group visits to keep on-site costs down.' },
-      { q: 'Can you install cameras on a farm or large property?', a: 'Yes. Paramont cameras with long-range night vision, solar or wireless options for remote barns and gates, and recording you can check from anywhere.' },
-      { q: 'Do you support Capital Region small businesses monthly?', a: 'Yes. Our Basic, Pro and Business managed plans include remote monitoring, priority support and camera health checks, with on-site visits scheduled as needed.' },
-      { q: 'What if I need help right away?', a: "Call or text 631-871-5957. Most issues are fixed remotely within the hour. Questions? We're here 24/7." },
-    ] },
+    'long-island': {
+      title: 'Security Cameras & IT Support Long Island | Suffolk & Nassau',
+      description: 'Security camera installation, IT support, Wi-Fi upgrades, cabling and POS across Suffolk and Nassau County. Free demos, 24/7 support. Call 631-871-5957.',
+      h1: 'Security Cameras, IT Support &amp; Wi-Fi on Long Island',
+      intro: 'Piets Technology Solutions is based right here in Suffolk County. From Huntington to Riverhead and across Nassau, we install InVid Tech Paramont camera systems, fix Wi-Fi dead zones, run clean cabling and support small businesses 24/7.',
+      para: 'Long Island homes and businesses have their own tech challenges: big split-levels with Wi-Fi that dies upstairs, waterfront properties that need weatherproof cameras, strip-mall restaurants that need POS and menu boards running through the dinner rush. We live and work here, and you deal directly with the installer. Whether you’re a homeowner in Smithtown, a deli in Bay Shore or an office in Hauppauge, you get the same thing: a free demo, a straight quote and a clean install.',
+      faq: [
+        { q: 'Do you cover all of Long Island?', a: "Yes — Suffolk and Nassau County. Questions? We're here 24/7 at 631-871-5957." },
+        { q: 'Do you install cameras in Suffolk County homes?', a: 'Yes. A typical layout covers the driveway, front door, backyard and side yards with InVid Tech Paramont cameras. We’ll walk the property and show you a live demo first.' },
+        { q: 'Can you fix Wi-Fi in a large Long Island house?', a: 'Yes. We survey the house, wire access points where they belong and eliminate dead zones in the basement, upstairs bedrooms and the backyard.' },
+        { q: 'Do you support restaurants and delis?', a: 'Absolutely. POS, kitchen printers, TV menu boards, cameras, phones and Wi-Fi for staff and guests. We understand you can’t be down during a rush.' },
+      ] },
+    'nyc': {
+      title: 'Security Cameras & IT Support NYC | All Five Boroughs',
+      description: 'Security cameras, IT support, networking, cabling, POS and access control in Manhattan, Brooklyn, Queens, the Bronx & Staten Island. Free demos, 24/7.',
+      h1: 'Security Cameras, IT &amp; Networking in New York City',
+      intro: 'Piets Technology Solutions serves all five boroughs with InVid Tech Paramont camera systems, access control, business Wi-Fi, structured cabling, POS and 24/7 support for storefronts, offices, restaurants and multi-family buildings.',
+      para: 'City jobs need an installer who respects building rules, tight schedules and tighter spaces. We work with property managers and small business owners across Manhattan, Brooklyn, Queens, the Bronx and Staten Island: cameras and video intercoms for walk-ups and lobbies, access control for offices, POS and menu boards for restaurants, and networks that hold up in dense buildings full of interference. Free video-call demos make it easy to plan before we ever set foot on site.',
+      faq: [
+        { q: 'Do you install cameras in NYC apartment buildings?', a: 'Yes. InVid Tech Paramont cameras and recorders for lobbies, hallways, entrances, roofs and basements, plus video intercoms and access control so residents and managers can see and control entry from a phone.' },
+        { q: 'Can you work around building management requirements?', a: 'Yes. We provide certificates of insurance, coordinate with supers and management, and schedule around building rules and quiet hours.' },
+        { q: 'Do you support NYC restaurants and ghost kitchens?', a: 'Yes. POS, kitchen printers, order tablets, menu boards, cameras and reliable Wi-Fi. We set up delivery-only kitchens to take orders from day one.' },
+        { q: 'Is remote support available in NYC?', a: 'Yes. Many software, email, printer and network issues can be handled remotely with RustDesk.' },
+      ] },
+    'hudson-valley': {
+      title: 'Security Cameras & IT Support | Hudson Valley NY',
+      description: 'Camera installation, Wi-Fi upgrades, cabling, smart home and IT support in Westchester, Putnam, Dutchess and Orange County. Free demos, 24/7 support.',
+      h1: 'Security Cameras, Wi-Fi &amp; IT Support in the Hudson Valley',
+      intro: 'From White Plains to Poughkeepsie and Newburgh, Piets Technology Solutions brings InVid Tech Paramont security cameras, whole-home Wi-Fi, structured cabling, Home Assistant smart home automation and small business IT to the Hudson Valley.',
+      para: 'Hudson Valley properties are bigger, older and more spread out: stone walls that kill Wi-Fi, long driveways that need cameras with real range, barns and detached garages that need fiber or point-to-point links. We plan for all of it. For businesses in Westchester, Putnam, Dutchess and Orange County, we deliver the same POS, phones, cabling and managed support we provide on Long Island, with free demos on a video call so planning is easy.',
+      faq: [
+        { q: 'Do you cover Westchester and Putnam County?', a: 'Yes. Westchester, Putnam, Dutchess and Orange County are all in our on-site service area.' },
+        { q: 'Can you get Wi-Fi to a detached garage or barn?', a: 'Yes. Depending on distance we run fiber, direct-burial Cat6 or a wireless point-to-point bridge, then add an access point in the outbuilding.' },
+        { q: 'Do you do smart home installs in the Hudson Valley?', a: 'Yes. Home Assistant automation for lighting, shades, thermostats, locks, cameras and gates, running locally on your own hardware with no required subscriptions.' },
+        { q: 'What about long driveways and gates?', a: 'InVid Tech Paramont cameras with night vision, plus gate intercoms and access control you manage from your phone.' },
+      ] },
+    'johnstown-capital-region': {
+      title: 'Security Cameras & IT Support Johnstown NY | Capital Region',
+      description: 'Security cameras, IT support, Wi-Fi, cabling and POS in Johnstown, Gloversville, Amsterdam, Albany and Saratoga Springs. Free demos, 24/7 support.',
+      h1: 'Security Cameras &amp; IT Support in Johnstown, Gloversville, Amsterdam, Albany &amp; Saratoga',
+      intro: 'Piets Technology Solutions serves Fulton and Montgomery County and the greater Capital Region with InVid Tech Paramont camera systems, business Wi-Fi, structured cabling, POS, IP phones and 24/7 tech support.',
+      para: 'Johnstown, Gloversville and Amsterdam businesses deserve the same tier of tech as Albany and Saratoga Springs. We bring it: camera systems for shops, farms and warehouses; Wi-Fi and cabling for offices, schools and churches; POS and menu boards for restaurants; and managed support so a small team never has to worry about IT. Remote support and video-call demos mean you get fast answers even when we’re not on site.',
+      faq: [
+        { q: 'Do you really come to Johnstown and Gloversville?', a: 'Yes. Johnstown, Gloversville, Amsterdam, Albany and Saratoga are in our on-site area.' },
+        { q: 'Can you install cameras on a farm or large property?', a: 'Yes. InVid Tech Paramont cameras with night vision for barns, gates and outbuildings, and recordings you can check from your phone.' },
+        { q: 'Do you support Capital Region small businesses monthly?', a: 'Yes. Our Basic, Pro and Business managed plans include remote monitoring, priority support and camera health checks, with on-site visits scheduled as needed.' },
+        { q: 'What if I need help right away?', a: "Call or text 631-871-5957. Many issues can be handled remotely. Questions? We're here 24/7." },
+      ] },
 };
 
 function locationPage(loc) {
   const c = LOC_COPY[loc.slug];
   const path = `/locations/${loc.slug}.html`;
   const ld = [localBusinessLd({ areaServed: [...loc.counties, ...loc.towns.slice(0, 12)].map(t => t + ', NY'), path, name: `${SITE.name} — ${loc.name}`, description: c.description }),
-    ...SERVICES.slice(0, 6).map(s => ({ '@context': 'https://schema.org', '@type': 'Service', name: `${s.name} in ${loc.name}`, serviceType: s.name, url: SITE.url + path + '#' + s.id,
+    ...SERVICES.slice(0, 6).map(s => ({ '@context': 'https://schema.org', '@type': 'Service', name: `${s.name} ${loc.slug === 'long-island' ? 'on' : 'in'} ${loc.name}`, serviceType: s.name, url: SITE.url + path + '#' + s.id,
       provider: { '@type': 'LocalBusiness', name: SITE.name, telephone: SITE.phoneE164 }, areaServed: loc.counties.map(t => ({ '@type': 'Place', name: t + ', NY' })) })),
     faqLd(c.faq), breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Locations', path: '/locations/' }, { name: loc.name, path }])];
 
-  const cards = SERVICES.map(s => `<article class="card" id="${s.id}"><div class="icon" aria-hidden="true">${s.icon}</div><h3>${esc(s.name)}</h3><p>${esc(s.pitch)}</p><a class="more" href="/services.html#${s.id}">Details →</a></article>`).join('\n      ');
+  const cards = SERVICES.map(s => `<article class="card" id="${s.id}"><div class="icon" aria-hidden="true">${icon(s.icon)}</div><h3>${esc(s.name)}</h3><p>${esc(s.pitch)}</p><a class="more" href="/services.html#${s.id}">Details →</a></article>`).join('\n      ');
   const others = LOCATIONS.filter(l => l.slug !== loc.slug).map(l => `<a class="area" href="/locations/${l.slug}.html"><strong>${esc(l.name)}</strong><span>${esc(l.short)}</span></a>`).join('');
 
   const body = `${banner()}
@@ -243,7 +308,7 @@ ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Locations', path: '/
 </section>
 <section class="section section-soft" id="services">
   <div class="wrap">
-    <div class="section-head"><div class="eyebrow">Services in ${esc(loc.name)}</div><h2>What we install and support here</h2></div>
+    <div class="section-head"><div class="eyebrow">Services ${loc.slug === 'long-island' ? 'on' : 'in'} ${esc(loc.name)}</div><h2>What we install and support here</h2></div>
     <div class="grid">
       ${cards}
     </div>
@@ -256,13 +321,13 @@ ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Locations', path: '/
   </div>
 </section>
 ${faqBlock(c.faq, { heading: `${loc.name} FAQ` })}
-${quoteForm({ source: `location-${loc.slug}`, title: `Get a free quote in ${loc.name}` })}
+${quoteForm({ source: `location-${loc.slug}`, title: `Get a free quote ${loc.slug === 'long-island' ? 'on' : 'in'} ${loc.name}` })}
 <section class="section section-soft">
   <div class="wrap"><div class="section-head"><div class="eyebrow">Other areas</div><h2>Also serving</h2></div><div class="areas">${others}</div></div>
 </section>
 </main>
 ${footer()}`;
-  return head({ title: c.title, description: c.description, path, extraLd: ld }) + body;
+    return head({ title: c.title, description: c.description, path, extraLd: ld, bodyClass: '', extraScripts: '<script src="/assets/js/planner.js" defer></script>' }) + body;
 }
 
 function locationsIndex() {
@@ -273,18 +338,632 @@ function locationsIndex() {
   const body = `${banner()}
 ${nav('locations')}
 <main id="main">
-${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Locations', path }], h1: 'Service Areas', intro: 'Based in Suffolk County, on-site across New York State, and remote support anywhere. Pick your area for local details.' })}
+${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Locations', path }], h1: 'Service Areas', intro: 'Based in Suffolk County, on-site across Long Island, NYC, the Hudson Valley and the Capital Region, and remote support anywhere. Pick your area for local details.' })}
 <section class="section"><div class="wrap"><div class="areas">${LOCATIONS.map(l => `<a class="area" href="/locations/${l.slug}.html"><strong>${esc(l.name)}</strong><span>${esc(l.short)}</span></a>`).join('')}</div></div></section>
 ${quoteForm({ source: 'locations-index' })}
 </main>
 ${footer()}`;
-  return head({ title, description, path, extraLd: ld }) + body;
+   return head({ title, description, path, extraLd: ld, bodyClass: '' }) + body;
+}
+
+function planPage() {
+  const title = 'Project Planner | Piets Technology Solutions';
+  const description = 'Tell us about your project and we’ll create a tailored plan for your security, networking, or smart home needs.';
+   
+  const ld = [
+    { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description: description, url: SITE.url + '/plan.html' }
+  ];
+   
+    // Embed the planner directly in the page
+    const plannerHtml = planner({ 
+      source: 'Planner - plan page',
+      heading: 'Tell us about your project',
+      id: 'planner'
+    });
+   
+  const body = `${banner()}
+${nav('plan')}
+<main id="main">
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><strong>Project Planner</strong>
+      </nav>
+      <h1>Build Your Custom Tech Plan</h1>
+      <p>Tell us about your project and we’ll create a tailored plan for your security, networking, or smart home needs.</p>
+    </div>
+  </div>
+   
+  ${plannerHtml}
+   
+  <section class="section section-soft" id="quote">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Free quote</div>
+        <h2>Ready to talk about your project?</h2>
+        <p>Call or text <a href="tel:${SITE.phoneE164}">${SITE.phone}</a>, email <a href="mailto:${SITE.email}">${SITE.email}</a>, or <a href="/#quote">send the quote form</a>. ${esc(SITE.clientLine)}</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-navy" href="/#quote">Get a free quote</a>
+        <a class="btn btn-outline" href="/services.html">See all services</a>
+      </div>
+    </div>
+  </section>
+</main>
+${footer()}`;
+   
+    return head({ title, description, path: '/plan.html', extraLd: ld, bodyClass: '', extraScripts: '<script src="/assets/js/planner.js" defer></script>' }) + body;
+}
+
+function coveragePage() {
+  const title = 'Camera Coverage Planner | Piets Technology Solutions';
+  const description = 'Design your security camera layout with our interactive floor plan tool. Place cameras, adjust lenses, and see coverage percentages in real time.';
+   
+  const ld = [
+    { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description: description, url: SITE.url + '/coverage.html' }
+  ];
+   
+  const body = `${banner()}
+${nav('coverage')}
+<main id="main">
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><strong>Camera Coverage Planner</strong>
+      </nav>
+      <h1>Camera Coverage Planner</h1>
+      <p>Design your security camera layout with our interactive floor plan tool. Place cameras, adjust lenses, and see coverage percentages in real time.</p>
+    </div>
+  </div>
+   
+  <div class="coverage-container">
+    <div class="coverage-toolbar">
+      <div class="coverage-group">
+        <span class="coverage-group__label">1. Your space</span>
+        <div class="seg" role="group" aria-label="Space type">
+          <button type="button" class="seg__btn active" data-plan="house" aria-pressed="true">House</button>
+          <button type="button" class="seg__btn" data-plan="storefront" aria-pressed="false">Storefront / Restaurant</button>
+          <button type="button" class="seg__btn" data-plan="office" aria-pressed="false">Office</button>
+          <button type="button" class="seg__btn" data-plan="warehouse" aria-pressed="false">Warehouse</button>
+        </div>
+      </div>
+      <div class="coverage-group">
+        <span class="coverage-group__label">2. Lens</span>
+        <div class="seg" role="group" aria-label="Camera lens">
+          <button type="button" class="seg__btn active" data-lens="wide" aria-pressed="true">Wide</button>
+          <button type="button" class="seg__btn" data-lens="standard" aria-pressed="false">Standard</button>
+          <button type="button" class="seg__btn" data-lens="long" aria-pressed="false">Long</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="coverage-floorplan">
+      <svg id="cov-stage" viewBox="0 0 1000 700" role="application" aria-label="Floor plan. Tap to drop a camera."></svg>
+    </div>
+    <p class="coverage-help">Tap the plan to drop a camera. Drag a camera to move it, drag its white dot to aim it. Pick a camera, then a lens, to change it. Keyboard: Tab to a camera, arrows move, Q / E rotate, Delete removes.</p>
+
+    <div class="coverage-controls">
+      <div class="coverage-stats">
+        <div class="stat"><span class="stat-label">Cameras</span><span class="stat-value" id="camera-count" aria-live="polite">0</span></div>
+        <div class="stat"><span class="stat-label">Rough coverage</span><span class="stat-value" id="coverage-percent" aria-live="polite">0%</span></div>
+        <div class="stat"><span class="stat-label">Lens mix</span><span class="stat-value stat-value--sm" id="lens-mix" aria-live="polite">0 wide · 0 std · 0 long</span></div>
+      </div>
+      <div class="coverage-actions">
+        <button type="button" class="btn btn-outline" id="undo-btn">Undo</button>
+        <button type="button" class="btn btn-outline" id="clear-btn">Clear</button>
+        <button type="button" class="btn btn-primary" id="send-layout-btn">Send my layout to Piets</button>
+      </div>
+    </div>
+    <p class="coverage-note">This is a rough visual. We confirm exact placement on a free walkthrough or video call.</p>
+
+    <div class="coverage-form-container" id="coverage-form-container" hidden>
+      <form class="form coverage-form" data-cov-form action="/api/leads" method="post" novalidate>
+        <input type="hidden" name="source" value="Coverage Planner">
+        <input type="hidden" name="service" value="security-cameras">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
+        <h2>Send your layout to Piets</h2>
+        <div class="two">
+          <div class="field"><label for="coverage-name">Name *</label><input id="coverage-name" name="name" type="text" required autocomplete="name"></div>
+          <div class="field"><label for="coverage-phone">Phone *</label><input id="coverage-phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="coverage-email">Email</label><input id="coverage-email" name="email" type="email" autocomplete="email"></div>
+          <div class="field"><label for="coverage-town">Town / ZIP *</label><input id="coverage-town" name="town" type="text" required autocomplete="postal-code"></div>
+        </div>
+        <div class="field"><label for="coverage-message">Layout details</label><textarea id="coverage-message" name="message" rows="4"></textarea></div>
+        <button class="btn btn-navy btn-block" type="submit">Send layout</button>
+        <div class="form-msg" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+</main>
+${footer()}`;
+ 
+   return head({ title, description, path: '/coverage.html', extraLd: ld, bodyClass: '', extraScripts: '<script src="/assets/js/coverage.js" defer></script>' }) + body;
+}
+
+/* ---------------- COMMERCIAL ---------------- */
+function commercialPage() {
+  const title = 'Commercial Technology Solutions | Piets Tech Solutions';
+  const description = 'Custom technology solutions for businesses: security cameras, networking, cabling, access control, POS, and smart home systems. Free demos and tailored plans.';
+  
+  const ld = [
+    { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description: description, url: SITE.url + '/commercial.html' },
+    breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Commercial', path: '/commercial.html' }])
+  ];
+  
+  const body = `${banner()}
+${nav('commercial')}
+<main id="main">
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><strong>Commercial Solutions</strong>
+      </nav>
+      <h1>Commercial Technology Solutions</h1>
+      <p>Cameras, networking, cabling, access control, POS and phones for restaurants, offices, retail, warehouses and multi-family buildings — designed, installed and supported by one local partner.</p>
+    </div>
+  </div>
+  
+  <!-- Who it is for -->
+  <section class="section" id="who-it-is-for">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Who we serve</div>
+        <h2>Built around how your business runs</h2>
+      </div>
+      <div class="who-we-serve-grid">
+        <div class="serve-card"><h3>Restaurants &amp; ghost kitchens</h3><p>POS and payment terminals, kitchen printers, digital menu boards, cameras and Wi-Fi that hold up through the rush.</p></div>
+        <div class="serve-card"><h3>Dental &amp; medical offices</h3><p>Segmented office networks, cameras for entrances and common areas, access control and business phones.</p></div>
+        <div class="serve-card"><h3>Auto &amp; mechanic shops</h3><p>Cameras over bays and lots, Wi-Fi for the office and waiting room, and phones that ring where you are.</p></div>
+        <div class="serve-card"><h3>Convenience stores, bodegas &amp; liquor stores</h3><p>Cameras over registers, doors and aisles, POS and card terminals, and remote viewing from your phone.</p></div>
+        <div class="serve-card"><h3>Offices &amp; retail</h3><p>Structured cabling, network upgrades, access control, phone systems and IT support.</p></div>
+        <div class="serve-card"><h3>Multi-family &amp; property managers</h3><p>Video intercoms, access control, cameras for lobbies and hallways, and Wi-Fi for common areas.</p></div>
+        <div class="serve-card"><h3>Builders &amp; general contractors</h3><p>Your low-voltage partner on new builds and renovations: pre-wire, cabling, cameras and access control.</p></div>
+        <div class="serve-card"><h3>Warehouses &amp; industrial</h3><p>Camera coverage for large spaces, networking across the building and access control for secure areas.</p></div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Scope list -->
+  <section class="section section-soft" id="scope">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Commercial services</div>
+        <h2>One partner for every system</h2>
+      </div>
+      <div class="scope-grid">
+        <div class="scope-item">
+          <div class="scope-icon">${icon('CAM')}</div>
+          <h3>Security Camera Systems</h3>
+          <p>InVid Tech Paramont IP camera systems with 4K resolution, night vision, and remote viewing capabilities. Designed for indoor and outdoor commercial environments.</p>
+        </div>
+        <div class="scope-item">
+          <div class="scope-icon">${icon('WIFI')}</div>
+          <h3>Networking & Wi-Fi</h3>
+          <p>Business-grade access points, proper routing and switching, and enterprise Wi-Fi solutions that eliminate dead zones and provide seamless coverage.</p>
+        </div>
+        <div class="scope-item">
+          <div class="scope-icon">${icon('CAT6')}</div>
+          <h3>Structured Cabling</h3>
+          <p>Professional Cat6/Cat6A and fiber optic cabling installations, labeled and tested, for new construction, renovations, and retrofits.</p>
+        </div>
+        <div class="scope-item">
+          <div class="scope-icon">${icon('KEY')}</div>
+          <h3>Access Control & Intercoms</h3>
+          <p>Keypad entry systems, fob-based credentials, mobile access, and video intercoms for controlling access to commercial properties.</p>
+        </div>
+        <div class="scope-item">
+          <div class="scope-icon">${icon('POS')}</div>
+          <h3>POS & Merchant Solutions</h3>
+          <p>Restaurant and retail point-of-sale systems, payment terminals, kitchen printers, and the network infrastructure to support them.</p>
+        </div>
+        <div class="scope-item">
+          <div class="scope-icon">${icon('VOIP')}</div>
+          <h3>Business Phones (VoIP)</h3>
+          <p>Auto-attendants, call routing, mobile apps and voicemail-to-email, so customers always reach you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 5-step project flow -->
+  <section class="section" id="project-flow">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Our process</div>
+        <h2>How we work with commercial clients</h2>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Free Consultation</h3>
+            <p>We start with a free on-site or video consultation to understand your business needs, current technology, and goals for improvement.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Custom Design</h3>
+            <p>We put together a tailored plan and a written quote built around your space, budget and timeline.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Professional Installation</h3>
+            <p>We install with clean, labeled wiring and schedule the work to keep disruption to your business low.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Training & Documentation</h3>
+            <p>We walk your staff through the new systems and leave you documentation for what was installed.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h3>Ongoing Support</h3>
+            <p>Questions? We're here 24/7. Optional managed plans add remote monitoring and regular checkups.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ -->
+  ${faqBlock([
+        { q: 'Do you work with businesses outside of Long Island?', a: 'Yes. While we\'re based in Suffolk County and serve the New York metro area, we handle larger commercial projects anywhere in the US on request.' },
+        { q: 'Can you provide references from other commercial clients?', a: 'Yes. References are available on request.' },
+        { q: 'Do you offer ongoing maintenance and support?', a: "Yes. Questions? We're here 24/7, and our managed plans add remote monitoring, priority support and regular maintenance." },
+        { q: 'How long does a typical commercial installation take?', a: 'Timeline varies based on project scope. We provide detailed timelines during the consultation phase and work to minimize disruption to your business operations.' },
+        { q: 'Do you handle permits and approvals for commercial installations?', a: 'We coordinate with property managers and building owners, and we\'ll tell you up front if your project is likely to need a permit or landlord approval so nothing surprises you.' }
+      ], { heading: 'Commercial technology questions', eyebrow: 'Common questions' })}
+
+  
+   <!-- Planner -->
+   ${plannerSection(planner({source:'Planner - commercial', heading:'Plan your commercial project', id:'commercial-quote'}))}
+</main>
+${footer()}`;
+  
+    return head({ title, description, path: '/commercial.html', extraLd: ld, bodyClass: '', extraScripts: '<script src="/assets/js/planner.js" defer></script>' }) + body;
+}
+
+/* ---------------- PLANS ---------------- */
+function remotePage() {
+  const title = 'Remote Support | Piets Technology Solutions';
+  const description = 'Secure RustDesk screen-share sessions for fast IT help anywhere. We never connect without your permission.';
+  const ld = [breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Remote Support', path: '/remote-support.html' }])];
+
+  const body = `${banner()}
+${nav('remote-support')}
+<main id="main">
+<div class="page-head">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><strong>Remote Support</strong>
+    </nav>
+    <h1>Remote Support</h1>
+    <p>Get fast IT help anywhere with secure RustDesk screen-share sessions. We never connect without your explicit permission.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Simple, secure, permission-based support</h2>
+    </div>
+    <ol class="steps">
+      <li>
+        <h3>Call or text us</h3>
+        <p>Reach out at 631-871-5957 and let us know you need remote support.</p>
+      </li>
+      <li>
+        <h3>Download RustDesk</h3>
+        <p>Get it free at <a href="https://rustdesk.com/" target="_blank" rel="noopener">rustdesk.com</a>, then open it.</p>
+      </li>
+      <li>
+        <h3>Read us your RustDesk ID</h3>
+        <p>We connect only with your permission.</p>
+      </li>
+      <li>
+        <h3>We fix it together</h3>
+        <p>You watch everything we do on screen as we resolve software issues, printer problems, email setup, and more.</p>
+      </li>
+      <li>
+        <h3>Session ends when you say</h3>
+        <p>You're in control — close RustDesk anytime to end the session.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Security & privacy</div>
+      <h2>Your permission is required every time</h2>
+    </div>
+    <div class="trust">
+      <div class="wrap">
+        <ul>
+          <li>No account or installation required</li>
+          <li>One-time, secure connection codes</li>
+          <li>We never connect without your explicit permission</li>
+          <li>You see everything we do on your screen</li>
+          <li>End-to-end encrypted RustDesk connection</li>
+          <li>Session ends when you close the application</li>
+        </ul>
+      </div>
+    </div>
+    <p class="security-note"><strong>Important:</strong> Piets Technology Solutions will never initiate a remote connection without your explicit, verbal permission. If you receive an unsolicited request claiming to be from us, do not connect and call us directly at 631-871-5957 to verify.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">What we can help with</div>
+      <h2>Common remote support issues</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="support-card">
+        <h3>Software fixes</h3>
+        <p>Slow computers, application errors, email issues, Microsoft 365/Google Workspace problems.</p>
+      </div>
+      <div class="support-card">
+        <h3>Printer & peripheral setup</h3>
+        <p>Printer installation, wireless printing, scanner setup, device driver updates.</p>
+      </div>
+      <div class="support-card">
+        <h3>Network troubleshooting</h3>
+        <p>Wi-Fi connectivity issues, router configuration, network diagnostics, ISP coordination.</p>
+      </div>
+      <div class="support-card">
+        <h3>Email & communication</h3>
+        <p>Email client setup, email delivery issues, spam filtering, video conferencing problems.</p>
+      </div>
+      <div class="support-card">
+        <h3>Updates & maintenance</h3>
+        <p>Operating system updates, security patches, software upgrades, backup verification.</p>
+      </div>
+      <div class="support-card">
+        <h3>Camera system checks</h3>
+        <p>InVid Tech Paramont camera system status, recording verification, remote viewing setup, motion detection testing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+${quoteForm({source:'Remote Support - remote-support', id:'remote-support'})}
+</main>
+${footer()}`;
+
+   return head({ title, description, path: '/remote-support.html', extraLd: ld, bodyClass: '' }) + body;
+}
+
+/* ---------------- 404 ---------------- */
+function notFoundPage() {
+  const body = `${banner()}
+${nav('')}
+<main id="main">
+  <section class="page-head page-head--404">
+    <div class="wrap">
+      <div class="eyebrow">Error 404</div>
+      <h1>That page isn't here.</h1>
+      <p>The link may be old or mistyped. Try one of these, or call or text ${SITE.phone}. Questions? We're here 24/7.</p>
+      <div class="btn-row">
+        <a href="/" class="btn btn-primary btn-lg">Go to the home page</a>
+        <a href="/services" class="btn btn-ghost btn-lg">See services</a>
+        <a href="/plan" class="btn btn-ghost btn-lg">Get a quote</a>
+      </div>
+    </div>
+  </section>
+</main>
+${footer()}`;
+  return head({ title: 'Page not found | Piets Technology Solutions', description: 'This page could not be found.', path: '/404', bodyClass: '' }).replace('<head>', '<head>\n<meta name="robots" content="noindex">') + body;
+}
+
+function aboutPage() {
+  const title = 'About Us | Owner-Operated Tech Support | Piets Tech';
+  const description = 'Owner-operated and based in Suffolk County — you deal directly with the installer. Licensed & insured, free demos, references available, 24/7 support.';
+  const ld = [breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'About', path: '/about.html' }])];
+
+  const body = `${banner()}
+${nav('about')}
+<main id="main">
+<div class="page-head">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><strong>About Us</strong>
+    </nav>
+    <h1>About Piets Technology Solutions</h1>
+    <p>Owner-operated technology company providing reliable, personalized service across Long Island, New York City, the Hudson Valley and the Capital Region.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How we work</div>
+      <h2>Personalized, owner-operated service</h2>
+    </div>
+    <div class="trust">
+      <div class="wrap">
+        <ul>
+          <li>Owner-operated: you deal directly with the installer</li>
+          <li>Free demos — in person or by video call</li>
+          <li>References available on request</li>
+          <li>Licensed &amp; insured</li>
+          <li>Every quote tailored to your specific needs</li>
+          <li>24/7 support by phone or text</li>
+          <li>No required monthly cloud fees for camera systems</li>
+        </ul>
+      </div>
+    </div>
+    <p>When you work with Piets Technology Solutions, you're dealing directly with the person who quotes, installs, and supports your technology systems. No salespeople — the person who quotes your job installs it.</p>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Our service area</div>
+      <h2>Where we provide on-site support</h2>
+    </div>
+    <div class="areas-grid">
+      ${LOCATIONS.map(loc => `
+        <div class="area-card">
+          <h3>${loc.name}</h3>
+          <p>${loc.short}</p>
+        </div>
+      `).join('')}
+    </div>
+    <p class="areas-note">Larger commercial projects anywhere in the US on request • Remote support anywhere</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Get started</div>
+      <h2>Ready to talk about your project?</h2>
+    </div>
+    <p>We offer free demos to show you exactly what we can do for your home or business. See our systems in action, get a straight answer, and receive a tailored quote — all with no obligation.</p>
+    ${quoteForm({source:'About - about', id:'about'})}
+  </div>
+</section>
+</main>
+${footer()}`;
+
+   return head({ title, description, path: '/about.html', extraLd: ld, bodyClass: '' }) + body;
+}
+
+function plansPage() {
+  const title = 'Managed Services Plans | Piets Technology Solutions';
+  const description = 'Optional managed services plans for cameras and networks. Basic, Pro and Business tiers with remote monitoring and priority support. No contract required.';
+  
+  const ld = [
+    { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description: description, url: SITE.url + '/plans.html' },
+    breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Plans', path: '/plans.html' }])
+  ];
+  
+  const body = `${banner()}
+${nav('plans')}
+<main id="main">
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><strong>Managed Services Plans</strong>
+      </nav>
+      <h1>Managed Services Plans</h1>
+      <p>Keep your technology systems running smoothly with our monthly managed services plans. Choose from Basic, Pro, or Business tiers, each designed to provide proactive monitoring, priority support, and regular maintenance.</p>
+    </div>
+  </div>
+  
+  <!-- 3 tier cards -->
+  <section class="section" id="plans-tier">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Choose your plan</div>
+        <h2>Managed services tiers</h2>
+      </div>
+      <div class="plans-grid">
+        <!-- Basic Plan -->
+        <div class="plan-card">
+          <div class="plan-header">
+            <h3>Basic</h3>
+            <p class="plan-tag">Essential monitoring</p>
+          </div>
+          <div class="plan-body">
+            <ul class="plan-features">
+              <li>Remote monitoring of networks & cameras</li>
+              <li>Monthly camera health checks</li>
+              <li>Remote support during business hours</li>
+              <li>Discounted on-site rates</li>
+            </ul>
+            <div class="plan-cta">
+              <a href="/plan.html?service=managed-services" class="btn btn-outline">Ask for pricing</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Pro Plan (Most Popular) -->
+        <div class="plan-card popular">
+          <div class="plan-header">
+            <h3>Pro</h3>
+            <p class="plan-tag">Most Popular</p>
+          </div>
+          <div class="plan-body">
+            <ul class="plan-features">
+              <li>Everything in Basic</li>
+              <li>Priority response 7 days a week</li>
+              <li>Quarterly on-site checkups</li>
+              <li>Patching, backups & security updates</li>
+              <li>Vendor coordination (ISP, POS, phones)</li>
+            </ul>
+            <div class="plan-cta">
+              <a href="/plan.html?service=managed-services" class="btn btn-navy">Ask for pricing</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Business Plan -->
+        <div class="plan-card">
+          <div class="plan-header">
+            <h3>Business</h3>
+            <p class="plan-tag">Comprehensive</p>
+          </div>
+          <div class="plan-body">
+            <ul class="plan-features">
+              <li>Everything in Pro</li>
+              <li>24/7 priority support line</li>
+              <li>Monthly on-site visits</li>
+              <li>Camera, access control & phone system management</li>
+              <li>Custom SLA and reporting</li>
+            </ul>
+            <div class="plan-cta">
+              <a href="/plan.html?service=managed-services" class="btn btn-outline">Ask for pricing</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Plan FAQ -->
+  ${faqBlock([
+        { q: 'What is the difference between the plan tiers?', a: 'The Basic plan includes essential monitoring and remote support during business hours. The Pro plan adds priority response, quarterly checkups, and system maintenance. The Business plan includes 24/7 priority support, monthly on-site visits, and comprehensive system management.' },
+        { q: 'Are there long-term contracts required?', a: 'No. Plans are optional, and no contract is required to get service. Every plan is quoted to your site — ask us for the details.' },
+        { q: 'Can I customize a plan for my specific needs?', a: 'Absolutely. While we offer three standard tiers, we can tailor a managed services plan to fit your specific technology environment and business requirements.' },
+        { q: 'How do I know which plan is right for my business?', a: 'During your free consultation, we\'ll assess your current technology systems, business needs, and budget to recommend the most appropriate plan tier for your situation.' },
+        { q: 'What happens if I need support outside of covered hours?', a: "Questions? We're here 24/7 by phone or text. Pro adds priority response 7 days a week; Business adds a 24/7 priority line." }
+      ], { heading: 'Managed services FAQ', eyebrow: 'Plan questions' })}
+
+  
+  <!-- Planner -->
+  ${plannerSection(planner({source:'Planner - plans', heading:'Find the right plan in 4 quick steps', id:'plans-quote'}))}
+</main>
+${footer()}`;
+  
+   return head({ title, description, path: '/plans.html', extraLd: ld, bodyClass: '' }) + body;
 }
 
 export function buildPages(pub) {
   const out = [];
   out.push(write(pub, 'index.html', homePage()));
   out.push(write(pub, 'services.html', servicesPage()));
+  out.push(write(pub, 'plan.html', planPage()));
+  out.push(write(pub, 'coverage.html', coveragePage()));
+  out.push(write(pub, 'commercial.html', commercialPage()));
+  out.push(write(pub, 'plans.html', plansPage()));
+  out.push(write(pub, 'remote-support.html', remotePage()));
+  out.push(write(pub, 'about.html', aboutPage()));
+  out.push(write(pub, '404.html', notFoundPage()));
   out.push(write(pub, 'locations/index.html', locationsIndex()));
   for (const loc of LOCATIONS) out.push(write(pub, `locations/${loc.slug}.html`, locationPage(loc)));
   return out;

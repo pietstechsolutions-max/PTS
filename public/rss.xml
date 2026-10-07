@@ -2,33 +2,49 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>Piets Technology Solutions Blog</title>
-  <link>https://pietstechsolutions.com/blog/</link>
+  <link>https://pietstechsolutions.com/blog</link>
   <atom:link href="https://pietstechsolutions.com/rss.xml" rel="self" type="application/rss+xml"/>
   <description>Tech tips on security cameras, Wi-Fi, cabling, POS and IT for New York homes and small businesses.</description>
   <language>en-us</language>
-  <lastBuildDate>Mon, 14 Sep 2026 15:10:21 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 07 Oct 2026 00:25:27 GMT</lastBuildDate>
+  <item>
+    <title><![CDATA[Do You Need a Permit for Security Cameras in Suffolk County?]]></title>
+    <link>https://pietstechsolutions.com/blog/permit-for-security-cameras-suffolk-county</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/permit-for-security-cameras-suffolk-county</guid>
+    <pubDate>Tue, 22 Sep 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Need a permit for security cameras in Suffolk County? Usually not. Here's when you might, plus the privacy rules Long Island homeowners should know.]]></description>
+    <category>security cameras</category><category>Suffolk County</category><category>Long Island</category><category>permits</category><category>home security</category>
+  </item>
+  <item>
+    <title><![CDATA[Restaurant Wi-Fi Setup in the Hudson Valley: What Works]]></title>
+    <link>https://pietstechsolutions.com/blog/restaurant-wifi-setup-hudson-valley</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/restaurant-wifi-setup-hudson-valley</guid>
+    <pubDate>Mon, 21 Sep 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Planning a restaurant Wi-Fi setup in the Hudson Valley? Here's how to keep your POS, guest Wi-Fi, and menu boards fast and secure on one network.]]></description>
+    <category>restaurant Wi-Fi</category><category>Hudson Valley</category><category>networking</category><category>POS</category><category>small business</category>
+  </item>
   <item>
     <title><![CDATA[What a Small Business POS Setup Actually Costs (and What to Ask)]]></title>
-    <link>https://pietstechsolutions.com/blog/small-business-pos-setup-cost.html</link>
-    <guid isPermaLink="true">https://pietstechsolutions.com/blog/small-business-pos-setup-cost.html</guid>
+    <link>https://pietstechsolutions.com/blog/small-business-pos-setup-cost</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/small-business-pos-setup-cost</guid>
     <pubDate>Wed, 02 Sep 2026 12:00:00 GMT</pubDate>
     <description><![CDATA[The real line items behind a restaurant or retail POS install — hardware, processing, software, network — and the questions that keep you from overpaying.]]></description>
     <category>point of sale</category><category>restaurants</category><category>small business</category>
   </item>
   <item>
     <title><![CDATA[Wi-Fi Dead Zones: Why Your Router Isn't Enough]]></title>
-    <link>https://pietstechsolutions.com/blog/wifi-dead-zones-why-your-router-isnt-enough.html</link>
-    <guid isPermaLink="true">https://pietstechsolutions.com/blog/wifi-dead-zones-why-your-router-isnt-enough.html</guid>
+    <link>https://pietstechsolutions.com/blog/wifi-dead-zones-why-your-router-isnt-enough</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/wifi-dead-zones-why-your-router-isnt-enough</guid>
     <pubDate>Tue, 25 Aug 2026 12:00:00 GMT</pubDate>
     <description><![CDATA[Why one router can't cover a Long Island or Hudson Valley home, why mesh kits disappoint, and what a real whole-home Wi-Fi upgrade looks like.]]></description>
     <category>wi-fi</category><category>networking</category><category>home network</category>
   </item>
   <item>
     <title><![CDATA[How Many Security Cameras Does a Long Island Home Need?]]></title>
-    <link>https://pietstechsolutions.com/blog/how-many-security-cameras-long-island-home.html</link>
-    <guid isPermaLink="true">https://pietstechsolutions.com/blog/how-many-security-cameras-long-island-home.html</guid>
+    <link>https://pietstechsolutions.com/blog/how-many-security-cameras-long-island-home</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/how-many-security-cameras-long-island-home</guid>
     <pubDate>Tue, 18 Aug 2026 12:00:00 GMT</pubDate>
-    <description><![CDATA[A practical guide to camera counts for Suffolk and Nassau County homes: which spots matter, what 4K and night vision really buy you, and how to avoid overpaying.]]></description>
+    <description><![CDATA[A practical guide to camera counts for Suffolk and Nassau homes: which spots matter, what 4K and night vision buy you, and how to avoid overpaying.]]></description>
     <category>security cameras</category><category>long island</category><category>home security</category>
   </item>
 </channel>

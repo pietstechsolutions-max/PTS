@@ -94,24 +94,46 @@ export default async function handler(req, res) {
     + '<p style="margin:14px 0 0"><a href="tel:' + esc(lead.phone) + '" style="background:#01A2E8;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">Call ' + esc(lead.phone) + '</a></p>'
     + '</div>';
 
-  try {
-    const transport = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: Number(process.env.SMTP_PORT || 465),
-      secure: String(process.env.SMTP_SECURE == null ? 'true' : process.env.SMTP_SECURE) !== 'false',
-      auth: { user, pass }
-    });
-    await transport.sendMail({
-      from: '"Piets Website" <' + user + '>',
-      to: OWNER_EMAIL,
-      replyTo: lead.email || undefined,
-      subject: 'New lead: ' + lead.name + ' - ' + serviceLabel + (lead.town ? ' (' + lead.town + ')' : ''),
-      text,
-      html
-    });
-    return res.status(200).json({ ok: true });
-  } catch (e) {
-    console.error('[lead] send failed - lead NOT delivered:', e.message, JSON.stringify(lead));
-    return res.status(502).json({ ok: false, error: 'Could not send right now. Please call or text ' + PHONE + '.' });
-  }
+   try {
+     const transport = nodemailer.createTransport({
+       host: process.env.SMTP_HOST || 'smtp.gmail.com',
+       port: Number(process.env.SMTP_PORT || 465),
+       secure: String(process.env.SMTP_SECURE == null ? 'true' : process.env.SMTP_SECURE) !== 'false',
+       auth: { user, pass }
+     });
+     
+     // Determine if this is a priority lead based on message content
+     const isPriority = lead.message.trim().startsWith('[PRIORITY]');
+     const priorityPrefix = isPriority ? 'PRIORITY ' : '';
+     
+     await transport.sendMail({
+       from: '"Piets Website" <' + user + '>',
+       to: OWNER_EMAIL,
+       replyTo: lead.email || undefined,
+       subject: priorityPrefix + 'New lead: ' + lead.name + ' - ' + serviceLabel + (lead.town ? ' (' + lead.town + ')' : ''),
+       text,
+       html
+     });
+     
+     // Send auto-reply to customer if they provided a valid email
+     if (lead.email && lead.email.trim() !== '') {
+       try {
+         const firstName = lead.name.split(' ')[0] || 'there';
+         await transport.sendMail({
+           from: '"Piets Website" <' + user + '>',
+           to: lead.email,
+           subject: 'Thanks for contacting Piets Technology Solutions',
+           text: `Thanks, ${firstName} — we got your request for ${serviceLabel}. We'll reach out shortly. Questions? We're here 24/7: ${PHONE} — Piets Technology Solutions`
+         });
+       } catch (autoReplyError) {
+         // Failure of the auto-reply must never fail the request
+         console.error('[lead] auto-reply failed:', autoReplyError.message);
+       }
+     }
+     
+     return res.status(200).json({ ok: true });
+   } catch (e) {
+     console.error('[lead] send failed - lead NOT delivered:', e.message, JSON.stringify(lead));
+     return res.status(502).json({ ok: false, error: 'Could not send right now. Please call or text ' + PHONE + '.' });
+   }
 }

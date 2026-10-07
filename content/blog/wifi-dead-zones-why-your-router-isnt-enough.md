@@ -46,7 +46,7 @@ A whole-home Wi-Fi upgrade done by someone who does this for a living looks like
 
 ## What it costs, honestly
 
-It's more than a $300 mesh kit and far less than people fear. The main variables are how many access points the house needs and how hard the cable runs are — a finished basement and attic access make it easy; a slab-on-grade ranch with a finished ceiling takes more work. We quote the exact gear and labor up front, and we'll show you a demo of the difference on a video call if you want to see it before deciding.
+It costs more than an off-the-shelf mesh kit and usually far less than people fear. The main variables are how many access points the house needs and how hard the cable runs are — a finished basement and attic access make it easy; a slab-on-grade ranch with a finished ceiling takes more work. We quote the exact gear and labor up front, and we'll show you a demo of the difference on a video call if you want to see it before deciding.
 
 ## Quick self-check before you call
 

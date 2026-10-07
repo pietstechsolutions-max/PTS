@@ -1,5 +1,6 @@
 ---
 title: "What a Small Business POS Setup Actually Costs (and What to Ask)"
+seoTitle: "Small Business POS Setup Costs: What to Ask | Piets Tech"
 description: "The real line items behind a restaurant or retail POS install — hardware, processing, software, network — and the questions that keep you from overpaying."
 date: 2026-09-02
 slug: small-business-pos-setup-cost

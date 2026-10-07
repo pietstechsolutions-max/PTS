@@ -69,6 +69,6 @@ New York allows recording a conversation you're part of, but recording strangers
 
 ## Ready to get cameras up without the guesswork?
 
-We install Paramont camera systems across Suffolk County and the rest of Long Island, and we handle the cabling, mounting, and app setup in one visit. Free demos are available in person or by video call, and every system is tailored to your home, your property, and your budget.
+We install InVid Tech Paramont camera systems across Suffolk and Nassau County, and we handle the cabling, mounting and app setup. Free demos are available in person or by video call, and every system is tailored to your home, your property, and your budget.
 
 Questions? We're here 24/7 — call or text 631-871-5957.
