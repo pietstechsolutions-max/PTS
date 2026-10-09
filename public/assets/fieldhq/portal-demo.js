@@ -23,9 +23,15 @@
   var STAGES = ['New lead', 'Quote sent', 'Scheduled', 'Done'];
   var NAV = {
     client: [['home', 'home', 'Home'], ['quote', 'quote', 'Quotes', 1], ['visits', 'cal', 'Visits'], ['photos', 'photo', 'Photos'], ['bills', 'bill', 'Invoices'], ['msgs', 'chat', 'Messages']],
-    team: [['today', 'today', 'Today'], ['board', 'pipe', 'Jobs board'], ['inbox', 'chat', 'Conversations']]
+    team: [['today', 'today', 'Today'], ['board', 'pipe', 'Jobs board'], ['inbox', 'chat', 'Conversations']],
+    partner: [['phome', 'home', 'Overview'], ['pleads', 'pipe', 'My leads'], ['pdeals', 'jobs', 'Deals'], ['pres', 'photo', 'Resources'], ['ppay', 'bill', 'Payouts']]
   };
-  var role = 'client', page = 'home';
+  /* Partner (VAR / reseller) sample data — no amounts on purpose */
+  var PD = { leads: [
+      { biz: 'Sample Marina', what: 'MarinaVue + dock cameras', st: 2, when: 'Sep 30' }, { biz: 'Sample Barn', what: 'StableVue', st: 1, when: 'Oct 2' },
+      { biz: 'Sample Deli', what: 'Piet Box · 2 TVs', st: 3, when: 'Oct 6' }, { biz: 'Sample Dental', what: 'Website + Field HQ', st: 0, when: 'Oct 8' } ] };
+  var PSTAGES = ['Lead sent', 'Quote out', 'Scheduled', 'Installed'];
+  var role = (root.getAttribute('data-default-role') === 'partner') ? 'partner' : 'client', page = role === 'partner' ? 'phome' : 'home';
   var LINES = [['Paramont 4K camera (sample)', 4, 0], ['NVR recorder + drive (sample)', 1, 0], ['Install, setup & training', 1, 0]];
   function V() {
     if (role === 'client') {
@@ -40,6 +46,25 @@
       if (page === 'photos') return '<h4>Photos</h4><p class="sub">Before, during and after shots from your job.</p><div class="photos">' + ['Front door view', 'Driveway view', 'Back yard view', 'Recorder closet', 'Phone app setup', 'Cable run'].map(function (x) { return '<div class="ph">' + ic(x.indexOf('app') > -1 ? 'photo' : 'cam') + x + '<br>(sample)</div>'; }).join('') + '</div>';
       if (page === 'bills') return '<h4>Invoices</h4><p class="sub">Zelle, Venmo, Cash App, cash or check at no extra charge. Card by secure link (4% processing fee).</p><div class="list">' + row('bill', 'INV-1001 · Walkthrough', 'Free', 'ok', 'No charge') + row('bill', 'Deposit · 8-camera install', D.approved ? 'Ready after approval' : 'Appears after you approve', D.approved ? 'warn' : '', D.approved ? 'Due' : 'Not yet') + '</div>';
       if (page === 'msgs') return '<h4>Messages</h4><p class="sub">Text-style chat with Piets.</p>' + thread() + '<div class="msgbox"><label for="fhqMsg" class="sr-only">Message</label><input id="fhqMsg" maxlength="200" placeholder="Type a message"><button class="fbtn" type="button" data-act="send">Send</button></div>';
+    } else if (role === 'partner') {
+      var inst = PD.leads.filter(function (l) { return l.st === 3; }).length, open = PD.leads.filter(function (l) { return l.st === 1 || l.st === 2; }).length;
+      if (page === 'phome') return '<h4>Hi Alex</h4><p class="sub">Sample Partner Co. · your Piets partner portal</p><div class="grid">' +
+        st('Leads sent', String(PD.leads.length)) + st('Open quotes', String(open)) + st('Installed', String(inst)) + st('Next payout', 'Nov 1') + '</div>' +
+        '<div class="list">' + PD.leads.slice(0, 3).map(function (l) { return row('jobs', esc(l.biz) + ' · ' + esc(l.what), 'Sent ' + l.when, l.st === 3 ? 'ok' : (l.st === 0 ? '' : 'warn'), PSTAGES[l.st]); }).join('') + '</div>' +
+        '<div class="fhq-cta"><button class="fbtn" type="button" data-page="pleads">Submit a lead</button><button class="fbtn ghost" type="button" data-page="pres">Demo kit &amp; resources</button></div>';
+      if (page === 'pleads') return '<h4>My leads</h4><p class="sub">Send Piets a business. We quote, install, support and bill. You follow it here.</p>' +
+        '<div class="quote"><div class="hd"><b>Submit a lead</b><span class="pill dk">Takes 20 seconds</span></div><div class="sign" style="flex-wrap:wrap"><input id="fhqLeadBiz" maxlength="60" placeholder="Business name"><input id="fhqLeadWhat" maxlength="60" placeholder="What they need (Piet Box, cameras, website…)"><button class="fbtn" type="button" data-act="plead">Send to Piets</button></div></div>' +
+        '<div class="list">' + PD.leads.map(function (l) { return row('jobs', esc(l.biz) + ' · ' + esc(l.what), 'Sent ' + l.when, l.st === 3 ? 'ok' : (l.st === 0 ? '' : 'warn'), PSTAGES[l.st]); }).join('') + '</div>';
+      if (page === 'pdeals') return '<h4>Deals</h4><p class="sub">Every lead moves left to right. Piets updates it; you just watch.</p><div class="board">' + PSTAGES.map(function (sname, i) {
+        var ls = PD.leads.filter(function (l) { return l.st === i; });
+        return '<div class="col"><h5>' + sname + '<span>' + ls.length + '</span></h5>' + ls.map(function (l) { return '<div class="jc"><b>' + esc(l.biz) + '</b><span>' + esc(l.what) + '</span></div>'; }).join('') + '</div>';
+      }).join('') + '</div>';
+      if (page === 'pres') return '<h4>Resources</h4><p class="sub">Everything you need to sell Piets. Co-branded versions on request.</p><div class="list">' +
+        row('photo', 'Piet Box one-pager + TV demo', 'pietstechsolutions.com/piet-box', '', 'Open') + row('photo', 'Website demo builder', 'pietstechsolutions.com/websites — build a demo in a minute, in front of the client', '', 'Open') +
+        row('photo', 'Field HQ client portal tour', 'pietstechsolutions.com/portal', '', 'Open') + row('photo', 'Pietvue apps: MarinaVue, StableVue, PuppyVue', 'pietstechsolutions.com/apps', '', 'Open') +
+        row('photo', 'Logo pack + brand colors', 'Ask Piets · sent as a zip', '', 'Request') + '</div>';
+      if (page === 'ppay') return '<h4>Payouts</h4><p class="sub">Paid monthly for installed deals. Amounts show on your real statement.</p><div class="quote"><table>' +
+        [['October (so far)', '1 installed · 2 in progress', 'Pending'], ['September', '2 installed', 'Paid'], ['August', '1 installed', 'Paid']].map(function (r) { return '<tr><td><b>' + r[0] + '</b><br><span style="color:var(--f-mut);font-size:.85rem">' + r[1] + '</span></td><td><span class="pill ' + (r[2] === 'Paid' ? 'ok' : 'warn') + '">' + r[2] + '</span></td></tr>'; }).join('') + '</table></div>';
     } else {
       if (page === 'today') return '<h4>Today</h4><p class="sub">Piets team view · sample data</p><div class="grid">' + st('Visits today', '3') + st('Quotes waiting', String(D.jobs.filter(function (j) { return j.s === 1; }).length)) + st('New leads', String(D.jobs.filter(function (j) { return j.s === 0; }).length)) + st('Piet Boxes online', 'All') + '</div><div class="list">' +
         row('cal', '9:00 AM · Sample Home', '8-camera install · ' + (D.approved ? 'quote approved' : 'quote waiting'), D.approved ? 'ok' : 'warn', D.approved ? 'Go' : 'Waiting') + row('cal', '1:00 PM · Sample Deli', 'POS network fix', '', 'Scheduled') + row('cal', '4:00 PM · Sample Cafe', 'Wi-Fi walkthrough', '', 'Scheduled') + '</div>';
@@ -69,6 +94,11 @@
       var inp = document.getElementById('fhqSign'); var v = (inp.value || '').trim();
       if (v.length < 2) { inp.setAttribute('aria-invalid', 'true'); inp.placeholder = 'Type your name first'; inp.focus(); return; }
       D.approved = true; D.signer = v; D.jobs[1].s = 2; D.msgs.push(['them', 'Got your approval, ' + v.split(' ')[0] + '. See you Thursday at 9.', 'Piets · just now']); render();
+    }
+    if (a.getAttribute('data-act') === 'plead') {
+      var b1 = document.getElementById('fhqLeadBiz'), w1 = document.getElementById('fhqLeadWhat'); var bv = (b1.value || '').trim(), wv = (w1.value || '').trim();
+      if (bv.length < 2) { b1.setAttribute('aria-invalid', 'true'); b1.placeholder = 'Business name first'; b1.focus(); return; }
+      PD.leads.unshift({ biz: bv, what: wv || 'Ask Piets', st: 0, when: 'just now' }); render(); return;
     }
     if (a.getAttribute('data-act') === 'send') {
       var i2 = document.getElementById('fhqMsg'); var txt = (i2.value || '').trim(); if (!txt) { i2.focus(); return; }

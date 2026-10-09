@@ -269,6 +269,7 @@ export function footer() {
           <li><a href="/piet-box">The Piet Box (new)</a></li>
           <li><a href="/websites">Website demo (free)</a></li>
           <li><a href="/apps.html">Apps we built (MarinaVue, StableVue, PuppyVue, Field HQ)</a></li>
+          <li><a href="/partners.html">Partners &amp; resellers (VAR program)</a></li>
           <li><a href="/blog/">Blog</a></li>
           ${SITE.portalLive ? '<li><a href="/portal">Client login (Field HQ)</a></li>' : ''}
         </ul>

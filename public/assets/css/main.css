@@ -804,3 +804,43 @@ body::before{content:"";position:fixed;top:0;left:0;right:0;height:4px;backgroun
 /* header: 9 nav items now — keep the phone number for very wide screens only */
 @media (max-width:1600px){.header-phone{display:none}}
 @media (max-width:1700px) and (min-width:1021px){.site-nav__links a{padding:8px 9px}}
+
+/* ---------- Partners page (Oct 9 2026, 3:50 AM) ---------- */
+.card-grid--5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.card--link{text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.card--link p{flex:1}
+.card__go{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--blue-deep);margin-top:12px}
+.partner-who{margin-top:40px;padding:26px 28px;border-radius:var(--r);background:#fff;border:1px solid var(--line)}
+.partner-who .check-list{margin:12px 0 0}
+.partner-apply{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:48px;align-items:start}
+.partner-apply .check-list{margin-top:18px}
+.partner-form{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;box-shadow:var(--shadow-lg)}
+.partner-form .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.partner-form label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem;color:var(--navy)}
+.partner-form input:not([type=checkbox]),.partner-form select,.partner-form textarea{width:100%;padding:12px 14px;border:1.5px solid #c3cfdd;border-radius:12px;font:inherit;color:var(--text);background:#fff}
+.partner-form input:focus,.partner-form select:focus,.partner-form textarea:focus{outline:none;border-color:#5B2EE6;box-shadow:0 0 0 3px rgba(122,61,255,.2)}
+.partner-form__what{border:0;padding:0;margin:16px 0}
+.partner-form__what legend{font-weight:700;color:var(--navy);margin-bottom:8px}
+.partner-form__what label{display:inline-flex;flex-direction:row;align-items:center;gap:8px;margin:4px 14px 4px 0;font-weight:500}
+.partner-form .btn{margin-top:8px}
+.partner-form .form-note{font-size:.78rem;color:var(--muted);margin-top:12px}
+.demo-more__partner{margin:26px 0 0;color:#b9c9e2;font-size:.95rem}
+.demo-more__partner a{color:#7ff3ff;font-weight:700}
+@media (max-width:1020px){.card-grid--5{grid-template-columns:repeat(2,minmax(0,1fr))}.partner-apply{grid-template-columns:1fr;gap:28px}}
+@media (max-width:760px){.card-grid--5{grid-template-columns:1fr}.partner-form .form-grid{grid-template-columns:1fr}.partner-form{padding:20px}}
+
+/* ---------- Oct 9 2026, 9:30 AM: header never overlaps + hero TV rolls Piets screens ---------- */
+/* Header: on a 1920px screen "Apps" ran into the phone number (Matt, 9:19 AM). Wider header row, phone number only on very wide screens, tighter nav just above the mobile breakpoint. */
+.site-header__inner{max-width:1560px}
+.header-phone{display:none}
+@media (min-width:1800px){.header-phone{display:inline-flex}}
+@media (min-width:1800px){.site-nav__links a{padding:8px 9px}}
+@media (max-width:1300px) and (min-width:1181px){.site-nav__links a{padding:8px 8px}}
+@media (max-width:1180px) and (min-width:1021px){.site-header .brand__text{display:none}.site-nav__links a{font-size:.86rem;padding:8px 6px}.site-header__actions .btn{padding-left:12px;padding-right:12px}.site-header__actions{gap:8px}}
+/* Hero TV (top right): rolling Piets screens with photos */
+.tvslide .k{font-size:17px;color:#5FE7FF}
+.tvslide--photo{padding-right:49%}
+.tvslide--photo .t{font-size:54px}
+.tvslide--photo .s{font-size:22px}
+.tvslide .ph{position:absolute;right:46px;top:96px;width:47%;aspect-ratio:16/10;border-radius:14px;background-size:cover;background-position:left top;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 24px 50px -20px rgba(0,0,0,.8);transform:perspective(900px) rotateY(-6deg)}
+.tv__bar b span{font:600 13px var(--font-mono);letter-spacing:.22em;color:#02D7F5;margin-left:10px;vertical-align:middle}

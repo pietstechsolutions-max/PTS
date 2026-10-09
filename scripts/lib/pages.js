@@ -991,6 +991,12 @@ ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Client Login', path:
         <p style="margin-top:18px"><a class="btn btn-navy" href="${base ? login : '#tour'}">${base ? 'Team sign-in' : 'See the team view'}</a></p>
       </article>
       <article class="card">
+        <div class="eyebrow">Partners &amp; resellers</div>
+        <h3>Partner portal</h3>
+        <p>VARs, installers, agencies and referral partners: your leads, deals, resources and payouts, in Field HQ.</p>
+        <p style="margin-top:18px"><a class="btn btn-navy" href="/partners.html#tour">Partner portal</a> <a class="btn btn-outline" href="/partners.html#apply">Apply</a></p>
+      </article>
+      <article class="card">
         <div class="eyebrow">New here?</div>
         <h3>Not a client yet</h3>
         <p>Tell us about your project. Free on-site or video demo. Every quote is tailored to your place.</p>
@@ -1098,6 +1104,109 @@ ${footer()}`;
   return head({ title, description, path: '/apps.html', extraLd: ld, bodyClass: 'apps-page' }) + body;
 }
 
+/* ---------------- PARTNERS (VARs, resellers, referral partners) — no commission amounts on purpose ---------------- */
+function partnersPage() {
+  const title = 'Partner & Reseller Program | VARs, MSPs, Installers | Piets Tech';
+  const description = 'Resell the Piet Box, Piets websites, Field HQ and the Pietvue apps. Piets installs, supports and bills; you track every lead and payout in your own Field HQ partner portal. Apply in two minutes.';
+  const ld = [breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Partners', path: '/partners.html' }])];
+  const sell = [
+    ['tv', 'The Piet Box', 'Monthly recurring. Any TV becomes a menu board, promo screen and photo wall. The easiest thing to show in a store.', '/piet-box'],
+    ['browser', 'Websites', 'Build a demo in front of the client in about a minute, then Piets builds and hosts the real site.', '/websites'],
+    ['portal', 'Field HQ', 'Quotes, scheduling, jobs board, invoices and a client portal for any service business.', '/apps#fieldhq'],
+    ['camera', 'Cameras, Wi-Fi, doors', 'InVid Tech Paramont 4K systems, business Wi-Fi, access control, cabling — installed by Piets.', '/services.html'],
+    ['hub', 'Pietvue apps', 'MarinaVue, StableVue, PuppyVue — cameras plus the app that runs a marina, barn or kennel.', '/apps'],
+  ];
+  const steps = [
+    ['Apply', 'Two minutes. Tell us who you are and what you sell today.'],
+    ['Onboard', 'A short call, your demo kit, and your own partner portal in Field HQ.'],
+    ['Sell or refer', 'Show the demos, or just send Piets the business. Piets quotes, installs, supports and bills.'],
+    ['Get paid', 'Every lead moves Lead → Quote → Scheduled → Installed in your portal. Payouts monthly for installed deals.'],
+  ];
+  const who = ['IT & MSP shops', 'Low-voltage and AV installers', 'POS and merchant-services reps', 'Marketing and web agencies', 'Business consultants and brokers', 'Anyone with restaurants, marinas, barns, kennels, offices or stores in their book'];
+  const body = `${banner()}
+${nav('partners')}
+<main id="main">
+<div class="page-head">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><strong>Partners</strong></nav>
+    <div class="page-head__eyebrow">VAR · partner · reseller program</div>
+    <h1>Sell Piets. We install, support and bill. <em>You get paid.</em></h1>
+    <p>Resell the Piet Box, Piets websites, Field HQ and the Pietvue apps under your name or ours. Every lead, quote, install and payout shows up in your own partner portal — built on Field HQ, the same app Piets runs on.</p>
+    <div class="btn-row"><a class="btn btn-primary btn-lg" href="#apply">Apply to partner ${icon('arrow', 18)}</a><a class="btn btn-ghost btn-lg" href="#tour">See the partner portal</a></div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">What you can resell</div><h2>Five things that are easy to show and easy to sell</h2><p>Every one has a free live demo you can run on your phone in front of the client. Pricing is quoted per job — ask us for your partner sheet.</p></div>
+    <div class="card-grid card-grid--5">
+      ${sell.map(([ic, h, t, href]) => `<a class="card card--link" href="${href}"><span class="icon">${icon(ic, 24)}</span><h3>${h}</h3><p>${t}</p><span class="card__go">See it ${icon('arrow', 16)}</span></a>`).join('\n      ')}
+    </div>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">How it works</div><h2>Four steps. No inventory, no trucks, no support calls.</h2></div>
+    <div class="steps">
+      ${steps.map(([h, t], i) => `<div class="step"><div class="step__num">${i + 1}</div><h3>${h}</h3><p>${t}</p></div>`).join('\n      ')}
+    </div>
+    <div class="partner-who"><div class="eyebrow">Who this is for</div><ul class="check-list">${who.map(w => `<li>${w}</li>`).join('')}</ul></div>
+  </div>
+</section>
+
+<section class="section" id="tour">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Your partner portal · Field HQ · sample data</div><h2>Click around the partner portal</h2><p>Submit a sample lead, watch it move across the board, see resources and payouts. Switch to the client or team view to see what your customers and Piets see. Nothing here is saved or sent.</p></div>
+    <div class="fhq" id="fhqDemo" data-default-role="partner">
+      <div class="fhq__top"><span class="fhq__brand"><i></i>PIETS <small>FIELD HQ · PARTNER</small></span><div class="fhq__role" role="group" aria-label="View"><button type="button" data-role="partner" aria-pressed="true">Partner view</button><button type="button" data-role="client" aria-pressed="false">Client view</button><button type="button" data-role="team" aria-pressed="false">Piets team view</button></div></div>
+      <div class="fhq__body"><nav class="fhq__nav" aria-label="Portal pages"></nav><div class="fhq__main" aria-live="polite"></div></div>
+      <div class="fhq__note">Sample screens. Businesses, leads and dates are made up. Your real portal shows your own leads, statements and amounts.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-soft" id="apply">
+  <div class="wrap">
+    <div class="partner-apply">
+      <div>
+        <div class="eyebrow">Apply</div>
+        <h2>Become a Piets partner</h2>
+        <p>Two minutes. Matt reads every application himself and calls you back. Questions first? Call or text ${SITE.phone}.</p>
+        <ul class="check-list"><li>No fees, no quotas</li><li>Demo kit and co-branded materials</li><li>Your own Field HQ partner portal</li><li>Piets handles install, support and billing</li></ul>
+      </div>
+      <form class="quote-form partner-form" data-lead-form action="/api/leads" method="post" novalidate>
+        <input type="hidden" name="source" value="Partner application"><input type="hidden" name="service" value="partner"><input type="hidden" name="message" value="">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <div class="form-grid">
+          <label>Your name <input name="name" required maxlength="80" autocomplete="name"></label>
+          <label>Company <input name="company" required maxlength="80" autocomplete="organization"></label>
+          <label>Mobile <input name="phone" type="tel" required maxlength="30" autocomplete="tel"></label>
+          <label>Email <input name="email" type="email" required maxlength="120" autocomplete="email"></label>
+          <label>Territory / area <input name="town" maxlength="80" placeholder="e.g. Suffolk County, NYC, Hudson Valley"></label>
+          <label>What you do today <select name="ptype"><option>IT / MSP</option><option>Low-voltage / AV installer</option><option>POS / merchant services</option><option>Marketing / web agency</option><option>Consultant / broker</option><option>Other</option></select></label>
+        </div>
+        <fieldset class="partner-form__what"><legend>What would you resell?</legend>
+          <label><input type="checkbox" name="resell" value="Piet Box" checked> Piet Box</label>
+          <label><input type="checkbox" name="resell" value="Websites"> Websites</label>
+          <label><input type="checkbox" name="resell" value="Field HQ"> Field HQ</label>
+          <label><input type="checkbox" name="resell" value="Cameras / Wi-Fi / doors"> Cameras, Wi-Fi, doors</label>
+          <label><input type="checkbox" name="resell" value="Pietvue apps"> Pietvue apps</label>
+        </fieldset>
+        <label>Anything else <textarea name="notes" rows="3" maxlength="600" placeholder="Who are your customers? How many could use this?"></textarea></label>
+        <button class="btn btn-primary btn-lg" type="submit">Send my application ${icon('arrow', 18)}</button>
+        <p class="form-msg" aria-live="polite"></p>
+        <p class="form-note">Much of this site was prepared with AI. Matt does his best to keep it perfect — tell him about any mistake.</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+${footer()}
+<script>(function(){var f=document.querySelector('.partner-form');if(!f)return;function build(){var g=function(n){var e=f.elements[n];return e&&e.value?e.value.trim():'';};var r=[].slice.call(f.querySelectorAll('input[name="resell"]:checked')).map(function(c){return c.value;}).join(', ');f.elements.message.value='PARTNER APPLICATION — Company: '+g('company')+' | Does today: '+g('ptype')+' | Territory: '+g('town')+' | Would resell: '+(r||'-')+' | Notes: '+g('notes');}f.addEventListener('input',build);f.addEventListener('change',build);f.addEventListener('submit',build,true);build();})();</script>`;
+  return head({ title, description, path: '/partners.html', extraLd: ld, bodyClass: 'partners-page', extraScripts: '<link rel="stylesheet" href="/assets/fieldhq/portal-demo.css"><script src="/assets/fieldhq/portal-demo.js" defer></script>' }) + body;
+}
+
 export function buildPages(pub) {
   const out = [];
   out.push(write(pub, 'index.html', homePage()));
@@ -1109,6 +1218,7 @@ export function buildPages(pub) {
   out.push(write(pub, 'remote-support.html', remotePage()));
   out.push(write(pub, 'about.html', aboutPage()));
   out.push(write(pub, 'apps.html', appsPage()));
+  out.push(write(pub, 'partners.html', partnersPage()));
   out.push(write(pub, '404.html', notFoundPage()));
   if (SITE.portalLive) out.push(write(pub, 'portal.html', portalPage()));
   out.push(write(pub, 'locations/index.html', locationsIndex()));
