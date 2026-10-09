@@ -65,6 +65,7 @@ export function heroSection() {
   return `
 <section class="hero">
   <div class="hero__bg" aria-hidden="true"></div>
+  <canvas class="hero__fx" aria-hidden="true"></canvas>
   <div class="wrap hero__grid">
     <div class="hero__copy">
       <div class="pill"><span class="pill__dot"></span>${esc(SITE.clientLine)}</div>
@@ -93,10 +94,29 @@ export function heroSection() {
       </div>
     </div>
     <div class="hero__visual">
+      <div class="hero__stage">
       ${hubDiagram()}
+      <div class="phone" role="img" aria-label="Piets apps on a phone: MarinaVue, StableVue and the Piet Box">
+        <div class="phone__frame">
+          <div class="phone__island"></div>
+          <div class="phone__screen">
+            <img src="/assets/photos/app-marinavue.jpg" alt="" class="is-on" width="585" height="1266" data-cap="MarinaVue" data-sub="Staff app · marina dashboard">
+            <img src="/assets/photos/app-stablevue.jpg" alt="" width="585" height="1266" loading="lazy" data-cap="StableVue" data-sub="Today board · barn cameras & care">
+            <img src="/assets/photos/app-stablevue-owner.jpg" alt="" width="585" height="1266" loading="lazy" data-cap="StableVue owner portal" data-sub="Live stall camera on your phone">
+            <img src="/assets/photos/app-pietbox.jpg" alt="" width="585" height="1266" loading="lazy" data-cap="Piet Box" data-sub="Your TV · menus, promos, photo wall">
+            <div class="phone__cap" aria-hidden="true"></div>
+          </div>
+          <div class="phone__dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i></div>
+          <div class="phone__glare"></div>
+        </div>
+      </div>
+      <span class="hero__tag hero__tag--1"><i></i>Camera 4 · live</span>
+      <span class="hero__tag hero__tag--2"><i></i>Front door · unlocked from phone</span>
+      </div>
     </div>
   </div>
-</section>`;
+</section>
+<script src="/assets/js/hero-fx.js" defer></script>`;
 }
 
 export function worksWith() {

@@ -31,7 +31,11 @@
     lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     upload: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v4h16v-4"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
-    chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'
+    chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/>',
+    photo: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 8"/>',
+    menu: '<path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+    megaphone: '<path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M17 9a4 4 0 0 1 0 6"/>'
   };
   function icon(name, size, stroke) {
     size = size || 24;
@@ -63,8 +67,8 @@
       '<linearGradient id="' + u + 'top" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a4aa8"/><stop offset=".55" stop-color="#173478"/><stop offset="1" stop-color="#0c1f55"/></linearGradient>' +
       '<linearGradient id="' + u + 'front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14306f"/><stop offset="1" stop-color="#081b47"/></linearGradient>' +
       '<linearGradient id="' + u + 'side" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b2257"/><stop offset="1" stop-color="#050f30"/></linearGradient>' +
-      '<linearGradient id="' + u + 'mk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00FFFF"/><stop offset="1" stop-color="#01A2E8"/></linearGradient>' +
-      '<linearGradient id="' + u + 'edge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00E5FF" stop-opacity="0"/><stop offset=".25" stop-color="#00E5FF"/><stop offset=".75" stop-color="#01A2E8"/><stop offset="1" stop-color="#7A3DFF" stop-opacity="0"/></linearGradient>' +
+      '<linearGradient id="' + u + 'mk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00FFFF"/><stop offset="1" stop-color="#016FD6"/></linearGradient>' +
+      '<linearGradient id="' + u + 'edge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00E5FF" stop-opacity="0"/><stop offset=".25" stop-color="#00E5FF"/><stop offset=".75" stop-color="#01A2E8"/><stop offset="1" stop-color="#3B5BFF" stop-opacity="0"/></linearGradient>' +
       '<radialGradient id="' + u + 'shadow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>' +
       '<radialGradient id="' + u + 'glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#00E5FF" stop-opacity=".45"/><stop offset="1" stop-color="#00E5FF" stop-opacity="0"/></radialGradient>' +
       '<filter id="' + u + 'led" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
