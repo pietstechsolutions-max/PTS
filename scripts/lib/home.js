@@ -101,9 +101,9 @@ export function heroSection() {
           <div class="phone__island"></div>
           <div class="phone__screen">
             <img src="/assets/photos/app-marinavue.jpg" alt="" class="is-on" width="585" height="1266" data-cap="MarinaVue" data-sub="Staff app · marina dashboard">
-            <img src="/assets/photos/app-stablevue.jpg" alt="" width="585" height="1266" loading="lazy" data-cap="StableVue" data-sub="Today board · barn cameras & care">
-            <img src="/assets/photos/app-stablevue-owner.jpg" alt="" width="585" height="1266" loading="lazy" data-cap="StableVue owner portal" data-sub="Live stall camera on your phone">
-            <img src="/assets/photos/app-pietbox.jpg" alt="" width="585" height="1266" loading="lazy" data-cap="Piet Box" data-sub="Your TV · menus, promos, photo wall">
+            <img src="/assets/photos/app-stablevue.jpg" alt="" width="585" height="1266" data-cap="StableVue" data-sub="Today board · barn cameras & care">
+            <img src="/assets/photos/app-stablevue-owner.jpg" alt="" width="585" height="1266" data-cap="StableVue owner portal" data-sub="Live stall camera on your phone">
+            <img src="/assets/photos/app-pietbox.jpg" alt="" width="585" height="1266" data-cap="Piet Box" data-sub="Your TV · menus, promos, photo wall">
             <div class="phone__cap" aria-hidden="true"></div>
           </div>
           <div class="phone__dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i></div>
