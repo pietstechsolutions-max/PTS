@@ -1,0 +1,316 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Piets Beta Crew</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one narrow column — pitch, fee card, then the report builder that turns answers into a ready-to-send message. Piets brand (navy/cyan), single dark look by choice. */
+:root{
+  --ink:#020b1f; --ink2:#06132e; --panel:#0b1d40; --navy:#011F5D;
+  --cy:#00FFFF; --cy2:#02D7F5; --bl:#01A2E8; --bl2:#016FD6;
+  --txt:#eef5ff; --mut:#9fb3d1; --line:rgba(255,255,255,.13); --field:#071733;
+  --ok:#2fd27a; --warn:#f5b301;
+  --disp:"Bricolage Grotesque",system-ui,sans-serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--ink);color:var(--txt);font:16px/1.6 var(--body);margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-inline:18px;padding-block:0 40px}
+h1,h2,h3{font-family:var(--disp);line-height:1.08;margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800}
+h2{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800}
+h3{font-size:1.1rem}
+p{margin:0}
+em.g{font-style:normal;background:linear-gradient(100deg,var(--cy),var(--bl));-webkit-background-clip:text;background-clip:text;color:transparent}
+.eye{font:600 .7rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cy2)}
+a{color:var(--cy2)}
+:focus-visible{outline:2px solid var(--cy2);outline-offset:3px}
+
+.hdr{display:flex;align-items:center;gap:12px;padding-block:18px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt);margin-right:auto}
+.brand svg{width:28px;height:32px;flex:none}
+.brand strong{display:block;font:italic 900 1.25rem var(--disp);letter-spacing:.04em;line-height:1}
+.brand small{display:block;font:500 .5rem var(--mono);letter-spacing:.3em;text-transform:uppercase;color:#9fc4ff;margin-top:3px}
+.hdr .ph{font:600 .9rem var(--mono);color:var(--txt);user-select:all}
+
+.hero{display:grid;gap:14px;padding-block:34px 26px}
+.hero .lead{color:#c8d6ea;font-size:1.08rem;max-width:40em}
+.jump{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:99px;padding:0 22px;min-height:48px;font:700 .98rem var(--body);text-decoration:none;cursor:pointer;color:inherit}
+.go{background:linear-gradient(135deg,var(--cy2),var(--bl2));color:#001024}
+.gh{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.24)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+section{padding-block:26px;border-top:1px solid var(--line);display:grid;gap:16px}
+.how{display:grid;gap:12px}
+@media(min-width:720px){.how{grid-template-columns:repeat(3,1fr)}}
+.how div{display:grid;gap:4px}
+.how b{font:600 .7rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cy2)}
+.how p{color:var(--mut);font-size:.95rem}
+
+.fees{background:var(--panel);border:1px solid rgba(2,215,245,.35);border-radius:20px;overflow:hidden}
+.fees table{width:100%;border-collapse:collapse;font-size:.95rem}
+.fees th,.fees td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.fees th{font:600 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mut);background:var(--ink2)}
+.fees td:last-child{font:700 1rem var(--disp);white-space:nowrap;color:var(--cy)}
+.fees tr:last-child td{border-bottom:0}
+.fees small{display:block;color:var(--mut);font:400 .82rem var(--body)}
+.tblwrap{overflow-x:auto}
+.rules{display:grid;gap:6px;margin:0;padding:0 0 0 18px;color:var(--mut);font-size:.93rem}
+.perks{display:flex;flex-wrap:wrap;gap:8px}
+.perk{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:99px;padding:7px 14px;font-size:.9rem}
+
+/* report builder */
+.tabs{display:inline-flex;gap:4px;background:var(--ink2);border:1px solid var(--line);border-radius:99px;padding:4px;flex-wrap:wrap}
+.tab{border:0;background:none;color:var(--mut);border-radius:99px;min-height:42px;padding:0 16px;font:600 .92rem var(--body);cursor:pointer}
+.tab[aria-selected=true]{background:var(--cy2);color:#001024}
+form{display:grid;gap:14px}
+.row{display:grid;gap:14px}
+@media(min-width:640px){.row.two{grid-template-columns:1fr 1fr}.row.three{grid-template-columns:1fr 1fr 1fr}}
+.row>*{min-width:0}
+.fld{display:grid;gap:6px}
+label,.lbl{font:600 .66rem var(--mono);letter-spacing:.13em;text-transform:uppercase;color:#b9cbe6}
+input,select,textarea{width:100%;background:var(--field);color:var(--txt);border:1.5px solid rgba(255,255,255,.18);border-radius:12px;padding:11px 13px;min-height:48px;font:400 1rem var(--body)}
+textarea{min-height:86px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--cy2);outline:2px solid rgba(2,215,245,.25)}
+input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid rgba(255,255,255,.2);background:transparent;color:var(--txt);border-radius:99px;min-height:42px;padding:0 14px;font:500 .92rem var(--body);cursor:pointer}
+.chip[aria-pressed=true]{background:rgba(2,215,245,.16);border-color:var(--cy2);font-weight:700}
+.hint{color:var(--mut);font-size:.88rem}
+.err{color:#ffb4a8;font-size:.92rem}
+.out{display:grid;gap:12px;background:var(--panel);border:1px solid rgba(2,215,245,.4);border-radius:18px;padding:18px}
+.out pre{margin:0;white-space:pre-wrap;word-break:break-word;font:500 .82rem/1.55 var(--mono);color:#dce8fb;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:14px;max-height:340px;overflow:auto}
+.send{display:flex;flex-wrap:wrap;gap:10px}
+.addr{display:grid;gap:4px;font-size:.92rem;color:var(--mut)}
+.addr b{color:var(--txt);font:600 .95rem var(--mono);user-select:all}
+.done{color:var(--ok);font-weight:600}
+
+.ftr{border-top:1px solid var(--line);padding-block:24px 30px;display:grid;gap:8px;color:var(--mut);font-size:.88rem}
+.ftr .ai{font-size:.74rem;color:#7d90ad;max-width:70ch}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+
+<div class="wrap">
+  <header class="hdr">
+    <a class="brand" href="https://pietstechsolutions.com" aria-label="Piets Technology Solutions">
+      <svg viewBox="0 0 40 44" aria-hidden="true"><rect width="30" height="6" rx="3" fill="#00FFFF"/><rect y="9" width="36" height="6" rx="3" fill="#02D7F5"/><rect y="18" width="30" height="6" rx="3" fill="#01A2E8"/><rect y="27" width="8" height="6" rx="3" fill="#016FD6"/><rect y="36" width="8" height="6" rx="3" fill="#016FD6"/></svg>
+      <span><strong>PIETS</strong><small>Technology Solutions</small></span>
+    </a>
+    <span class="ph">631-871-5957</span>
+  </header>
+
+  <div class="hero">
+    <span class="eye">Beta Crew &middot; invite only</span>
+    <h1>Break it, tell Matt, <em class="g">get paid for the good ones.</em></h1>
+    <p class="lead">You're one of the first business owners trying Piets Site Studio and Field HQ. Use it like you would on a busy day. When something breaks, confuses you, or gives you an idea, send it here. When you send a client our way, you get a finder's fee.</p>
+    <div class="jump"><a class="btn go" href="#report">Send a report</a><a class="btn gh" href="#fees">See finder's fees</a></div>
+  </div>
+
+  <section aria-labelledby="whatH">
+    <h2 id="whatH">What to test</h2>
+    <div class="how">
+      <div><b>Site Studio</b><h3>Build your free demo site</h3><p>pietstechsolutions.com/websites. Answer the questions, upload a logo, tap every button in the demo.</p></div>
+      <div><b>Field HQ</b><h3>Run a fake job start to finish</h3><p>Lead in, quote, approve in the client portal, invoice, payment. Try it on your phone.</p></div>
+      <div><b>Anything Piets</b><h3>Website, flyers, the Piet Box</h3><p>Typos, wrong prices, a page that looks off on your phone. All of it counts.</p></div>
+    </div>
+  </section>
+
+  <section id="fees" aria-labelledby="feesH">
+    <h2 id="feesH">Finder's fees</h2>
+    <p class="hint">Send a business or homeowner who becomes a paying Piets client. Matt pays you once their deposit clears and 30 days pass.</p>
+    <div class="fees"><div class="tblwrap"><table>
+      <thead><tr><th>They buy</th><th>You get</th></tr></thead>
+      <tbody>
+        <tr><td>Website, Starter <small>$997 setup</small></td><td>$250</td></tr>
+        <tr><td>Website, Pro <small>$2,497 setup</small></td><td>$500</td></tr>
+        <tr><td>Website, Premium with full Field HQ <small>$4,997 setup</small></td><td>$1,000</td></tr>
+        <tr><td>The Whole Shabang <small>$19,997 setup</small></td><td>$2,000</td></tr>
+        <tr><td>Field HQ on its own <small>monthly plan</small></td><td>10% &times; 12 mo</td></tr>
+        <tr><td>Managed IT plan <small>Basic $299 or Pro $599 a month</small></td><td>1st month</td></tr>
+        <tr><td>Cameras, Wi-Fi, network or POS install <small>completed and paid</small></td><td>$100</td></tr>
+        <tr><td>Install job over $5,000 <small>completed and paid</small></td><td>5%</td></tr>
+      </tbody>
+    </table></div></div>
+    <div class="perks" aria-label="Beta Crew perks">
+      <span class="perk">Your first referral pays double</span>
+      <span class="perk">Founding price on Field HQ, locked for life</span>
+      <span class="perk">Your name on the thank-you list (if you want it)</span>
+    </div>
+    <ul class="rules">
+      <li>The client has to be new to Piets and name you when they sign up.</li>
+      <li>No fee on your own purchase. Homeowners can take a Piets service credit instead of cash.</li>
+      <li>Matt needs a W-9 from you before paying. You handle your own taxes on what you earn.</li>
+      <li>Reports are never paid per bug and never tied to saying nice things. Tell it straight.</li>
+      <li>If you post about Piets after getting a fee or perk, say so in the post.</li>
+    </ul>
+  </section>
+
+  <section id="report" aria-labelledby="repH">
+    <h2 id="repH">Send a report</h2>
+    <div class="tabs" role="tablist" aria-label="Report type">
+      <button class="tab" role="tab" type="button" id="tab-bug" aria-selected="true" data-kind="Bug">Something broke</button>
+      <button class="tab" role="tab" type="button" id="tab-confusing" aria-selected="false" data-kind="Confusing">Confusing</button>
+      <button class="tab" role="tab" type="button" id="tab-idea" aria-selected="false" data-kind="Idea">Idea</button>
+      <button class="tab" role="tab" type="button" id="tab-ref" aria-selected="false" data-kind="Referral">Refer a client</button>
+    </div>
+
+    <form id="rep" novalidate>
+      <div class="row two">
+        <div class="fld"><label for="r_name">Your name *</label><input id="r_name" maxlength="60" autocomplete="name" placeholder="Jamie Rivera"></div>
+        <div class="fld"><label for="r_biz">Your business</label><input id="r_biz" maxlength="80" autocomplete="organization" placeholder="Rivera Electric"></div>
+      </div>
+      <div class="row two">
+        <div class="fld"><label for="r_phone">Your phone or email *</label><input id="r_phone" maxlength="80" autocomplete="tel" placeholder="555-201-4477"></div>
+        <div class="fld"><label for="r_device">Phone or computer you used</label><input id="r_device" maxlength="60" placeholder="iPhone 15, Safari"></div>
+      </div>
+
+      <div id="grpProblem" class="row" style="gap:14px">
+        <div class="fld"><span class="lbl">Which product?</span>
+          <div class="chips" id="prodChips" role="radiogroup" aria-label="Product">
+            <button type="button" class="chip" aria-pressed="true" data-v="Site Studio">Site Studio</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Field HQ">Field HQ</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Field HQ client portal">Client portal</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Piets website">Piets website</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Other">Other</button>
+          </div></div>
+        <div class="fld"><label for="r_where">Which page or button?</label><input id="r_where" maxlength="120" placeholder="Quotes page, the Send button"></div>
+        <div class="fld" id="fDid"><label for="r_did">What did you do?</label><textarea id="r_did" maxlength="1200" placeholder="1. Made a quote  2. Tapped Send  3. ..."></textarea></div>
+        <div class="row two" id="fExp">
+          <div class="fld"><label for="r_expect">What should have happened?</label><textarea id="r_expect" maxlength="800"></textarea></div>
+          <div class="fld"><label for="r_happen">What happened instead? *</label><textarea id="r_happen" maxlength="1200"></textarea></div>
+        </div>
+        <div class="fld" id="fIdea" hidden><label for="r_idea">Your idea or suggestion *</label><textarea id="r_idea" maxlength="1500" placeholder="I'd pay more if it could..."></textarea></div>
+        <div class="row two">
+          <div class="fld"><span class="lbl">How bad is it?</span>
+            <div class="chips" id="sevChips" role="radiogroup" aria-label="How bad">
+              <button type="button" class="chip" aria-pressed="false" data-v="Blocks me">Blocks me</button>
+              <button type="button" class="chip" aria-pressed="true" data-v="Annoying">Annoying</button>
+              <button type="button" class="chip" aria-pressed="false" data-v="Small">Small</button>
+            </div></div>
+          <div class="fld"><label for="r_rate">So far, 1 to 10?</label><select id="r_rate"><option value="">Skip</option><option>10</option><option>9</option><option>8</option><option>7</option><option>6</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></div>
+        </div>
+        <div class="fld"><label for="r_pay">What would make you pay for this?</label><input id="r_pay" maxlength="300" placeholder="Optional"></div>
+      </div>
+
+      <div id="grpRef" class="row" style="gap:14px" hidden>
+        <div class="row two">
+          <div class="fld"><label for="f_cbiz">Their business or name *</label><input id="f_cbiz" maxlength="80" placeholder="Harbor Auto Body"></div>
+          <div class="fld"><label for="f_cname">Person to talk to</label><input id="f_cname" maxlength="60" placeholder="Owner, Dana"></div>
+        </div>
+        <div class="row two">
+          <div class="fld"><label for="f_cphone">Their phone or email *</label><input id="f_cphone" maxlength="80"></div>
+          <div class="fld"><label for="f_ctown">Town</label><input id="f_ctown" maxlength="60"></div>
+        </div>
+        <div class="fld"><span class="lbl">What do they need?</span>
+          <div class="chips" id="needChips" aria-label="What they need">
+            <button type="button" class="chip" aria-pressed="false" data-v="Website">Website</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Field HQ">Field HQ</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Cameras">Cameras</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Wi-Fi / network">Wi-Fi / network</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Managed IT">Managed IT</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="POS">POS</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Backup internet">Backup internet</button>
+          </div></div>
+        <div class="fld"><label for="f_note">Anything Matt should know?</label><textarea id="f_note" maxlength="800" placeholder="How you know them, best time to call, what they're unhappy with now"></textarea></div>
+        <label style="display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font:400 .93rem var(--body);color:var(--mut)"><input type="checkbox" id="f_ok" style="width:20px;min-height:20px;height:20px;margin-top:2px;flex:none"> They know I'm passing their info to Piets and said it's OK.</label>
+      </div>
+
+      <label style="display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font:400 .93rem var(--body);color:var(--mut)"><input type="checkbox" id="r_contact" checked style="width:20px;min-height:20px;height:20px;margin-top:2px;flex:none"> Matt can contact me about this.</label>
+      <p class="err" id="err" role="alert" hidden></p>
+      <div><button class="btn go" type="submit" id="makeBtn">Get my message ready</button></div>
+    </form>
+
+    <div class="out" id="out" hidden aria-live="polite">
+      <h3>Ready to send</h3>
+      <p class="hint">Copy it, then paste it into an email or text to Matt. Add a screenshot or screen recording if you have one.</p>
+      <pre id="msg"></pre>
+      <div class="send">
+        <button class="btn go" type="button" id="copyBtn">Copy message</button>
+        <a class="btn gh" id="mailBtn" href="#">Open email</a>
+        <a class="btn gh" id="smsBtn" href="#">Open text</a>
+      </div>
+      <p class="done" id="copied" hidden>Copied. Now paste it into an email or text to Matt.</p>
+      <div class="addr"><span>Send it to</span><b>pietstechsolutions@gmail.com</b><b>631-871-5957</b><span>If the email or text button doesn't open anything on your device, copy the message and send it to one of these yourself.</span></div>
+    </div>
+  </section>
+
+  <footer class="ftr">
+    <p><strong>Piets Technology Solutions Inc</strong> &middot; 631-871-5957 &middot; pietstechsolutions@gmail.com &middot; pietstechsolutions.com</p>
+    <p>Wi-Fi, Wires, Whatever &mdash; Piet Makes It Better. Questions? We're here 24/7.</p>
+    <p class="ai">Much of this page was drafted with AI. Matt does his best to keep it perfect. Spot a mistake or have a question or suggestion? Send it with the form above so he can fix it and keep it from happening again. Finder's fee terms can change; the amount confirmed by Matt in writing for your referral is what gets paid.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var kind = 'Bug';
+  var KEY = 'piets_beta_me';
+  function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  function picked(boxId) { return $$('#' + boxId + ' .chip[aria-pressed=true]').map(function (b) { return b.getAttribute('data-v'); }); }
+
+  // remember name + contact on this device only
+  try { var me = JSON.parse(localStorage.getItem(KEY) || '{}'); ['r_name', 'r_biz', 'r_phone', 'r_device'].forEach(function (k) { if (me[k]) document.getElementById(k).value = me[k]; }); } catch (e) { }
+  function remember() { try { var o = {}; ['r_name', 'r_biz', 'r_phone', 'r_device'].forEach(function (k) { o[k] = val(k); }); localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) { } }
+
+  function setKind(k) {
+    kind = k;
+    $$('.tab').forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-kind') === k ? 'true' : 'false'); });
+    var ref = k === 'Referral', idea = k === 'Idea';
+    $('#grpRef').hidden = !ref; $('#grpProblem').hidden = ref;
+    $('#fIdea').hidden = !idea; $('#fExp').hidden = idea; $('#fDid').hidden = idea;
+    $('#out').hidden = true; $('#err').hidden = true;
+  }
+  $$('.tab').forEach(function (t) { t.addEventListener('click', function () { setKind(t.getAttribute('data-kind')); }); });
+  if (/^#refer/.test(location.hash)) setKind('Referral');
+
+  function single(boxId) { $$('#' + boxId + ' .chip').forEach(function (b) { b.addEventListener('click', function () { $$('#' + boxId + ' .chip').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); }); }); }
+  single('prodChips'); single('sevChips');
+  $$('#needChips .chip').forEach(function (b) { b.addEventListener('click', function () { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); }); });
+
+  function fail(msg, id) { var e = $('#err'); e.textContent = msg; e.hidden = false; $$('[aria-invalid]').forEach(function (x) { x.removeAttribute('aria-invalid'); }); if (id) { var el = document.getElementById(id); el.setAttribute('aria-invalid', 'true'); el.focus(); } return false; }
+
+  function build() {
+    $('#err').hidden = true;
+    if (!val('r_name')) return fail('Add your name so Matt knows who sent it.', 'r_name');
+    if (!val('r_phone')) return fail('Add your phone or email so Matt can follow up.', 'r_phone');
+    var stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    var L = [], subject;
+    if (kind === 'Referral') {
+      if (!val('f_cbiz')) return fail('Add the business or person you are referring.', 'f_cbiz');
+      if (!val('f_cphone')) return fail('Add their phone or email.', 'f_cphone');
+      if (!document.getElementById('f_ok').checked) return fail('Check that they said it is OK to share their info.', 'f_ok');
+      subject = '[PIETS-REFERRAL] ' + val('f_cbiz') + ' from ' + val('r_name');
+      L.push('TYPE: Referral', 'CLIENT: ' + val('f_cbiz'), 'CONTACT PERSON: ' + (val('f_cname') || '-'), 'CLIENT PHONE/EMAIL: ' + val('f_cphone'), 'TOWN: ' + (val('f_ctown') || '-'), 'NEEDS: ' + (picked('needChips').join(', ') || '-'), 'NOTE: ' + (val('f_note') || '-'), 'CLIENT OK TO SHARE: yes');
+    } else {
+      var prod = picked('prodChips')[0] || 'Other', sev = picked('sevChips')[0] || '-';
+      if (kind === 'Idea' && !val('r_idea')) return fail('Write your idea in a sentence or two.', 'r_idea');
+      if (kind !== 'Idea' && !val('r_happen')) return fail('Tell Matt what happened.', 'r_happen');
+      subject = '[PIETS-FEEDBACK] ' + kind + ' | ' + prod + (val('r_where') ? ' | ' + val('r_where').slice(0, 50) : '');
+      L.push('TYPE: ' + kind, 'PRODUCT: ' + prod, 'WHERE: ' + (val('r_where') || '-'));
+      if (kind === 'Idea') L.push('IDEA: ' + val('r_idea'));
+      else L.push('STEPS: ' + (val('r_did') || '-'), 'EXPECTED: ' + (val('r_expect') || '-'), 'HAPPENED: ' + val('r_happen'));
+      L.push('SEVERITY: ' + sev, 'RATING: ' + (val('r_rate') || '-'), 'WOULD PAY IF: ' + (val('r_pay') || '-'));
+    }
+    L.push('---', 'FROM: ' + val('r_name') + (val('r_biz') ? ' (' + val('r_biz') + ')' : ''), 'REPLY TO: ' + val('r_phone'), 'DEVICE: ' + (val('r_device') || '-'), 'OK TO CONTACT: ' + (document.getElementById('r_contact').checked ? 'yes' : 'no'), 'SENT: ' + stamp, 'VIA: Piets Beta Crew page');
+    remember();
+    var body = L.join('\n');
+    $('#msg').textContent = 'Subject: ' + subject + '\n\n' + body;
+    $('#mailBtn').href = 'mailto:pietstechsolutions@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    $('#smsBtn').href = 'sms:+16318715957?&body=' + encodeURIComponent(subject + '\n' + body).slice(0, 1800);
+    $('#copied').hidden = true; $('#out').hidden = false;
+    $('#out').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    return true;
+  }
+  $('#rep').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+
+  $('#copyBtn').addEventListener('click', function () {
+    var t = $('#msg').textContent, ok = function () { $('#copied').hidden = false; };
+    function selectIt() { var r = document.createRange(); r.selectNodeContents($('#msg')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); $('#copied').textContent = 'Selected. Press copy on your device, then paste it into an email or text to Matt.'; $('#copied').hidden = false; }
+    try { navigator.clipboard.writeText(t).then(ok, selectIt); } catch (e) { selectIt(); }
+  });
+})();
+</script>
+</body></html>

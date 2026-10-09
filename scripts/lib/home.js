@@ -17,6 +17,8 @@ const I = {
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
   shield: '<path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  browser: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/>',
+  portal: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
 };
 export const ico = (name, size = 24) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[name] || ''}</svg>`;
 
@@ -42,7 +44,7 @@ function hubDiagram() {
       <title id="hub-title">One Piets hub connects cameras, Wi-Fi, doors, phones, POS and smart home</title>
       <defs>
         <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#00E5FF" stop-opacity=".45"/><stop offset="1" stop-color="#00E5FF" stop-opacity="0"/></radialGradient>
-        <linearGradient id="hubGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00E5FF"/><stop offset=".5" stop-color="#01A2E8"/><stop offset="1" stop-color="#3B5BFF"/></linearGradient>
+        <linearGradient id="hubGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#02D7F5"/><stop offset=".55" stop-color="#016FD6"/><stop offset="1" stop-color="#7A3DFF"/></linearGradient>
       </defs>
       <circle cx="200" cy="200" r="150" class="hub__orbit"/>
       <circle cx="200" cy="200" r="95" class="hub__orbit hub__orbit--inner"/>
@@ -381,6 +383,7 @@ export const HOME_FAQ = [
   { q: 'Do I need a monthly plan?', a: 'No. Managed plans are optional — no contract is required to get service. They are there for people who want remote monitoring, camera health checks and priority support.' },
   { q: 'How much does it cost?', a: 'Every job is quoted to your site — there are no one-size packages. Book a free demo and you get a tailored plan and quote.' },
   { q: 'What payment methods do you accept?', a: 'Zelle, Venmo, Cash App, cash or check at no extra charge; credit/debit card via a secure payment link (4% card processing fee).' },
+  { q: 'What is the Piet Box?', a: 'A small box we plug into your router. It calls Piets, so we can watch your internet, Wi-Fi, cameras and registers 24/7, help remotely with your OK and add features without a visit. Try the free demo at /piet-box.' },
   { q: 'How does remote support work?', a: 'We use RustDesk. You open RustDesk, read us your ID, and we connect with your permission.' },
 ];
 
@@ -395,6 +398,24 @@ export function finalCta() {
     <div class="btn-row btn-row--center">
       <a href="/plan.html" class="btn btn-primary btn-lg">Build my plan ${ico('arrow', 18)}</a>
       <a href="tel:${SITE.phoneE164}" class="btn btn-ghost btn-lg">Call ${SITE.phone}</a>
+    </div>
+  </div>
+</section>`;
+}
+
+/* New products band: Piet Box, Website Studio, Field HQ client portal */
+export function newFromPiets() {
+  const card = (href, icon, tag, title, text, cta) => `<a class="nfp__card" href="${href}">
+      <span class="nfp__ic">${ico(icon, 26)}</span><span class="nfp__tag">${tag}</span>
+      <h3>${title}</h3><p>${text}</p><span class="nfp__go">${cta} ${ico('arrow', 16)}</span></a>`;
+  return `
+<section class="section nfp" id="new">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">New from Piets</div><h2>Three new ways we take tech off your plate</h2><p>Try each one right here. Every demo is free and takes about a minute.</p></div>
+    <div class="nfp__grid">
+      ${card('/piet-box', 'hub', 'New · Piet Box', 'Plug it in. We handle the rest.', 'One small box that lets Piets watch your internet, Wi-Fi, cameras and registers 24/7 and fix things remotely.', 'Build your Piet Box demo')}
+      ${card('/websites', 'browser', 'Website demo builder', 'See your new website first.', 'Answer five questions, add your logo and photos, and watch a demo of your new site get built.', 'Build my free website demo')}
+      ${card(SITE.portalLive ? '/portal' : '/plan.html', 'portal', 'Field HQ client portal', 'Your job, in one place.', 'Approve quotes, see visits and photos, pay invoices and message Piets from your phone.', SITE.portalLive ? 'Take the portal tour' : 'Ask about the portal')}
     </div>
   </div>
 </section>`;

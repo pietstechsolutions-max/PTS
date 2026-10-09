@@ -2,7 +2,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { SITE, SERVICES, LOCATIONS, esc, head, banner, nav, footer, quoteForm, faqBlock, faqLd, breadcrumbLd, orgLd, localBusinessLd, pageHead, planner, icon } from './site.js';
-import { heroSection, worksWith, statsBand, servicesBlock, industryTabs, commercialBand, compareBlock, howItWorks, coverageTeaser, plansBlock, brochureGate, reviewsSlot, HOME_FAQ, finalCta, areasBlock as homeAreas, plannerSection } from './home.js';
+import { heroSection, worksWith, statsBand, servicesBlock, industryTabs, commercialBand, compareBlock, howItWorks, coverageTeaser, plansBlock, brochureGate, reviewsSlot, HOME_FAQ, finalCta, areasBlock as homeAreas, plannerSection, newFromPiets } from './home.js';
 
 const write = (pub, rel, html) => { const f = join(pub, rel); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, html); return rel; };
 
@@ -46,6 +46,7 @@ ${heroSection()}
 ${worksWith()}
 ${statsBand()}
 ${servicesBlock()}
+${newFromPiets()}
 ${industryTabs()}
 ${commercialBand()}
 ${compareBlock()}
@@ -953,6 +954,74 @@ ${footer()}`;
    return head({ title, description, path: '/plans.html', extraLd: ld, bodyClass: '' }) + body;
 }
 
+
+/* ---------------- CLIENT LOGIN (Field HQ) ---------------- */
+function portalPage() {
+  const title = 'Client Login | Field HQ Client Portal | Piets Tech';
+  const description = 'Sign in to your Piets client portal (Field HQ) to approve quotes, see visits, photos and invoices, and message Piets. Take the demo tour.';
+  const base = SITE.fieldhqUrl || '';
+  const q = SITE.fieldhqTenant ? `?t=${encodeURIComponent(SITE.fieldhqTenant)}` : '';
+  const login = base ? `${base}/login${q}` : '#tour';
+  const loginLabel = base ? 'Sign in' : 'Take the demo tour';
+  const demoQ = SITE.fieldhqTenant ? `&t=${encodeURIComponent(SITE.fieldhqTenant)}` : '';
+  const live = (SITE.fieldhqDemo && base) ? `
+    <div class="btn-row" style="margin-top:18px">
+      <a class="btn btn-primary" href="${base}/api/auth/demo?role=client${demoQ}">Live app: client view</a>
+      <a class="btn btn-navy" href="${base}/api/auth/demo?role=admin${demoQ}">Live app: owner view</a>
+    </div>` : '';
+  const ld = [breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Client Login', path: '/portal' }])];
+  const body = `${banner()}
+${nav('portal')}
+<main id="main">
+${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Client Login', path: '/portal' }], eyebrow: 'Field HQ client portal', h1: 'Client login', intro: `Your quotes, visits, photos, invoices and messages in one place. ${esc(SITE.clientLine)}` })}
+<section class="section">
+  <div class="wrap">
+    <div class="card-grid">
+      <article class="card">
+        <div class="eyebrow">Clients</div>
+        <h3>Your client portal</h3>
+        <p>Approve your quote, follow your job, see visits and photos, view invoices and message Piets.</p>
+        <p style="margin-top:18px"><a class="btn btn-primary" href="${login}">${loginLabel}</a></p>
+        <p style="margin-top:10px;font-size:.9rem;color:var(--muted)">Use the secure link we text or email you. No passwords.</p>
+      </article>
+      <article class="card">
+        <div class="eyebrow">Team</div>
+        <h3>Piets team sign-in</h3>
+        <p>Schedule, jobs board, quotes, invoices and client messages for the Piets team.</p>
+        <p style="margin-top:18px"><a class="btn btn-navy" href="${base ? login : '#tour'}">${base ? 'Team sign-in' : 'See the team view'}</a></p>
+      </article>
+      <article class="card">
+        <div class="eyebrow">New here?</div>
+        <h3>Not a client yet</h3>
+        <p>Tell us about your project. Free on-site or video demo. Every quote is tailored to your place.</p>
+        <p style="margin-top:18px"><a class="btn btn-outline" href="/plan.html">Get a free quote</a></p>
+      </article>
+    </div>${live}
+  </div>
+</section>
+<section class="section section-soft" id="tour">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Demo tour · sample data</div><h2>Click around the portal</h2><p>Switch between the client view and the Piets team view. Approve the sample quote, send a message, move a job. Nothing here is saved or sent.</p></div>
+    <div class="fhq" id="fhqDemo">
+      <div class="fhq__top"><span class="fhq__brand"><i></i>PIETS <small>FIELD HQ</small></span><div class="fhq__role" role="group" aria-label="View"><button type="button" data-role="client" aria-pressed="true">Client view</button><button type="button" data-role="team" aria-pressed="false">Team view</button></div></div>
+      <div class="fhq__body"><nav class="fhq__nav" aria-label="Portal pages"></nav><div class="fhq__main" aria-live="polite"></div></div>
+      <div class="fhq__note">Sample screens. Names, jobs and messages are made up. Real quotes show your exact gear, labor and price.</div>
+    </div>
+    <div class="fhq-cta"><a class="btn btn-primary" href="/plan.html">Get a quote and your own portal</a><a class="btn btn-outline" href="/piet-box">See the Piet Box</a></div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">For business owners</div><h2>Run your own business on Field HQ</h2><p>The same app Piets uses: quotes, scheduling, a jobs board, invoices and a client portal, set up for your trade. Ask us about it, or start with a free website demo that already sends leads into it.</p></div>
+    <div class="btn-row"><a class="btn btn-navy" href="/websites">Build a free website demo</a><a class="btn btn-outline" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></div>
+    <p style="margin-top:24px;color:var(--muted)">Paying an invoice: Zelle, Venmo, Cash App, cash or check at no extra charge. Card by secure payment link (4% processing fee). Need help signing in? Call or text ${SITE.phone}.</p>
+  </div>
+</section>
+</main>
+${footer()}`;
+  return head({ title, description, path: '/portal', extraLd: ld, bodyClass: '', extraScripts: '<link rel="stylesheet" href="/assets/fieldhq/portal-demo.css"><script src="/assets/fieldhq/portal-demo.js" defer></script>' }) + body;
+}
+
 export function buildPages(pub) {
   const out = [];
   out.push(write(pub, 'index.html', homePage()));
@@ -964,6 +1033,7 @@ export function buildPages(pub) {
   out.push(write(pub, 'remote-support.html', remotePage()));
   out.push(write(pub, 'about.html', aboutPage()));
   out.push(write(pub, '404.html', notFoundPage()));
+  if (SITE.portalLive) out.push(write(pub, 'portal.html', portalPage()));
   out.push(write(pub, 'locations/index.html', locationsIndex()));
   for (const loc of LOCATIONS) out.push(write(pub, `locations/${loc.slug}.html`, locationPage(loc)));
   return out;

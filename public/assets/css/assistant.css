@@ -400,7 +400,7 @@
 #assistant-header{background:#050A1F;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:none}
 #assistant-header h2{color:#fff;font-size:1rem;margin:0;line-height:1.25}
 #assistant-close{color:#fff;background:rgba(255,255,255,.1);border:0;border-radius:50%;width:34px;height:34px;display:grid;place-items:center;cursor:pointer}
-#assistant-button{background:linear-gradient(100deg,#00E5FF,#01A2E8 50%,#3B5BFF);box-shadow:0 10px 30px rgba(1,162,232,.45)}
+#assistant-button{background:linear-gradient(100deg,#02D7F5,#016FD6 55%,#7A3DFF);box-shadow:0 10px 30px rgba(96,86,255,.45)}
 @media (max-width:760px){#assistant-button{bottom:84px!important}#assistant-panel{border-radius:20px 20px 0 0}}
 #assistant-button{width:auto!important;height:54px;padding:0 20px 0 16px;border-radius:999px;color:#fff;font-weight:700}
 #assistant-button .logo-mark{width:22px;height:22px}

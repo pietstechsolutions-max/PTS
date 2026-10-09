@@ -17,6 +17,26 @@ const SERVICES = {
   'other': 'Other'
 };
 
+// Optional: also send every lead into Field HQ (the CRM) so it lands on the pipeline.
+// Set FIELDHQ_URL (e.g. https://app.example.com) and FIELDHQ_FORMS_KEY (same value as FORMS_KEY in Field HQ). Never blocks the email.
+async function forwardToFieldHQ(lead) {
+  const base = (process.env.FIELDHQ_URL || '').replace(/\/$/, '');
+  if (!base) return false;
+  try {
+    const t = process.env.FIELDHQ_TENANT ? '?t=' + encodeURIComponent(process.env.FIELDHQ_TENANT) : '';
+    const r = await fetch(base + '/api/forms/website' + t, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-fhq-key': process.env.FIELDHQ_FORMS_KEY || '' },
+      body: JSON.stringify(lead),
+      signal: AbortSignal.timeout(8000)
+    });
+    return r.ok;
+  } catch (e) {
+    console.error('[lead] Field HQ forward failed:', e.message);
+    return false;
+  }
+}
+
 const CTRL = new RegExp('[\\u0000-\\u001f\\u007f]', 'g');
 
 function clean(v, max = 2000) {
@@ -67,9 +87,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: 'Name and phone are required.' });
   }
 
+  const inFieldHQ = await forwardToFieldHQ(lead);
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
   if (!user || !pass) {
+    if (inFieldHQ) return res.status(200).json({ ok: true });
     console.error('[lead] SMTP not configured - lead NOT delivered:', JSON.stringify(lead));
     return res.status(503).json({ ok: false, error: 'Form is not connected yet. Please call or text ' + PHONE + '.' });
   }
@@ -133,6 +155,7 @@ export default async function handler(req, res) {
      
      return res.status(200).json({ ok: true });
    } catch (e) {
+     if (inFieldHQ) return res.status(200).json({ ok: true });
      console.error('[lead] send failed - lead NOT delivered:', e.message, JSON.stringify(lead));
      return res.status(502).json({ ok: false, error: 'Could not send right now. Please call or text ' + PHONE + '.' });
    }

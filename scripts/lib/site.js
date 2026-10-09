@@ -16,6 +16,10 @@ export function versionAssets(html) {
 }
 export const SITE = {
   portalLive: process.env.PORTAL_LIVE === '1',
+  // Field HQ (client portal + team app). Set FIELDHQ_URL once Field HQ is hosted. FIELDHQ_DEMO=1 shows one-click demo buttons (local demo only).
+  fieldhqUrl: (process.env.FIELDHQ_URL || '').replace(/\/$/, ''),
+  fieldhqDemo: process.env.FIELDHQ_DEMO === '1',
+  fieldhqTenant: process.env.FIELDHQ_TENANT || '',
   name: 'Piets Technology Solutions',
   legalName: 'Piets Technology Solutions Inc',
   url: 'https://pietstechsolutions.com',
@@ -124,10 +128,10 @@ ${extraScripts}
 }
 
 export function banner() {
-  const msg = `<span>Free on-site or video demo</span><i></i><span>No required cloud fees</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>Questions? We're here 24/7</span><i></i>`;
+  const msg = `<span>New: the Piet Box &mdash; plug it in, we handle the rest</span><i></i><span>Free on-site or video demo</span><i></i><span>No required cloud fees</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>Questions? We're here 24/7</span><i></i>`;
   return `<div class="announcement" data-announcement>
   <div class="announcement__track" aria-hidden="true"><div class="announcement__run">${msg}${msg}</div><div class="announcement__run">${msg}${msg}</div></div>
-  <p class="sr-only">Free on-site or video demo. No required cloud fees. InVid Tech Paramont authorized installer. Questions? We're here 24/7.</p>
+  <p class="sr-only">New: the Piet Box. Free on-site or video demo. No required cloud fees. InVid Tech Paramont authorized installer. Questions? We're here 24/7.</p>
   <button class="announcement__close" type="button" data-close-announcement aria-label="Close announcement"><svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
 </div>`;
 }
@@ -145,14 +149,16 @@ export function nav(current = '') {
         ${item('/plans.html', 'Plans', 'plans')}
         ${item('/locations/', 'Locations', 'locations')}
         ${item('/blog/', 'Blog', 'blog')}
-        ${SITE.portalLive ? item('/portal', 'Client Portal', 'portal') : ''}
+        ${item('/piet-box', 'Piet Box', 'piet-box')}
+        ${item('/websites', 'Websites', 'websites')}
+        ${SITE.portalLive ? `<li class="site-nav__mobile-only"><a href="/portal"${current === 'portal' ? ' aria-current="page"' : ''}>Client login</a></li>` : ''}
         <li class="site-nav__mobile-only"><a href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></li>
         <li class="site-nav__mobile-only"><a href="/plan.html">Get a quote</a></li>
       </ul>
     </nav>
     <div class="site-header__actions">
       <a class="header-phone" href="tel:${SITE.phoneE164}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>${SITE.phone}</a>
-      <a class="btn btn-ghost btn-sm" href="#assistant" data-open-assistant>Talk to Piets</a>
+      ${SITE.portalLive ? '<a class="btn btn-ghost btn-sm header-login" href="/portal">Client login</a>' : '<a class="btn btn-ghost btn-sm" href="#assistant" data-open-assistant>Talk to Piets</a>'}
       <a class="btn btn-primary btn-sm" href="/plan.html">Get a quote</a>
     </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
@@ -259,8 +265,10 @@ export function footer() {
           <li><a href="/plans.html">Managed plans</a></li>
           <li><a href="/coverage.html">Coverage Planner</a></li>
           <li><a href="/remote-support.html">Remote support</a></li>
+          <li><a href="/piet-box">The Piet Box (new)</a></li>
+          <li><a href="/websites">Website demo (free)</a></li>
           <li><a href="/blog/">Blog</a></li>
-          ${SITE.portalLive ? '<li><a href="/portal">Client Portal</a></li>' : ''}
+          ${SITE.portalLive ? '<li><a href="/portal">Client login (Field HQ)</a></li>' : ''}
         </ul>
         <h4>Service areas</h4><ul>
           ${LOCATIONS.map(l => `<li><a href="/locations/${l.slug}.html">${esc(l.name)}</a></li>`).join('\n          ')}

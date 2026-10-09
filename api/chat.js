@@ -43,6 +43,11 @@ const FACTS = `
 - Pro (most popular): everything in Basic; priority response 7 days a week; quarterly on-site checkup; patching, backups & security updates; vendor coordination (ISP, POS, phones).
 - Business: everything in Pro; 24/7 priority line; monthly on-site visit; camera, access control & phone system management; custom SLA and reporting.
 
+## New products (Oct 2026)
+- The Piet Box (/piet-box): a small managed box that plugs into the client's router. It calls out to the Piets Hub (nothing opened on the router), so Piets can watch internet, Wi-Fi, cameras, recorder, POS and printers 24/7, help remotely with the client's OK, and push new features. Options: backup internet, camera link-up, smart home hub (Home Assistant), TV screen mode (welcome screens / menu boards). Business phones: coming soon. No prices — "ask us, every setup is tailored". Free demo builder on the page.
+- Website demo builder (/websites): answer a few questions, upload a logo and photos, see a demo of a new website before paying.
+- Client login (/portal): Field HQ client portal — approve quotes, see visits, photos, invoices, message Piets. Demo tour on the page.
+
 ## Who we serve (industries)
 Restaurants & ghost kitchens (biggest segment), dental & medical offices, auto/mechanic shops, convenience stores / bodegas / liquor stores, offices & retail, multi-family & property managers, builders / general contractors (low-voltage partner on new builds and renovations), and homes.
 

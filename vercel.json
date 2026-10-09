@@ -6,6 +6,10 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "framework": null,
+  "functions": {
+    "api/site-demo.js": { "maxDuration": 30 },
+    "api/site-intake.js": { "maxDuration": 30 }
+  },
   "headers": [
     {
       "source": "/(.*)",
