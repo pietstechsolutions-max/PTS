@@ -721,3 +721,7 @@ body::before{content:"";position:fixed;top:0;left:0;right:0;height:4px;backgroun
 .app-block__live{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:#16A765;font-weight:600}
 .app-block__live i{width:8px;height:8px;border-radius:50%;background:#16A765;box-shadow:0 0 0 0 rgba(22,167,101,.6);animation:ping 2s infinite}
 @media (max-width:1020px){.app-block__inner{grid-template-columns:1fr;gap:32px}.app-block--flip .app-block__media{order:0}.app-block{padding:56px 0}}
+
+/* header: 9 nav items now — keep the phone number for very wide screens only */
+@media (max-width:1600px){.header-phone{display:none}}
+@media (max-width:1700px) and (min-width:1021px){.site-nav__links a{padding:8px 9px}}
