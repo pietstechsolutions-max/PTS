@@ -1,8 +1,40 @@
-/* Piets hero: cyan/purple particle network behind the hero. Piets Technology Solutions Inc · 631-871-5957.
-   Light on purpose: ~25 fps, pauses when the hero is off screen or the tab is hidden, off under prefers-reduced-motion. */
+/* Piets hero: live screens (scaled, clocks, TV slides, timers) + cyan/purple particle network.
+   Piets Technology Solutions Inc · 631-871-5957. Light on purpose: ~25 fps, pauses off screen / hidden tab, static under prefers-reduced-motion. */
 (function(){
   "use strict";
   var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* 1. scale each "native size" screen to its frame */
+  var scrs = [].slice.call(document.querySelectorAll(".scr[data-w]"));
+  function fit(){
+    scrs.forEach(function(s){
+      var w = parseFloat(s.getAttribute("data-w")), h = parseFloat(s.getAttribute("data-h")), p = s.parentElement;
+      var k = Math.min(p.clientWidth / w, p.clientHeight / h);
+      s.style.transform = "scale(" + k + ")";
+    });
+  }
+  fit(); window.addEventListener("resize", fit, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  setTimeout(fit, 600);
+  /* 2. clocks + timers */
+  function pad(n){ return (n < 10 ? "0" : "") + n; }
+  var clocks = [].slice.call(document.querySelectorAll(".js-clock")), shorts = [].slice.call(document.querySelectorAll(".js-clock-short")), timers = [].slice.call(document.querySelectorAll(".js-timer")), prints = [].slice.call(document.querySelectorAll(".js-print"));
+  var t0 = 4 * 60 + 12, tick = 0;
+  function clock(){
+    var d = new Date(), hh = d.getHours(), s = pad(hh) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+    clocks.forEach(function(c){ c.textContent = s; });
+    var h12 = hh % 12 || 12; shorts.forEach(function(c){ c.textContent = h12 + ":" + pad(d.getMinutes()); });
+    t0++; timers.forEach(function(c){ c.textContent = pad(Math.floor(t0 / 3600)) + ":" + pad(Math.floor(t0 / 60) % 60) + ":" + pad(t0 % 60); });
+    tick++; prints.forEach(function(c){ var ph = Math.floor(tick / 5) % 4; c.textContent = ["Printing", "Printing", "Done", "Online"][ph]; c.className = "st" + (ph < 2 ? " busy" : ""); });
+  }
+  if (!rm) { clock(); setInterval(clock, 1000); }
+  /* 3. TV slides */
+  var slides = [].slice.call(document.querySelectorAll(".tvslide")), dots = [].slice.call(document.querySelectorAll(".tv__dots i")), si = 0;
+  if (slides.length > 1 && !rm) setInterval(function(){
+    slides[si].classList.remove("is-on"); if (dots[si]) dots[si].classList.remove("on");
+    si = (si + 1) % slides.length;
+    slides[si].classList.add("is-on"); if (dots[si]) dots[si].classList.add("on");
+  }, 4500);
+  /* 4. particles */
   var c = document.querySelector(".hero__fx");
   if (!c || rm || !c.getContext) return;
   var ctx = c.getContext("2d"), hero = c.parentElement, W = 0, H = 0, pts = [], N = 70;

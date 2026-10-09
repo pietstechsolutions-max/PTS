@@ -58,6 +58,7 @@
     if (s.type === 'menu') return '<div class="ts menu"><div class="k">' + esc(d.name) + '</div><div class="t s">' + esc(s.t) + '</div><ul class="' + (s.items.length > 6 ? 'two' : '') + '">' + s.items.map(function (r) { return '<li><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></li>'; }).join('') + '</ul></div>';
     if (s.type === 'qr') return '<div class="ts split"><div><div class="k">' + esc(s.k) + '</div><div class="t s">' + esc(s.t) + '</div><div class="x">' + esc(s.x) + '</div>' + (s.pics && this.photos.length ? '<div class="pics">' + this.photos.slice(0, 4).map(function (p) { return '<span style="background-image:url(' + p.img + ')"></span>'; }).join('') + '</div>' : '') + '</div><div class="qrb">' + qrSvg(QR_URL) + 'SCAN ME</div></div>';
     if (s.type === 'photo') return '<div class="ts photo"><div class="ph" style="background-image:url(' + s.img + ')"></div><div style="display:grid;align-content:center"><span class="badge">ON THE WALL</span><div class="t s">' + esc(s.t) + '</div><div class="x">' + esc(s.x) + '</div></div></div>';
+    if (s.type === 'show') return '<div class="ts photo show"><div class="ph" style="background-image:url(' + s.img + ');aspect-ratio:16/10"></div><div style="display:grid;align-content:center"><span class="badge">' + esc(s.k || 'BY PIETS') + '</span><div class="t s">' + esc(s.t) + '</div><div class="x">' + esc(s.x) + '</div></div></div>';
     if (s.type === 'ad') return '<div class="ts split"><div><div class="k">Local business</div><div class="t s">' + esc(s.t) + '</div><div class="x">' + esc(s.x) + '</div></div><div class="adart" style="background:' + (s.color || 'var(--grad)') + '">' + esc(s.t.split(' ')[0]) + '</div></div>';
     return '<div class="ts promo" style="' + (s.color ? 'background:radial-gradient(70cqw 50cqw at 75% 30%,' + s.color + ',#050A1F 75%)' : '') + '"><div class="k">' + esc(s.k || '') + '</div><div class="t">' + esc(s.t) + '</div><div class="x">' + esc(s.x || '') + '</div></div>';
   };
@@ -89,8 +90,17 @@
     $('pbFeats').innerHTML = FEATS.map(function (f) { return '<div class="feat"><span class="ic">' + A.icon(f[0], 20, 1.8) + '</span><div><b>' + f[1] + '</b><span>' + f[2] + '</span></div></div>'; }).join('');
     $('pbHeroBox').innerHTML = A.box({ uid: 'hero', glow: false });
     SAMPLES = [['Happy Birthday!', '#ff5f8f', '#7b2ff7', 'Sam', 'Happy 30th Sam!'], ['Game Night', '#0ea5e9', '#1e3a8a', 'The Crew', 'Tuesday regulars!'], ['Team Lunch', '#f59e0b', '#b45309', 'Office Gang', 'Best heroes on the block']].map(function (s) { return { img: sampleImg(s[0], s[1], s[2]), name: s[3], text: s[4] }; });
-    var hero = new TV($('heroTv'), { data: function () { var t = TYPES[0]; return { name: 'Main Street Deli', tag: 'Fresh every morning', promo: t.promo, items: items(t.menu), shows: ['welcome', 'menu', 'qr-photo', 'promo', 'qr-ad'] }; } });
-    hero.photos = [SAMPLES[0]]; hero.ads = [{ name: 'Joe’s Pizza', text: '2 blocks away · Grandma slice $4.50', color: 'linear-gradient(135deg,#ffb020,#ff5d5d)' }];
+    var hero = new TV($('heroTv'), { data: function () { return { name: 'Piets Technology Solutions', tag: '', promo: '', items: [], shows: [] }; } });
+    /* The hero TV rolls through Piets' own business — the Piet Box, websites, Field HQ, the Pietvue apps, cameras — the way a client's TV would roll through theirs. */
+    hero.rot = function () { return [
+      { type: 'promo', k: 'The Piet Box', t: 'Your TV, working for you', x: 'Menu boards · promos · photo wall · ads local businesses pay for', sec: 6 },
+      { type: 'show', k: 'THE PIET BOX', t: 'Plug it in. Scan. Piets runs it.', x: 'One small box turns any TV into a screen that sells. No router changes.', img: '/assets/photos/apps/piet-box.jpg', sec: 7 },
+      { type: 'show', k: 'WEBSITES BY PIETS', t: 'See your new website before you pay a dime', x: 'Answer five questions and watch a demo of your site get built — pietstechsolutions.com/websites', img: '/assets/photos/apps/site-studio.jpg', sec: 7 },
+      { type: 'show', k: 'FIELD HQ', t: 'Your job, in one place', x: 'Approve quotes, see visits and photos, pay invoices and message Piets from your phone.', img: '/assets/photos/apps/fieldhq-portal.jpg', sec: 7 },
+      { type: 'show', k: 'PIETVUE APPS', t: 'MarinaVue · StableVue · PuppyVue', x: 'Cameras, Wi-Fi and the app that runs the place — for marinas, barns and kennels.', img: '/assets/photos/apps/marinavue.jpg', sec: 7 },
+      { type: 'promo', k: 'Cameras', t: '4K cameras. No cloud fees.', x: 'InVid Tech Paramont systems, installed and supported by Piets · 631-871-5957', sec: 6, color: '#1B0B55' },
+      { type: 'qr', k: 'Advertise here', t: 'Your business on this screen', x: 'Local businesses: scan to ask about an ad.', sec: 7 }
+    ]; };
     hero.show(0);
   }
 

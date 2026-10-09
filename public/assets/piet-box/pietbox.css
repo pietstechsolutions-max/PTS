@@ -259,3 +259,5 @@ h1 em,h2 em{font-style:normal;background:var(--grad);-webkit-background-clip:tex
 .final{background:radial-gradient(700px 360px at 50% 0,rgba(122,61,255,.32),transparent 70%),linear-gradient(180deg,var(--ink),#1B0B55)}
 .strip{background:linear-gradient(90deg,#06132e,#140c3a)}
 body::before{content:"";position:fixed;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#02D7F5,#016FD6 55%,#7A3DFF);z-index:2147483000;pointer-events:none}
+.ts.show .ph{width:46cqw;aspect-ratio:16/10;border-color:rgba(167,139,250,.7);box-shadow:0 2cqw 5cqw rgba(0,0,0,.6),0 0 4cqw rgba(122,61,255,.35)}
+.ts.show .badge{background:rgba(122,61,255,.18);color:#E9DDFF;border-color:rgba(167,139,250,.6)}
