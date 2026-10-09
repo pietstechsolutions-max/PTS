@@ -131,6 +131,7 @@ const today = new Date().toISOString().slice(0, 10);
       { loc: '/about.html', priority: '0.8', changefreq: 'monthly' },
       { loc: '/websites', priority: '0.8', changefreq: 'monthly' },
       { loc: '/piet-box', priority: '0.8', changefreq: 'monthly' },
+      { loc: '/apps', priority: '0.8', changefreq: 'monthly' },
       ...(SITE.portalLive ? [{ loc: '/portal', priority: '0.5', changefreq: 'yearly' }] : []),
       { loc: '/locations/', priority: '0.7', changefreq: 'monthly' },
       ...pageFiles.filter(f => f.startsWith('locations/') && !f.endsWith('index.html')).map(f => ({ loc: '/' + f, priority: '0.8', changefreq: 'monthly' })),

@@ -1022,6 +1022,82 @@ ${footer()}`;
   return head({ title, description, path: '/portal', extraLd: ld, bodyClass: '', extraScripts: '<link rel="stylesheet" href="/assets/fieldhq/portal-demo.css"><script src="/assets/fieldhq/portal-demo.js" defer></script>' }) + body;
 }
 
+/* ---------------- APPS (everything Piets built) — no prices on purpose ---------------- */
+function appsPage() {
+  const title = 'Apps & Products Built by Piets | Piet Box, Site Studio, Field HQ, MarinaVue, StableVue, PuppyVue';
+  const description = 'Software Piets built for the places it wires: the Piet Box for your TV, the website demo builder, the Field HQ client portal, and the Pietvue apps for marinas, barns and kennels. Free live demos.';
+  const ld = [breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Apps', path: '/apps.html' }])];
+  const apps = [
+    { id: 'piet-box', name: 'The Piet Box', tag: 'For your TV', img: '/assets/photos/apps/piet-box.jpg', alt: 'The Piet Box page and TV demo',
+      text: 'One small box turns any TV into a menu board, an ad screen and a photo wall your customers fill. Plug it in, scan the code, and Piets runs it for you.',
+      bullets: ['Menu boards and promos, changed remotely', 'Scan-to-advertise: local businesses pay to be on your screen', 'Photo wall by QR, every post approved first', 'No router changes, no port forwarding'],
+      cta: { href: '/piet-box#build', label: 'Build your screen demo' }, demo: true },
+    { id: 'site-studio', name: 'Piets Site Studio', tag: 'Website demo builder', img: '/assets/photos/apps/site-studio.jpg', alt: 'Piets Site Studio website demo builder',
+      text: 'Answer five questions, add your logo and photos, and see a demo of your new website in about a minute — before you spend anything.',
+      bullets: ['Real copy written for your business', 'Hero scenes built for your trade', 'Mobile-first, fast, hosted by Piets', 'Seven languages'],
+      cta: { href: '/websites', label: 'Build my free website demo' }, demo: true },
+    { id: 'fieldhq', name: 'Field HQ', tag: 'Client portal + team app', img: '/assets/photos/apps/fieldhq-portal.jpg', alt: 'Field HQ client portal tour',
+      text: 'Every Piets job in one place: quotes to approve, visits, photos, invoices and messages — for you on your phone, and for the Piets team in the field.',
+      bullets: ['Approve a quote by typing your name', 'See your visits, photos and invoices', 'Message Piets from the portal', 'Team view: today, jobs board, conversations'],
+      cta: SITE.portalLive ? { href: '/portal', label: 'Take the portal tour' } : { href: '/plan.html', label: 'Ask about Field HQ' }, demo: SITE.portalLive },
+    { id: 'marinavue', name: 'MarinaVue', tag: 'Pietvue · marinas, boatyards, yacht clubs', img: '/assets/photos/apps/marinavue.jpg', alt: 'MarinaVue staff app on a desktop',
+      phone: '/assets/photos/app-marinavue.jpg',
+      text: 'Dock cameras, marina Wi-Fi, gate access and a slip-holder app — installed, wired and supported by one low-voltage contractor. Every owner sees only their own boat.',
+      bullets: ['Live chart of every slip, drawn from the marina’s own records', 'Owner portal: your boat, your camera, your invoice', 'Staff app: vessels, yard, work orders, access rules', 'Camera coverage and dock Wi-Fi on the chart'],
+      cta: { href: '/plan.html?source=MarinaVue', label: 'Book a MarinaVue demo' } },
+    { id: 'stablevue', name: 'StableVue', tag: 'Pietvue · boarding barns, training stables, equestrian centers', img: '/assets/photos/apps/stablevue.jpg', alt: 'StableVue on a desktop',
+      phone: '/assets/photos/app-stablevue-owner.jpg',
+      text: 'Barn cameras, barn Wi-Fi and the software that runs the place. Boarders get a private live view of their horse, their care sheet and their invoice; staff get a board of what still has to happen today.',
+      bullets: ['One horse, one camera — from bed, at 2 AM', 'Care board with turnout, feed and paperwork checks', 'Owner portal with Coggins dates and invoices', 'Foal watch and stall cameras'],
+      cta: { href: '/plan.html?source=StableVue', label: 'Book a StableVue demo' } },
+    { id: 'puppyvue', name: 'PuppyVue', tag: 'Pietvue · breeders, kennels, boarding, daycare', img: '/assets/photos/apps/puppyvue.jpg', alt: 'PuppyVue on a desktop',
+      text: 'Cameras, check-ins and a client platform for dog businesses. Pet parents and puppy buyers watch live; staff run check-ins, feeding, meds and report cards in one place.',
+      bullets: ['Live play-yard and suite cameras for pet parents', 'Check-in / check-out, feeding, meds, report cards', 'Litters, bookings and billing', 'Six roles, each sees only what they need'],
+      cta: { href: '/plan.html?source=PuppyVue', label: 'Book a PuppyVue demo' } },
+  ];
+  const block = (a, i) => `
+<section class="section app-block${i % 2 ? ' app-block--flip' : ''}" id="${a.id}">
+  <div class="wrap app-block__inner">
+    <div class="app-block__media">
+      <div class="app-block__shot"><img src="${a.img}" alt="${esc(a.alt)}" loading="lazy" width="1024" height="640"></div>
+      ${a.phone ? `<div class="app-block__phone"><img src="${a.phone}" alt="" loading="lazy" width="585" height="1266"></div>` : ''}
+    </div>
+    <div class="app-block__copy">
+      <div class="eyebrow">${esc(a.tag)}</div>
+      <h2>${esc(a.name)}</h2>
+      <p>${a.text}</p>
+      <ul class="check-list">${a.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      <div class="btn-row"><a class="btn btn-primary" href="${a.cta.href}">${a.cta.label} ${icon('arrow', 18)}</a>${a.demo ? '<span class="app-block__live"><i></i>Live demo</span>' : ''}</div>
+    </div>
+  </div>
+</section>`;
+
+  const body = `${banner()}
+${nav('apps')}
+<main id="main">
+<div class="page-head">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><strong>Apps</strong></nav>
+    <div class="page-head__eyebrow">Built by Piets</div>
+    <h1>The apps we built for the places we wire.</h1>
+    <p>Cameras, Wi-Fi and doors are only half the job. These are the apps Piets built so owners, staff and customers actually get to use what we install — on the TV, on the phone, in the office. Every one is demoed free; pricing is quoted for your place.</p>
+    <div class="app-jump">${apps.map(a => `<a href="#${a.id}">${esc(a.name)}</a>`).join('')}</div>
+  </div>
+</div>
+${apps.map(block).join('\n')}
+<section class="final-cta">
+  <div class="final-cta__glow" aria-hidden="true"></div>
+  <div class="wrap final-cta__inner">
+    <h2>Want one of these for your place?</h2>
+    <p>Book a free demo — in person or on a video call. The person who demos it is the person who installs it.</p>
+    <div class="btn-row btn-row--center"><a class="btn btn-primary btn-lg" href="/plan.html">Book a free demo ${icon('arrow', 18)}</a><a class="btn btn-ghost btn-lg" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></div>
+  </div>
+</section>
+</main>
+${footer()}`;
+  return head({ title, description, path: '/apps.html', extraLd: ld, bodyClass: 'apps-page' }) + body;
+}
+
 export function buildPages(pub) {
   const out = [];
   out.push(write(pub, 'index.html', homePage()));
@@ -1032,6 +1108,7 @@ export function buildPages(pub) {
   out.push(write(pub, 'plans.html', plansPage()));
   out.push(write(pub, 'remote-support.html', remotePage()));
   out.push(write(pub, 'about.html', aboutPage()));
+  out.push(write(pub, 'apps.html', appsPage()));
   out.push(write(pub, '404.html', notFoundPage()));
   if (SITE.portalLive) out.push(write(pub, 'portal.html', portalPage()));
   out.push(write(pub, 'locations/index.html', locationsIndex()));

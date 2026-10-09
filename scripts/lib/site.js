@@ -151,6 +151,7 @@ export function nav(current = '') {
         ${item('/blog/', 'Blog', 'blog')}
         ${item('/piet-box', 'Piet Box', 'piet-box')}
         ${item('/websites', 'Websites', 'websites')}
+        ${item('/apps.html', 'Apps', 'apps')}
         ${SITE.portalLive ? `<li class="site-nav__mobile-only"><a href="/portal"${current === 'portal' ? ' aria-current="page"' : ''}>Client login</a></li>` : ''}
         <li class="site-nav__mobile-only"><a href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></li>
         <li class="site-nav__mobile-only"><a href="/plan.html">Get a quote</a></li>
@@ -267,6 +268,7 @@ export function footer() {
           <li><a href="/remote-support.html">Remote support</a></li>
           <li><a href="/piet-box">The Piet Box (new)</a></li>
           <li><a href="/websites">Website demo (free)</a></li>
+          <li><a href="/apps.html">Apps we built (MarinaVue, StableVue, PuppyVue, Field HQ)</a></li>
           <li><a href="/blog/">Blog</a></li>
           ${SITE.portalLive ? '<li><a href="/portal">Client login (Field HQ)</a></li>' : ''}
         </ul>

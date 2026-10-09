@@ -1,24 +1,8 @@
-/* Piets hero effects: phone screen cycling + particle network. Piets Technology Solutions Inc · 631-871-5957.
+/* Piets hero: cyan/purple particle network behind the hero. Piets Technology Solutions Inc · 631-871-5957.
    Light on purpose: ~25 fps, pauses when the hero is off screen or the tab is hidden, off under prefers-reduced-motion. */
 (function(){
   "use strict";
   var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var scr = document.querySelector(".phone__screen");
-  if (scr) {
-    var imgs = [].slice.call(scr.querySelectorAll("img"));
-    var dots = [].slice.call(document.querySelectorAll(".phone__dots i"));
-    var cap = document.querySelector(".phone__cap");
-    var i = 0;
-    function show(n){
-      imgs[i].classList.remove("is-on"); if (dots[i]) dots[i].classList.remove("is-on");
-      i = n;
-      imgs[i].classList.add("is-on"); if (dots[i]) dots[i].classList.add("is-on");
-      if (cap) { cap.style.opacity = 0; setTimeout(function(){ cap.innerHTML = (imgs[i].getAttribute("data-cap") || "") + "<small>" + (imgs[i].getAttribute("data-sub") || "") + "</small>"; cap.style.opacity = 1; }, 380); }
-    }
-    if (cap && imgs[0]) cap.innerHTML = (imgs[0].getAttribute("data-cap") || "") + "<small>" + (imgs[0].getAttribute("data-sub") || "") + "</small>";
-    if (imgs.length > 1 && !rm) setInterval(function(){ show((i + 1) % imgs.length); }, 4200);
-    dots.forEach(function(d, k){ d.addEventListener("click", function(){ show(k); }); });
-  }
   var c = document.querySelector(".hero__fx");
   if (!c || rm || !c.getContext) return;
   var ctx = c.getContext("2d"), hero = c.parentElement, W = 0, H = 0, pts = [], N = 70;

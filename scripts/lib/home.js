@@ -94,24 +94,31 @@ export function heroSection() {
       </div>
     </div>
     <div class="hero__visual">
-      <div class="hero__stage">
+      <div class="hero__stage" aria-label="The Piets Hub connected to a TV with the Piet Box, a camera monitor, a computer and a phone">
+      <svg class="hero__links" viewBox="0 0 1000 1040" aria-hidden="true" focusable="false">
+        <path id="hl1" d="M500 572 L740 130"/><path id="hl2" d="M500 572 L170 140"/><path id="hl3" d="M500 572 L190 870"/><path id="hl4" d="M500 572 L870 770"/>
+        <circle r="4"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#hl1"/></animateMotion></circle>
+        <circle r="4"><animateMotion dur="3.8s" begin="0.6s" repeatCount="indefinite"><mpath href="#hl2"/></animateMotion></circle>
+        <circle r="4"><animateMotion dur="3.5s" begin="1.1s" repeatCount="indefinite"><mpath href="#hl3"/></animateMotion></circle>
+        <circle r="4"><animateMotion dur="4.1s" begin="1.7s" repeatCount="indefinite"><mpath href="#hl4"/></animateMotion></circle>
+      </svg>
       ${hubDiagram()}
-      <div class="phone" role="img" aria-label="Piets apps on a phone: MarinaVue, StableVue and the Piet Box">
-        <div class="phone__frame">
-          <div class="phone__island"></div>
-          <div class="phone__screen">
-            <img src="/assets/photos/app-marinavue.jpg" alt="" class="is-on" width="585" height="1266" data-cap="MarinaVue" data-sub="Staff app · marina dashboard">
-            <img src="/assets/photos/app-stablevue.jpg" alt="" width="585" height="1266" data-cap="StableVue" data-sub="Today board · barn cameras & care">
-            <img src="/assets/photos/app-stablevue-owner.jpg" alt="" width="585" height="1266" data-cap="StableVue owner portal" data-sub="Live stall camera on your phone">
-            <img src="/assets/photos/app-pietbox.jpg" alt="" width="585" height="1266" data-cap="Piet Box" data-sub="Your TV · menus, promos, photo wall">
-            <div class="phone__cap" aria-hidden="true"></div>
-          </div>
-          <div class="phone__dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i></div>
-          <div class="phone__glare"></div>
-        </div>
+      <div class="dev dev--tv">
+        <div class="tv"><div class="tv__screen"><img src="/assets/photos/screen-tv-pietbox.jpg" alt="A TV running the Piet Box: welcome screen with menu, photo wall and QR code" width="1092" height="616"></div><div class="tv__stand"></div><img class="tv__box" src="/assets/photos/pietbox-device.png" alt="" width="900" height="490"></div>
+        <span class="dev__tag"><i></i>Piet Box · your TV</span>
       </div>
-      <span class="hero__tag hero__tag--1"><i></i>Camera 4 · live</span>
-      <span class="hero__tag hero__tag--2"><i></i>Front door · unlocked from phone</span>
+      <div class="dev dev--nvr">
+        <div class="mon"><div class="mon__screen"><img src="/assets/photos/screen-nvr.jpg" alt="Camera monitor showing live 4K security camera views" width="1280" height="800"></div><div class="mon__stand"></div></div>
+        <span class="dev__tag"><i></i>Cameras · 4K · no cloud fees</span>
+      </div>
+      <div class="dev dev--laptop">
+        <div class="laptop"><div class="laptop__screen"><img src="/assets/photos/screen-laptop-it.jpg" alt="Computer screen with the Piets IT support dashboard: printers, computers, remote help, backups" width="1440" height="900"></div><div class="laptop__base"></div></div>
+        <span class="dev__tag"><i></i>Computers · printers · remote help</span>
+      </div>
+      <div class="dev dev--phone">
+        <div class="phone"><div class="phone__frame"><div class="phone__island"></div><div class="phone__screen"><img src="/assets/photos/screen-phone-cameras.jpg" alt="Phone showing the Piets camera app with live views and the Piets apps" width="1170" height="2532"></div><div class="phone__glare"></div></div></div>
+        <span class="dev__tag"><i></i>Your apps · live cameras</span>
+      </div>
       </div>
     </div>
   </div>
@@ -425,17 +432,25 @@ export function finalCta() {
 
 /* New products band: Piet Box, Website Studio, Field HQ client portal */
 export function newFromPiets() {
-  const card = (href, icon, tag, title, text, cta) => `<a class="nfp__card" href="${href}">
-      <span class="nfp__ic">${ico(icon, 26)}</span><span class="nfp__tag">${tag}</span>
-      <h3>${title}</h3><p>${text}</p><span class="nfp__go">${cta} ${ico('arrow', 16)}</span></a>`;
+  const card = (href, img, alt, tag, title, text, cta) => `<a class="demo-card" href="${href}">
+      <span class="demo-card__shot"><img src="${img}" alt="${esc(alt)}" loading="lazy" width="1024" height="640"></span>
+      <span class="demo-card__body"><span class="nfp__tag">${tag}</span><h3>${title}</h3><p>${text}</p><span class="nfp__go">${cta} ${ico('arrow', 16)}</span></span></a>`;
   return `
-<section class="section nfp" id="new">
+<section class="section nfp" id="demos">
   <div class="wrap">
-    <div class="section-head"><div class="eyebrow">New from Piets</div><h2>Three new ways we take tech off your plate</h2><p>Try each one right here. Every demo is free and takes about a minute.</p></div>
-    <div class="nfp__grid">
-      ${card('/piet-box', 'hub', 'New · Piet Box', 'Plug it in. We handle the rest.', 'One small box that lets Piets watch your internet, Wi-Fi, cameras and registers 24/7 and fix things remotely.', 'Build your Piet Box demo')}
-      ${card('/websites', 'browser', 'Website demo builder', 'See your new website first.', 'Answer five questions, add your logo and photos, and watch a demo of your new site get built.', 'Build my free website demo')}
-      ${card(SITE.portalLive ? '/portal' : '/plan.html', 'portal', 'Field HQ client portal', 'Your job, in one place.', 'Approve quotes, see visits and photos, pay invoices and message Piets from your phone.', SITE.portalLive ? 'Take the portal tour' : 'Ask about the portal')}
+    <div class="section-head"><div class="eyebrow">Live demos · free · no sign-up</div><h2>Try what Piets builds, right here</h2><p>Every demo runs in your browser with sample data. Takes about a minute each.</p></div>
+    <div class="demo-grid">
+      ${card('/websites', '/assets/photos/apps/site-studio.jpg', 'The Piets website demo builder', 'Website demo builder', 'See your new website before you pay a dime.', 'Answer five questions, add your logo and photos, and watch a demo of your new site get built.', 'Build my free website demo')}
+      ${card('/piet-box#build', '/assets/photos/apps/piet-box.jpg', 'The Piet Box TV demo', 'The Piet Box · TV demo', 'Your TV, working for you.', 'Menu boards, promos, a photo wall your customers fill by QR, and ads local businesses pay for. Build your screen and watch it run.', 'Build my screen demo')}
+      ${card(SITE.portalLive ? '/portal' : '/apps#fieldhq', '/assets/photos/apps/fieldhq-portal.jpg', 'The Field HQ client portal tour', 'Field HQ · client portal', 'Your job, in one place.', 'Approve quotes, see visits and photos, pay invoices and message Piets from your phone. Click through the tour as the client or as the team.', SITE.portalLive ? 'Take the portal tour' : 'See the portal')}
+    </div>
+    <div class="demo-more">
+      <div class="demo-more__apps">
+        <a href="/apps#marinavue"><img src="/assets/photos/apps/marinavue.jpg" alt="MarinaVue" loading="lazy" width="1024" height="640"><span>MarinaVue</span><small>Marinas &amp; boatyards</small></a>
+        <a href="/apps#stablevue"><img src="/assets/photos/apps/stablevue.jpg" alt="StableVue" loading="lazy" width="1024" height="640"><span>StableVue</span><small>Barns &amp; equestrian centers</small></a>
+        <a href="/apps#puppyvue"><img src="/assets/photos/apps/puppyvue.jpg" alt="PuppyVue" loading="lazy" width="1024" height="640"><span>PuppyVue</span><small>Kennels, breeders &amp; daycare</small></a>
+      </div>
+      <a class="btn btn-ghost btn-lg" href="/apps">See everything Piets built ${ico('arrow', 18)}</a>
     </div>
   </div>
 </section>`;

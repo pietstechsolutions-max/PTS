@@ -142,7 +142,7 @@
     function feed(m, c) { var ul = $('ccFeed'), li = document.createElement('li'); li.className = c || ''; li.innerHTML = '<time>' + now() + '</time><span>' + esc(m) + '</span>'; ul.insertBefore(li, ul.firstChild); while (ul.children.length > 25) ul.removeChild(ul.lastChild); }
     function data() { return { name: S.name || 'Sample ' + T().label, tag: S.promo ? '' : 'Glad you are here', promo: S.promo || T().promo, items: menuItems, shows: S.shows.length ? S.shows : ['welcome'], menuTitle: S.type === 'gym' ? 'Class schedule' : (S.type === 'dental' ? 'Our services' : 'Menu') }; }
     function sims() {
-      var l = [['photo', 'photo', 'A customer posts a photo'], ['ad', 'store', 'A local business asks for an ad'], ['price', 'menu', 'Piets changes a price'], ['setup', 'qr', 'Set up a new box by QR'], ['due', 'lock', 'A payment is missed'], ['buyout', 'check', 'Client buys the box ($500+)']];
+      var l = [['photo', 'photo', 'A customer posts a photo'], ['ad', 'store', 'A local business asks for an ad'], ['price', 'menu', 'Piets changes a price'], ['setup', 'qr', 'Set up a new box by QR'], ['due', 'lock', 'A payment is missed'], ['buyout', 'check', 'Client buys the box']];
       $('ccSim').innerHTML = l.map(function (s) { return '<button type="button" data-sim="' + s[0] + '">' + A.icon(s[1], 20, 1.8) + s[2] + '</button>'; }).join('');
     }
     function phone(title, html) { $('phonePanel').hidden = false; $('phoneT').textContent = title; $('phoneF').innerHTML = html; }
@@ -178,7 +178,7 @@
         }, RM ? 300 : 3000);
       },
       buyout: function () {
-        phone("Owner's phone · leaving Piets", '<span>Keep the box and get your content released for a one-time unlock fee, starting at $500.</span><button class="btn btn-go btn-sm" type="button" data-phone="buy">Pay unlock fee</button>');
+        phone("Owner's phone · leaving Piets", '<span>Keep the box and get your content released for a one-time unlock fee. Ask Piets for the number.</span><button class="btn btn-go btn-sm" type="button" data-phone="buy">Pay unlock fee</button>');
       }
     };
     function lockSims(on) { document.querySelectorAll('#ccSim button').forEach(function (b) { b.disabled = on; }); }
