@@ -7,7 +7,7 @@ import { readdirSync, readFileSync, writeFileSync, mkdirSync, statSync } from 'n
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
-import { SITE, SERVICES, esc, head, banner, nav, footer, breadcrumbLd, slugify } from './lib/site.js';
+import { SITE, SERVICES, esc, head, banner, nav, footer, breadcrumbLd, slugify, versionAssets } from './lib/site.js';
 import { buildPages } from './lib/pages.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -181,7 +181,10 @@ function walk(dir) {
   for (const f of readdirSync(dir)) {
     const fp = join(dir, f);
     if (statSync(fp).isDirectory()) walk(fp);
-    else if (/\.(html|xml)$/.test(f)) writeFileSync(fp, cleanUrls(readFileSync(fp, 'utf8')));
+    // .html also gets ?v=<hash> on every /assets/*.css|js link (static pages like piet-box.html and
+    // websites.html included) because Vercel caches /assets for a year — see versionAssets in lib/site.js.
+    else if (/\.html$/.test(f)) writeFileSync(fp, versionAssets(cleanUrls(readFileSync(fp, 'utf8'))));
+    else if (/\.xml$/.test(f)) writeFileSync(fp, cleanUrls(readFileSync(fp, 'utf8')));
   }
 }
 walk(PUB);

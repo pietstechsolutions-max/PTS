@@ -1,6 +1,6 @@
 // Home page sections for the Piets Technology Solutions website.
 // Content follows BRIEF/FACTS.md only (no prices, no invented numbers).
-import { SITE, LOCATIONS, esc } from './site.js';
+import { SITE, LOCATIONS, esc, versionAssets } from './site.js';
 
 /* Small inline icon set (24px, stroke = currentColor) */
 const I = {
@@ -116,7 +116,7 @@ export function heroSection() {
     </div>
   </div>
 </section>
-<script src="/assets/js/hero-fx.js" defer></script>`;
+${versionAssets('<script src="/assets/js/hero-fx.js" defer></script>')}`;
 }
 
 export function worksWith() {
