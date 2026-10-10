@@ -14,6 +14,7 @@ const SERVICES = {
   'menu-boards': 'TV menu boards', 'ghost-kitchen': 'Ghost kitchen',
   'access-control': 'Access control', 'remote-support': 'Remote support',
   'tech-support-247': '24/7 tech support', 'managed-services': 'Managed services',
+  'lighting': 'Holiday & permanent lighting', 'partner': 'Partner program',
   'other': 'Other'
 };
 

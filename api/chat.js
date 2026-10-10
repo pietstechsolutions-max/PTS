@@ -33,6 +33,7 @@ const FACTS = `
 - menu-boards → Digital Menu Boards → TV menu boards updated from a phone.
 - ghost-kitchen → Ghost Kitchen Setup → Tablets, printers, network, cameras and phones for delivery-only kitchens.
 - smart-home → Smart Home (Home Assistant) → Local, private Home Assistant automation for lights, locks, thermostats, shades and cameras. No required cloud fees.
+- lighting → Holiday & Permanent Lighting → Permanent architectural lighting that stays up all year and changes colour from your phone, or a seasonal holiday install with takedown and storage. Design it on a photo of your house first in the Design Studio (/lighting, /design-studio).
 - it-support → IT Support & Repair → PCs, printers, email, malware cleanup; on site or remote.
 - remote-support → Remote Support (RustDesk) → Secure screen-share help in minutes.
 - tech-support-247 → 24/7 Tech Support → Call or text any time.
@@ -46,6 +47,13 @@ const FACTS = `
 ## New products (Oct 2026)
 - The Piet Box (/piet-box): a small managed box that plugs into the client's router. It calls out to the Piets Hub (nothing opened on the router), so Piets can watch internet, Wi-Fi, cameras, recorder, POS and printers 24/7, help remotely with the client's OK, and push new features. Options: backup internet, camera link-up, smart home hub (Home Assistant), TV screen mode (welcome screens / menu boards). Business phones: coming soon. No prices — "ask us, every setup is tailored". Free demo builder on the page.
 - Website demo builder (/websites): answer a few questions, upload a logo and photos, see a demo of a new website before paying.
+- Partner & reseller program (/partners): resell the Piet Box, Piets websites, Field HQ and the Pietvue apps; Piets installs, supports and bills; partners track leads and payouts in their own Field HQ partner portal (demo on the page). Apply on the page. No prices.
+- Payments & POS (/payments): card processing, a custom POS built around how you ring, and the network behind it; try the live register demo. Statement review available.
+- Ghost kitchen (/ghost-kitchen): delivery-only kitchens built to take orders day one, with your own ordering page, DoorDash Drive dispatch and a dispute desk for platform chargebacks.
+- Fleet (/fleet): a plug-in OBD-II device and an app for predicted service, incident footage and load matching.
+- Design Studio (/design-studio): free, upload a photo of a home or business and place cameras with coverage cones or design lighting on the roofline; runs on the visitor's device.
+- Financing (/financing): estimate a payment on a camera system, POS, cabling or lighting install through third-party lenders. Piets is not a lender.
+- Software and apps (/software, /apps, /fieldhq): Field HQ CRM, Site Studio, the Piet Box, the Pietvue apps (MarinaVue, StableVue, PuppyVue), Piets POS and Piets Fleet; every one has a live demo. No prices.
 - Client login (/portal): Field HQ client portal — approve quotes, see visits, photos, invoices, message Piets. Demo tour on the page.
 
 ## Who we serve (industries)
@@ -64,7 +72,7 @@ Restaurants & ghost kitchens (biggest segment), dental & medical offices, auto/m
 - Old logos (pink/purple, black-and-white crescent P, red PS, green shield) must never be used.
 
 ## Numbers you MAY show (true)
-24/7 support · 13 services · 4 on-site regions · 0 required cloud fees. No other numbers (no years, job counts, ratings, response times, prices).
+24/7 support · 14 services · 4 on-site regions · 0 required cloud fees. No other numbers (no years, job counts, ratings, response times, prices).
 `;
 
 function buildSystemPrompt() {

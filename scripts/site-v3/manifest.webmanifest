@@ -1,0 +1,13 @@
+{
+  "name": "Piets Technology Solutions",
+  "short_name": "Piets Tech",
+  "description": "Security cameras, IT support, Wi-Fi, cabling, POS and 24/7 tech support across New York.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#011F5D",
+  "icons": [
+    { "src": "/assets/brand/favicon-64.png", "sizes": "64x64", "type": "image/png" },
+    { "src": "/assets/brand/logo-mark.png", "sizes": "any", "type": "image/png" }
+  ]
+}

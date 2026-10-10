@@ -1,0 +1,58 @@
+/* Field HQ client portal tour — Piets look (navy/cyan). Sample data only.
+   Piets Technology Solutions Inc · 631-871-5957 */
+.fhq{--f-ink:#050A1F;--f-navy:#011F5D;--f-deep:#011442;--f-cy:#00E5FF;--f-bl:#01A2E8;--f-bl2:#016FD6;--f-line:#E2E8F1;--f-mist:#F3F6FB;--f-txt:#0B1530;--f-mut:#56657F;--f-ok:#16a36a;--f-warn:#c27c00;
+  border-radius:24px;overflow:hidden;border:1px solid var(--f-line);background:#fff;color:var(--f-txt);box-shadow:0 30px 70px -40px rgba(1,31,93,.55);font-size:15px}
+.fhq *{box-sizing:border-box}
+.fhq__top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;background:var(--f-ink);color:#eef5ff}
+.fhq__brand{display:flex;align-items:center;gap:8px;font:italic 800 1rem "Bricolage Grotesque",Inter,sans-serif;letter-spacing:.04em;margin-right:auto}
+.fhq__brand small{font:500 .55rem "JetBrains Mono",monospace;letter-spacing:.2em;color:#9fc4ff;font-style:normal}
+.fhq__brand i{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#00E5FF,#016FD6);display:inline-block}
+.fhq__role{display:inline-flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:99px;padding:3px}
+.fhq__role button{border:0;background:none;color:#cfe0f5;font:600 .82rem Inter,sans-serif;padding:7px 14px;border-radius:99px;cursor:pointer;min-height:36px}
+.fhq__role button[aria-pressed=true]{background:linear-gradient(100deg,#00E5FF,#01A2E8);color:#021033}
+.fhq__body{display:grid;min-height:460px}
+@media(min-width:820px){.fhq__body{grid-template-columns:200px minmax(0,1fr)}}
+.fhq__nav{background:var(--f-mist);border-right:1px solid var(--f-line);padding:10px;display:flex;gap:4px;overflow-x:auto}
+@media(min-width:820px){.fhq__nav{flex-direction:column;overflow:visible}}
+.fhq__nav button{display:flex;align-items:center;gap:8px;border:0;background:none;text-align:left;padding:9px 12px;border-radius:10px;font:600 .88rem Inter,sans-serif;color:var(--f-txt);cursor:pointer;white-space:nowrap;min-height:40px}
+.fhq__nav button svg{width:18px;height:18px;color:var(--f-bl2);flex:none}
+.fhq__nav button[aria-current=page]{background:#fff;box-shadow:0 2px 10px -4px rgba(1,31,93,.35);color:var(--f-navy)}
+.fhq__nav .badge{margin-left:auto;background:var(--f-bl2);color:#fff;border-radius:99px;font-size:.7rem;padding:1px 7px}
+.fhq__main{padding:18px;min-width:0}
+.fhq h4{margin:0 0 4px;font:800 1.3rem "Bricolage Grotesque",Inter,sans-serif;color:var(--f-navy)}
+.fhq .sub{color:var(--f-mut);margin:0 0 14px;font-size:.9rem}
+.fhq .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.fhq .stat{border:1px solid var(--f-line);border-radius:14px;padding:12px 14px}
+.fhq .stat small{display:block;font:600 .62rem "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--f-mut)}
+.fhq .stat b{display:block;font:800 1.3rem "Bricolage Grotesque",Inter,sans-serif;margin-top:4px;font-variant-numeric:tabular-nums}
+.fhq .list{display:grid;gap:8px;margin-top:12px}
+.fhq .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--f-line);border-radius:14px;padding:12px 14px}
+.fhq .row .t{flex:1;min-width:160px}.fhq .row .t b{display:block}.fhq .row .t span{font-size:.85rem;color:var(--f-mut)}
+.fhq .pill{display:inline-block;border-radius:99px;padding:3px 10px;font:600 .72rem Inter,sans-serif;background:#e6f6ff;color:#0164b0;white-space:nowrap}
+.fhq .pill.ok{background:#e7f8ef;color:var(--f-ok)}.fhq .pill.warn{background:#fff4dc;color:var(--f-warn)}.fhq .pill.dk{background:var(--f-navy);color:#fff}
+.fhq .fbtn{border:0;border-radius:99px;padding:8px 16px;font:700 .85rem Inter,sans-serif;cursor:pointer;min-height:38px;background:linear-gradient(100deg,#00E5FF,#01A2E8);color:#021033}
+.fhq .fbtn.ghost{background:#fff;border:1px solid #c3cfdd;color:var(--f-txt)}
+.fhq .fbtn[disabled]{opacity:.55;cursor:default}
+.fhq .quote{border:1px solid var(--f-line);border-radius:16px;overflow:hidden;margin-top:12px}
+.fhq .quote table{width:100%;border-collapse:collapse;font-size:.9rem}
+.fhq .quote td{padding:9px 14px;border-top:1px solid var(--f-line)}.fhq .quote td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.fhq .quote .hd{background:var(--f-mist);padding:12px 14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.fhq .sign{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;border-top:1px solid var(--f-line);align-items:center}
+.fhq .sign input,.fhq .msgbox input{flex:1;min-width:160px;border:1.5px solid #c3cfdd;border-radius:12px;padding:9px 12px;min-height:42px;font:inherit;color:var(--f-txt);background:#fff}
+.fhq .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:12px}
+.fhq .ph{aspect-ratio:4/3;border-radius:12px;background:linear-gradient(135deg,#0b2a6e,#050A1F);color:#7ff3ff;display:grid;place-items:center;text-align:center;font:600 .72rem "JetBrains Mono",monospace;letter-spacing:.06em;padding:8px}
+.fhq .ph svg{width:28px;height:28px;display:block;margin:0 auto 6px}
+.fhq .thread{display:grid;gap:8px;margin-top:12px;max-height:260px;overflow:auto;padding:4px}
+.fhq .bub{max-width:80%;padding:9px 13px;border-radius:16px;font-size:.9rem;line-height:1.4}
+.fhq .bub.them{background:var(--f-mist);border-bottom-left-radius:4px}
+.fhq .bub.me{background:var(--f-navy);color:#fff;justify-self:end;border-bottom-right-radius:4px}
+.fhq .bub small{display:block;font-size:.7rem;opacity:.7;margin-top:3px}
+.fhq .msgbox{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.fhq .board{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-top:12px}
+.fhq .col{background:var(--f-mist);border-radius:14px;padding:10px;min-width:0}
+.fhq .col h5{margin:0 0 8px;font:600 .66rem "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--f-mut);display:flex;justify-content:space-between}
+.fhq .jc{background:#fff;border:1px solid var(--f-line);border-radius:12px;padding:10px;margin-bottom:8px;font-size:.86rem}
+.fhq .jc b{display:block}.fhq .jc span{color:var(--f-mut);font-size:.8rem}
+.fhq .jc button{margin-top:6px;border:0;background:none;color:var(--f-bl2);font:700 .78rem Inter,sans-serif;cursor:pointer;padding:4px 0}
+.fhq__note{font-size:.8rem;color:var(--f-mut);padding:10px 14px;border-top:1px solid var(--f-line);background:var(--f-mist)}
+.fhq-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}

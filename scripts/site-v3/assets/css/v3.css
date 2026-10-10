@@ -1,0 +1,209 @@
+/* Piets Site v3 — nav restructure, hub band, standalone-site shells.
+   Loads LAST on every page, after theme-ncp.css. Navy · Cyan · Purple (palette B).
+   Piets Technology Solutions Inc · 631-871-5957 · pietstechsolutions.com
+   Much of this was prepared with AI. Tell the owner about any mistake so it gets fixed. */
+
+/* ---------- nav: five groups, products carry the gradient dot ---------- */
+.site-nav__links .nav-more[data-navdot]>summary::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:2px;
+  background:var(--ncp-grad,linear-gradient(100deg,#02D7F5,#016FD6 55%,#7A3DFF));flex:0 0 auto}
+.site-nav__links .nav-more>summary[data-on]{color:#fff;background:rgba(122,61,255,.2)}
+.nav-more__panel li a[aria-current]{background:rgba(122,61,255,.3);color:#fff}
+/* the panels sit under a 6-item bar now — keep the wide ones from running off screen */
+.nav-more__panel{min-width:250px;max-width:min(300px,90vw)}
+.site-nav__links>li>details>summary{user-select:none}
+@media(min-width:1021px){
+  .site-nav__links{gap:2px}
+  /* the first dropdown opens leftwards so it never clips off the viewport */
+  .site-nav__links>li:first-child .nav-more__panel{right:auto;left:0}
+}
+
+/* ---------- home: the family / network band ---------- */
+.fam{background:#050A1F;position:relative;overflow:hidden;color:#fff;padding:84px 0}
+.fam::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(48% 42% at 78% 14%,rgba(122,61,255,.3),transparent 70%),
+  radial-gradient(38% 34% at 8% 88%,rgba(2,215,245,.16),transparent 70%)}
+.fam>.wrap{position:relative;z-index:1}
+.fam h2,.fam h3{color:#fff}
+.fam p{color:#AFBED8}
+.famgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+@media(max-width:980px){.famgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.famgrid{grid-template-columns:1fr}}
+.famcard{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;color:#fff;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);transition:.2s}
+a.famcard:hover{text-decoration:none;transform:translateY(-3px);
+  background:rgba(122,61,255,.17);border-color:rgba(167,139,250,.7)}
+.famcard .dom{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;color:#8FE9FB;
+  display:flex;align-items:center;gap:7px}
+.famcard .dom::before{content:"";width:6px;height:6px;border-radius:50%;
+  background:linear-gradient(100deg,#02D7F5,#7A3DFF)}
+.famcard h3{font-size:1.14rem;margin:0}
+.famcard p{font-size:.89rem;color:#A9B8D4;margin:0;flex:1}
+.famcard .go{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#CDB4FF}
+.famcard.hub{background:linear-gradient(140deg,rgba(2,215,245,.14),rgba(122,61,255,.2));
+  border-color:rgba(167,139,250,.55)}
+.famcard .soon{font-family:var(--font-mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px;align-self:flex-start;background:rgba(255,176,32,.14);
+  border:1px solid rgba(255,176,32,.4);color:#FFD88A}
+
+/* ---------- standalone product-site shell ---------- */
+/* Any product page that will later move to its own domain wears this. It keeps the Piets
+   identity but reads as its own site, with a thin "part of Piets" rail back to the hub. */
+.sitebar{background:#010E30;border-bottom:1px solid rgba(255,255,255,.08);
+  font-family:var(--font-mono);font-size:.68rem;letter-spacing:.05em;color:#8EA3C9}
+.sitebar .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:7px;padding-bottom:7px}
+.sitebar a{color:#9FB1D0}
+.sitebar a:hover{color:#fff}
+.sitebar .me{color:#fff;display:inline-flex;align-items:center;gap:7px}
+.sitebar .me::before{content:"";width:6px;height:6px;border-radius:50%;
+  background:linear-gradient(100deg,#02D7F5,#7A3DFF)}
+.sitebar .sep{margin-left:auto;display:flex;gap:14px;flex-wrap:wrap}
+@media(max-width:620px){.sitebar .sep{margin-left:0;width:100%}}
+
+/* ---------- small shared bits used by the new pages ---------- */
+.kicker{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:#02D7F5;margin-bottom:10px;display:block}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+@media(max-width:860px){.twocol{grid-template-columns:1fr}}
+.bigq{font-family:var(--font-display);font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.2;color:#fff;
+  margin:0 0 14px;letter-spacing:-.02em}
+.statline{display:flex;flex-wrap:wrap;gap:26px;margin-top:26px}
+.statline b{display:block;font-family:var(--font-display);font-size:1.75rem;line-height:1;color:#fff}
+.statline span{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#9FB1D0}
+.check-list{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.check-list li{position:relative;padding-left:26px;font-size:.95rem}
+.check-list li::before{content:"";position:absolute;left:0;top:.42em;width:15px;height:8px;
+  border-left:2.5px solid #16A765;border-bottom:2.5px solid #16A765;transform:rotate(-45deg)}
+.darkwrap .check-list li::before{border-color:#2EE59D}
+.darkwrap .check-list li{color:#C6D4EA}
+
+/* keep long consoles from forcing the page sideways on a phone */
+.mcon,.appstage,.crm{max-width:100%}
+img,svg,canvas{max-width:100%}
+
+/* ---------- home hero: the Design Studio CTA (purple accent, palette B) ---------- */
+body.home-page .hero .btn-studio{background:rgba(122,61,255,.22);color:#fff;
+  border-color:rgba(167,139,250,.75);box-shadow:0 8px 26px rgba(122,61,255,.3)}
+body.home-page .hero .btn-studio:hover{background:rgba(122,61,255,.34);
+  border-color:#9B6BFF;box-shadow:0 12px 34px rgba(122,61,255,.45)}
+body.home-page .hero .btn-studio svg{color:#02D7F5}
+body.home-page .hero .btn-studio:focus-visible{outline:2px solid #02D7F5;outline-offset:3px}
+body.home-page .hero__studio-note{margin:-8px 0 18px;font-size:.86rem;color:#B9C6E0;max-width:48ch}
+body.home-page .hero__studio-note::before{content:"";display:inline-block;width:6px;height:6px;
+  border-radius:50%;margin-right:8px;vertical-align:middle;
+  background:linear-gradient(100deg,#02D7F5,#7A3DFF)}
+@media(max-width:430px){
+  body.home-page .hero .btn-row{flex-direction:column;align-items:stretch}
+  body.home-page .hero .btn-row .btn{width:100%}
+}
+
+/* ---------- header: ONE "Log in" control, all three roles under Field HQ ----------
+   Roadmap item 20 (the owner, Oct 10 2026): "I just want a login thing that is labeled
+   correctly" + "can we just run it all under the field hq I created." Palette B only:
+   purple #7A3DFF is the accent on the open state, cyan #02D7F5 on the icon and rule. */
+.site-header__actions .login-menu{position:relative}
+.site-header__actions .login-menu>summary{list-style:none;cursor:pointer}
+.site-header__actions .login-menu>summary::-webkit-details-marker{display:none}
+.site-header__actions .login-menu>summary::marker{content:""}
+.site-header__actions .login-menu>summary>svg:first-child{color:#02D7F5}
+.site-header__actions .login-menu[open]>summary{background:rgba(122,61,255,.28);
+  border-color:rgba(167,139,250,.75);color:#fff;transform:none}
+.site-header__actions .login-menu>summary:hover{transform:none}
+.login-menu__chev{transition:transform .2s}
+.site-header__actions .login-menu[open]>summary .login-menu__chev{transform:rotate(180deg)}
+.login-menu__panel{min-width:286px;max-width:min(320px,92vw)}
+.login-menu__panel li a{display:block;padding:10px 12px;border-radius:12px;color:#C9D4E8;
+  text-decoration:none!important}
+.login-menu__panel li a b{display:block;font-size:.95rem;font-weight:600;color:#fff}
+.login-menu__panel li a span{display:block;font-size:.78rem;line-height:1.35;color:#9FB1D0;margin-top:3px}
+.login-menu__panel li a:hover{background:rgba(122,61,255,.26)}
+.login-menu__panel li a:hover span{color:#DBCCFF}
+.login-menu__panel li a:focus-visible{outline:2px solid #02D7F5;outline-offset:-2px}
+.login-menu__foot{margin:7px 6px 2px;padding-top:9px;border-top:1px solid rgba(2,215,245,.3);
+  font-family:var(--font-mono);font-weight:500;font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;color:#8FE9FB}
+.site-header__actions .login-menu>summary:focus-visible{outline:3px solid #02D7F5;outline-offset:3px}
+
+/* ---------- header nav: every top-level item is the same box ----------
+   the owner, Oct 10 2026 (artifact comment): "THE MORE AND PLANS DOES NOT ALIGN PROPERLY".
+   The bar mixes <a> items (Design Studio, Plans) with <details><summary> items
+   (Services, Payments, Products, More). A block <a> and a flex <summary> place their
+   text differently inside the same box, so the two kinds drifted a pixel apart — and
+   under 1320px they also had different padding and font-size, which made it obvious.
+   Padding and size are fixed in main.css; this makes both kinds the same kind of box
+   so they cannot drift again. Desktop only — under 1021px the nav is the phone menu. */
+@media (min-width:1021px){
+  /* NB: do not set display on the <li> here — it would beat the .site-nav__mobile-only
+     display:none guard and spill the phone-only rows into the desktop bar. */
+  .site-nav__links>li>a,
+  .site-nav__links>li>details>summary{
+    display:flex;align-items:center;gap:7px;line-height:1.25;
+    min-height:38px;box-sizing:border-box}
+  /* both dots are flex items now, so they space the same way */
+  .site-nav__links a[data-pillar]::before{margin-right:0}
+  .site-nav__links .nav-more[data-navdot]>summary::before{margin-right:0}
+}
+
+/* The same shrink steps main.css applies to the nav under 1320px / 1100px, repeated here
+   because theme-ncp.css loads after main.css and re-sets the summary's font-size at equal
+   specificity — so the <a> items shrank and the <summary> items did not. v3.css loads last,
+   so this is the layer that can keep the whole bar on one size. */
+@media (max-width:1320px) and (min-width:1021px){
+  .site-nav__links>li>a,
+  .site-nav__links .nav-more>summary{padding:8px 9px}
+}
+@media (max-width:1100px) and (min-width:1021px){
+  .site-nav__links>li>a,
+  .site-nav__links .nav-more>summary{font-size:.88rem;padding:8px 7px}
+}
+/* the two controls on the right sit on the same line as the nav — keep them in step */
+@media (max-width:1100px) and (min-width:1021px){
+  .site-header__actions .btn,
+  .site-header__actions .login-menu>summary{font-size:.88rem}
+}
+
+/* ---------- header nav: one single look, link or dropdown ----------
+   the owner, Oct 10 2026 (artifact comment): "CAN YOU MAKE ALL THE LINKS LOOK THE SAME
+   EVEN IF THEY ARE LINKSS OR DROPDOWNS".
+
+   The block above already made the six boxes the same size. Three things still told a
+   link apart from a dropdown, and this is all of them:
+
+   1. HOVER AND CURRENT-PAGE COLOUR. main.css washed the plain <a> items white
+      (rgba(255,255,255,.08)) while theme-ncp.css washed the <summary> items purple
+      (rgba(122,61,255,.28)). Everything is purple now — that is the brand accent and
+      it was already the majority behaviour (4 of the 6 items).
+   2. THE PILLAR DOTS. A small gradient dot sat on Design Studio, Payments and Products
+      and not on Services, Plans or More, so three of six items carried an extra mark.
+      Removed. (To put them back: delete this block's two ::before rules.)
+   3. THE GAP between the text and whatever follows it: 7px on links, 6px on summaries.
+
+   The chevron stays on the four items that open a menu. It is the only honest signal
+   that something opens rather than navigates, so it is dimmed instead of dropped —
+   the words now read as one row and the chevron is a quiet hint, not a second style. */
+
+/* 1 · hover and open — identical on both kinds */
+.site-nav__links>li>a:hover,
+.site-nav__links>li>.nav-more>summary:hover,
+.site-nav__links>li>.nav-more[open]>summary{
+  color:#fff;background:rgba(122,61,255,.28)}
+
+/* 1b · current page (links) and current section (dropdowns) — identical on both kinds */
+.site-nav__links>li>a[aria-current="page"],
+.site-nav__links>li>.nav-more>summary[data-on]{
+  color:#fff;background:rgba(122,61,255,.2)}
+
+/* 1c · keyboard focus ring — identical on both kinds */
+.site-nav__links>li>a:focus-visible,
+.site-nav__links>li>.nav-more>summary:focus-visible{
+  outline:2px solid #02D7F5;outline-offset:2px}
+
+/* 2 · the pillar dots come off, so no item carries a mark another one lacks */
+.site-nav__links a[data-pillar]::before,
+.site-nav__links .nav-more[data-navdot]>summary::before{content:none;display:none}
+
+/* 3 · one gap value, and a chevron that hints instead of competing */
+.site-nav__links>li>a,
+.site-nav__links>li>.nav-more>summary{gap:6px}
+.site-nav__links>li>.nav-more>summary>svg{opacity:.6;transition:transform .2s,opacity .2s}
+.site-nav__links>li>.nav-more>summary:hover>svg,
+.site-nav__links>li>.nav-more[open]>summary>svg{opacity:1}

@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piets Fleet — OBD-II Tracking, Fuel Delivery &amp; Partner Network | Piets Technology Solutions</title>
+<meta name="description" content="A plug-in OBD-II device and an app that sends the fuel company, the mechanic or the parts counter to the vehicle. Predicted service, incident footage filed to insurance, backhaul load matching.">
+<link rel="canonical" href="https://pietstechsolutions.com/fleet.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#011F5D">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Piets Technology Solutions">
+<meta property="og:title" content="Piets Fleet — OBD-II Tracking, Fuel Delivery &amp; Partner Network | Piets Technology Solutions">
+<meta property="og:description" content="A plug-in OBD-II device and an app that sends the fuel company, the mechanic or the parts counter to the vehicle. Predicted service, incident footage filed to insurance, backhaul load matching.">
+<meta property="og:url" content="https://pietstechsolutions.com/fleet.html">
+<meta property="og:image" content="https://pietstechsolutions.com/assets/brand/banner.png">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="360">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Piets Fleet — OBD-II Tracking, Fuel Delivery &amp; Partner Network | Piets Technology Solutions">
+<meta name="twitter:description" content="A plug-in OBD-II device and an app that sends the fuel company, the mechanic or the parts counter to the vehicle. Predicted service, incident footage filed to insurance, backhaul load matching.">
+<meta name="twitter:image" content="https://pietstechsolutions.com/assets/brand/banner.png">
+<link rel="icon" href="/assets/brand/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/brand/logo-mark.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="alternate" type="application/rss+xml" title="Piets Technology Solutions Blog" href="https://pietstechsolutions.com/rss.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Inter:wght@400..800&amp;family=JetBrains+Mono:wght@400..800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/assistant.css">
+<link rel="stylesheet" href="/assets/css/theme-ncp.css">
+<link rel="stylesheet" href="/assets/apps/apps.css">
+<link rel="stylesheet" href="/assets/money/money.css">
+<link rel="stylesheet" href="/assets/css/v3.css">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://pietstechsolutions.com/"},{"@type":"ListItem","position":2,"name":"Piets Fleet","item":"https://pietstechsolutions.com/fleet.html"}]}</script>
+<style>
+/* Fleet pilot & partner intake (fleet.html only) */
+#fleetapply .planner-step h3{margin:0 0 6px}
+#fleetapply fieldset legend{color:var(--navy)}
+#fleetapply textarea{min-height:92px}
+#fleetapply .facheck{display:flex;gap:10px;align-items:flex-start;margin:18px 0 8px;font-size:.92rem;font-weight:600;line-height:1.45;cursor:pointer}
+#fleetapply .facheck input{width:20px;height:20px;flex:0 0 auto;margin-top:1px;accent-color:#7A3DFF}
+#fleetapply .facheck .error-message{flex-basis:100%}
+#fleetapply .fapanel{margin:20px 0 0;padding:18px 20px;border:1px solid var(--line);border-left:4px solid #7A3DFF;border-radius:14px;background:var(--mist)}
+#fleetapply .fapanel h4{margin:0 0 10px;font-size:1rem;color:var(--navy)}
+#fleetapply .fapanel p{margin:0 0 10px;color:var(--muted);font-size:.93rem}
+#fleetapply .fapanel dl{display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:6px 16px;margin:0;font-size:.92rem}
+#fleetapply .fapanel dt{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);align-self:center}
+#fleetapply .fapanel dd{margin:0;font-weight:600;color:var(--navy);overflow-wrap:anywhere}
+#fleetapply .fapanel--fall textarea{width:100%;box-sizing:border-box;font-family:var(--font-mono);font-size:.82rem;background:#fff}
+@media (max-width:560px){
+  #fleetapply{padding:22px 16px}
+  #fleetapply .fapanel{padding:16px}
+  #fleetapply .fapanel dl{grid-template-columns:1fr;gap:2px 0}
+  #fleetapply .fapanel dd{margin-bottom:8px}
+}
+</style>
+</head>
+<body class="">
+<script>document.documentElement.classList.add('js');</script>
+<script src="/assets/js/core.js" defer></script>
+<script src="/assets/js/sections.js" defer></script>
+<script src="/assets/assistant.js" defer></script>
+<script src="/assets/money/fleet.js" defer></script>
+<script src="/assets/money/fleetform.js" defer></script>
+<script src="/assets/money/a11y.js" defer></script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="announcement" data-announcement>
+  <div class="announcement__track" aria-hidden="true"><div class="announcement__run"><span>New: Design Studio &mdash; see cameras or holiday lights on a photo of your own house</span><i></i><span>Merchant processing, custom POS and equipment financing</span><i></i><span>Ghost kitchen setup &mdash; and we fight the delivery-platform chargebacks</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>No required cloud fees</span><i></i><span>Questions? We're here 24/7</span><i></i><span>New: Design Studio &mdash; see cameras or holiday lights on a photo of your own house</span><i></i><span>Merchant processing, custom POS and equipment financing</span><i></i><span>Ghost kitchen setup &mdash; and we fight the delivery-platform chargebacks</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>No required cloud fees</span><i></i><span>Questions? We're here 24/7</span><i></i></div><div class="announcement__run"><span>New: Design Studio &mdash; see cameras or holiday lights on a photo of your own house</span><i></i><span>Merchant processing, custom POS and equipment financing</span><i></i><span>Ghost kitchen setup &mdash; and we fight the delivery-platform chargebacks</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>No required cloud fees</span><i></i><span>Questions? We're here 24/7</span><i></i><span>New: Design Studio &mdash; see cameras or holiday lights on a photo of your own house</span><i></i><span>Merchant processing, custom POS and equipment financing</span><i></i><span>Ghost kitchen setup &mdash; and we fight the delivery-platform chargebacks</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>No required cloud fees</span><i></i><span>Questions? We're here 24/7</span><i></i></div></div>
+  <p class="sr-only">New: Design Studio — see cameras or holiday lights on a photo of your own house Merchant processing, custom POS and equipment financing Ghost kitchen setup — and we fight the delivery-platform chargebacks InVid Tech Paramont authorized installer No required cloud fees Questions? We're here 24/7</p>
+  <button class="announcement__close" type="button" data-close-announcement aria-label="Close announcement"><svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+</div>
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="/index.html" aria-label="Piets Technology Solutions home"><img src="/assets/brand/logo-mark.svg" width="36" height="36" alt=""><span class="brand__text"><strong>PIETS</strong><small>Technology Solutions</small></span></a>
+    <nav class="site-nav" aria-label="Main">
+      <ul id="primary-menu" class="site-nav__links">
+        <li><details class="nav-more" name="pietsnav"><summary>Services <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
+        <li><a href="/services.html">All services</a></li>
+        <li><a href="/services.html#security-cameras">Security cameras</a></li>
+        <li><a href="/services.html#networking-wifi">Networks &amp; Wi-Fi</a></li>
+        <li><a href="/services.html#it-support">IT support &amp; repair</a></li>
+        <li><a href="/lighting.html">Holiday &amp; permanent lighting</a></li>
+        <li><a href="/services.html#access-control">Access control</a></li>
+        <li><a href="/services.html#smart-home">Smart home</a></li>
+        <li><a href="/commercial.html">Commercial</a></li>
+        </ul></details></li>
+        <li><a href="/design-studio.html" data-pillar="1">Design Studio</a></li>
+        <li><details class="nav-more" name="pietsnav" data-navdot="1"><summary>Payments <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
+        <li><a href="/payments.html">Merchant processing &amp; POS</a></li>
+        <li><a href="/ghost-kitchen.html">Ghost kitchen &amp; delivery</a></li>
+        <li><a href="/ghost-kitchen.html#disputes">Chargebacks &amp; disputes</a></li>
+        <li><a href="/financing.html">Equipment financing</a></li>
+        </ul></details></li>
+        <li><details class="nav-more" name="pietsnav" data-navdot="1"><summary data-on="1">Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
+        <li><a href="/software.html">Piets Software</a></li>
+        <li><a href="/apps.html">Piets Apps (Pietvue)</a></li>
+        <li><a href="/fieldhq.html">Field HQ CRM</a></li>
+        <li><a href="/fleet.html" aria-current="page">Piets Fleet</a></li>
+        <li><a href="/piet-box.html">The Piet Box</a></li>
+        <li><a href="/websites.html">Websites &middot; Site Studio</a></li>
+        </ul></details></li>
+        <li><a href="/plans.html">Plans</a></li>
+        <li><a href="/remote-support.html">Remote support</a></li>
+        <li><details class="nav-more" name="pietsnav"><summary>More <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
+        <li><a href="/coverage.html">Coverage Planner</a></li>
+        <li><a href="/locations/index.html">Locations</a></li>
+        <li><a href="/blog/index.html">Blog</a></li>
+        <li><a href="/portal.html">Client login</a></li>
+        <li><a href="/partners.html">Partners</a></li>
+        <li><a href="/about.html">About us</a></li>
+        </ul></details></li>
+        <li class="site-nav__mobile-only"><details class="nav-more" name="pietsnav"><summary>Log in <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
+        <li><a href="/portal.html">Client &middot; Field HQ portal</a></li>
+        <li><a href="/fieldhq.html#console">Owner / staff &middot; Field HQ</a></li>
+        <li><a href="/fieldhq.html#console">Reseller / VAR &middot; Field HQ</a></li>
+        </ul></details></li>
+        <li class="site-nav__mobile-only"><a href="tel:+16318715957">Call 631-871-5957</a></li>
+        <li class="site-nav__mobile-only"><a href="/plan.html">Get a quote</a></li>
+        </ul>
+    </nav>
+    <div class="site-header__actions">
+      <a class="header-phone" href="tel:+16318715957"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>631-871-5957</a>
+      <details class="nav-more login-menu" name="pietsnav"><summary class="btn btn-ghost btn-sm header-login" aria-label="Log in"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>Log in<svg class="login-menu__chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel login-menu__panel">
+        <li><a href="/portal.html"><b>Client</b><span>Your quotes, visits, photos and invoices &mdash; the Field HQ client portal</span></a></li>
+        <li><a href="/fieldhq.html#console"><b>Owner / staff</b><span>The Field HQ console</span></a></li>
+        <li><a href="/fieldhq.html#console"><b>Reseller / VAR</b><span>Field HQ &mdash; the same console, partner access</span></a></li>
+        <li class="login-menu__foot">All three run under Field HQ &middot; 631-871-5957</li>
+        </ul></details>
+      <a class="btn btn-primary btn-sm" href="/plan.html">Get a quote</a>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<main id="main">
+<section class="phero">
+  <div class="phero__bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/index.html">Home</a> / <span>Piets Fleet</span></nav>
+    <span class="ptag"><i></i>In development &middot; partner programme open</span>
+    <h1>Fuel comes to the truck. <span class="grad-text">The truck keeps working.</span></h1>
+    <p class="lead">A plug-in OBD-II device and an app that does the part nobody else joins up &mdash; it knows the vehicle is low, it knows where the vehicle is, and it sends the fuel company, the mechanic or the parts counter straight to it.</p>
+    <div class="btn-row" style="margin-top:22px">
+      <a class="btn btn-primary btn-lg" href="#console">Open the fleet console</a>
+      <a class="btn btn-ghost btn-lg" href="#apply">Partner with us on it</a>
+    </div>
+    <div class="phero__stats">
+      <div><b>1</b><span>Device, plugs into the port</span></div>
+      <div><b>4</b><span>Partner types in the network</span></div>
+      <div><b>0</b><span>Trips to the pump</span></div>
+    </div>
+    <div class="pillars">
+      <a href="/design-studio.html"><b>Design Studio</b><span>See it on your house</span></a>
+      <a href="/payments.html"><b>Payments</b><span>Processing &amp; POS</span></a>
+      <a href="/ghost-kitchen.html"><b>Ghost kitchen</b><span>Delivery &amp; disputes</span></a>
+      <a href="/fleet.html" aria-current="page"><b>Piets Fleet</b><span>Trucks &amp; fuel</span></a>
+      <a href="/financing.html"><b>Financing</b><span>Spread the cost</span></a>
+      </div>
+  </div>
+</section>
+
+<section class="darkwrap" id="console">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow" style="color:#02D7F5">Concept console</div>
+      <h2>This is the idea, running.</h2>
+      <p>Pick a vehicle. Van 1 is sitting on a job at 18% fuel &mdash; send fuel to it instead of pulling it off the job. Then look at how service gets predicted and how an empty return leg gets filled.</p></div>
+    <div id="fleetDemo"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Why build another one</div>
+      <h2>Plenty of apps track a truck. None of them send anyone to it.</h2>
+      <p>Tracking is solved. What is not solved is the bit after the alert &mdash; somebody still has to notice, phone around, and take the vehicle out of service to deal with it. That is the gap this fills.</p></div>
+    <div class="fgrid">
+      <div class="fcard"><span class="it"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="14" height="10" rx="2"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6.5" cy="18.5" r="2"/><circle cx="18" cy="18.5" r="2"/></svg></span>
+        <h3>It reads the vehicle</h3><p>Mileage, fuel level, engine hours and fault codes come off the OBD-II port. Not typed in by a driver who forgot.</p></div>
+      <div class="fcard"><span class="it"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v8a2 2 0 0 0 4 0V3M4 21h8V3H4zM16 8v9a2 2 0 0 0 4 0V9l-3-4"/></svg></span>
+        <h3>Fuel comes to you</h3><p>Low tank plus a GPS pin equals a job for a fuel partner. They turn up at the site. The driver never leaves the work.</p></div>
+      <div class="fcard"><span class="it"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M14 7a4 4 0 1 1-5 5l-6 6 2 2 6-6a4 4 0 0 0 5-5z"/></svg></span>
+        <h3>Service predicted</h3><p>It learns how hard each vehicle gets used and flags the service before the noise starts, with the mileage and the code already attached for the shop.</p></div>
+      <div class="fcard"><span class="it"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+        <h3>Tap to pay in the field</h3><p>The fuel driver or the technician takes payment on their own phone, tip included, settling to their own account. No terminal, no invoice to chase.</p></div>
+      <div class="fcard"><span class="it"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11a2 2 0 0 1 2 2v1l4-2.5v9L16 14v1a2 2 0 0 1-2 2H3z"/><circle cx="8.5" cy="12" r="2.5"/></svg></span>
+        <h3>Footage that files itself</h3><p>On an incident the clip locks, copies off the vehicle and goes to the insurer on file with the time, the track and the speed. Nobody has to remember three weeks later.</p></div>
+      <div class="fcard"><span class="it"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+        <h3>Thirty minutes out</h3><p>The customer gets told automatically when the vehicle is half an hour away. The &ldquo;what time are you coming&rdquo; call stops.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="darkwrap">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow" style="color:#02D7F5">Beyond work trucks</div>
+      <h2>Anything that sits still with an empty tank.</h2></div>
+    <div class="flow">
+      <div><h4>Party buses &amp; coaches</h4><p>Parked outside a venue for four hours. Fuel it where it stands instead of the driver leaving the job.</p></div>
+      <div><h4>Transport &amp; haulage</h4><p>The return legs get chained the way an airline chains flights, so the truck is not driving home empty.</p></div>
+      <div><h4>Trades fleets</h4><p>Plumbers, electricians, landscapers. Same problem, same fix, same partner network.</p></div>
+      <div><h4>Ordinary drivers</h4><p>Low and already late for work? Fuel delivered while the car is in the lot. Detailing while you are inside.</p></div>
+    </div>
+    <div class="callout">
+      <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      <p><b>Where this honestly stands.</b> Piets Fleet is in development, not shipping. The console above is a working demonstration of the concept, built from the real design &mdash; it is not reading a real vehicle. Nothing on this page is for sale yet, and no date is being promised. If you want in early, the next section is the one to read.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--mist" id="partner">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Two ways in</div>
+      <h2>Fleets to pilot it. Partners to serve it.</h2>
+      <p>The app is only worth anything if there is somebody on the other end of the alert. So it is being built with the fuel companies, shops and parts counters in from the start, not bolted on later.</p></div>
+    <div class="twocol">
+      <div>
+        <h3>If you run a fleet</h3>
+        <p style="color:var(--muted)">Pilot vehicles get the device, the app and a say in what gets built next. Tell us the three things that waste the most time in your week.</p>
+        <ul class="check-list" style="margin-top:14px">
+          <li>Vehicle health, mileage and fuel without anybody writing it down</li>
+          <li>Service booked before it becomes a breakdown</li>
+          <li>Customers told automatically when the van is close</li>
+          <li>Incident footage handled without a scramble</li>
+        </ul>
+      </div>
+      <div>
+        <h3>If you are a potential partner</h3>
+        <p style="color:var(--muted)">Fuel delivery, mobile mechanics, parts counters, detailers, insurance. The alerts the app raises become jobs, and they route to the partners in the network.</p>
+        <ul class="check-list" style="margin-top:14px">
+          <li>Work routed to you with the vehicle, the location and the fault already attached</li>
+          <li>Paid in the app, straight to your own account</li>
+          <li>Featured placement in the partner directory</li>
+          <li>Joint-venture conversations welcome &mdash; this is being built with partners, not at them</li>
+        </ul>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:28px">
+      <a class="btn btn-primary btn-lg" href="#apply">Put my fleet or my shop on the list</a>
+      <a class="btn btn-outline btn-lg" href="tel:+16318715957">Call 631-871-5957</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="apply">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow" style="color:#7A3DFF">Apply</div>
+      <h2>Put your fleet or your shop on the list.</h2>
+      <p>Three short steps. We read every one of these ourselves &mdash; it goes to the same phone that answers at 2am. Nothing here is a commitment and there is nothing to pay.</p></div>
+
+    <div class="planner-container" id="fleetapply">
+      <div class="planner-header">
+        <h2>Fleet &amp; partner intake</h2>
+        <div class="planner-progress">
+          <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+          <div class="progress-steps">
+            <span class="step current" data-step="1">1</span>
+            <span class="step" data-step="2">2</span>
+            <span class="step" data-step="3">3</span>
+          </div>
+        </div>
+      </div>
+
+      <form class="planner-form" data-fleet-form action="/api/leads" method="post" novalidate>
+        <input type="hidden" name="source" value="Fleet - partner &amp; pilot intake">
+        <input type="hidden" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="planner-step" data-step="1">
+          <h3>Which one are you?</h3>
+          <p>Pick the one that fits best. It changes the next question, nothing else.</p>
+          <div class="service-grid" style="grid-template-columns:repeat(auto-fill,minmax(210px,1fr))">
+            <label class="service-option">
+              <input type="radio" name="role" value="fleet" required>
+              <div class="service-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16V7h11v9"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></div>
+              <div class="service-label">I run a fleet<br><small style="font-weight:500;color:var(--muted)">Vans, trucks or cars I want on the pilot</small></div>
+            </label>
+            <label class="service-option">
+              <input type="radio" name="role" value="partner">
+              <div class="service-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V8a5 5 0 0 1 10 0v3"/><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M12 15v2"/></svg></div>
+              <div class="service-label">I am a potential partner<br><small style="font-weight:500;color:var(--muted)">Fuel, mechanic, parts, towing, insurance</small></div>
+            </label>
+          </div>
+          <div class="form-msg" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="planner-step" data-step="2" style="display:none">
+          <h3>Tell us about it</h3>
+
+          <div data-branch="fleet" hidden>
+            <p>Pilot vehicles get the device, the app and a say in what gets built next.</p>
+            <div class="two">
+              <div class="field">
+                <label for="fa-vehicles">How many vehicles? *</label>
+                <select id="fa-vehicles" name="vehicles" required>
+                  <option value="">Choose a range&hellip;</option>
+                  <option value="1-3">1&ndash;3</option>
+                  <option value="4-10">4&ndash;10</option>
+                  <option value="11-25">11&ndash;25</option>
+                  <option value="25-plus">25+</option>
+                  <option value="not-sure">Not sure yet</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="fa-town">Town / ZIP you are based in *</label>
+                <input id="fa-town" name="town" type="text" required autocomplete="postal-code">
+              </div>
+            </div>
+            <fieldset style="border:0;padding:0;margin:18px 0 0">
+              <legend style="font-weight:600;font-size:.92rem;padding:0">What would help most? Pick any.</legend>
+              <div class="service-grid">
+                <label class="service-option"><input type="checkbox" name="need" value="vehicle-health"><div class="service-label">Vehicle health without the paperwork</div></label>
+                <label class="service-option"><input type="checkbox" name="need" value="fuel-to-site"><div class="service-label">Fuel brought to the site</div></label>
+                <label class="service-option"><input type="checkbox" name="need" value="predicted-service"><div class="service-label">Service before the breakdown</div></label>
+                <label class="service-option"><input type="checkbox" name="need" value="eta-texts"><div class="service-label">Customer told when the van is close</div></label>
+                <label class="service-option"><input type="checkbox" name="need" value="incident-footage"><div class="service-label">Incident footage handled for me</div></label>
+                <label class="service-option"><input type="checkbox" name="need" value="tap-to-pay"><div class="service-label">Tap to pay in the field</div></label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div data-branch="partner" hidden>
+            <p>The alerts the app raises become jobs, and they route to the partners in the network.</p>
+            <fieldset style="border:0;padding:0;margin:0">
+              <legend style="font-weight:600;font-size:.92rem;padding:0">What does your business do? Pick any. *</legend>
+              <div class="service-grid">
+                <label class="service-option"><input type="checkbox" name="trade" value="fuel-delivery"><div class="service-label">Fuel delivery</div></label>
+                <label class="service-option"><input type="checkbox" name="trade" value="mobile-mechanic"><div class="service-label">Mobile mechanic</div></label>
+                <label class="service-option"><input type="checkbox" name="trade" value="shop-garage"><div class="service-label">Shop or garage</div></label>
+                <label class="service-option"><input type="checkbox" name="trade" value="parts-counter"><div class="service-label">Parts counter</div></label>
+                <label class="service-option"><input type="checkbox" name="trade" value="tire-roadside"><div class="service-label">Tire &amp; roadside</div></label>
+                <label class="service-option"><input type="checkbox" name="trade" value="towing"><div class="service-label">Towing &amp; recovery</div></label>
+                <label class="service-option"><input type="checkbox" name="trade" value="detailing"><div class="service-label">Detailing &amp; wash</div></label>
+                <label class="service-option"><input type="checkbox" name="trade" value="insurance"><div class="service-label">Insurance</div></label>
+                <label class="service-option"><input type="checkbox" name="trade" value="other"><div class="service-label">Something else</div></label>
+              </div>
+            </fieldset>
+            <div class="two" style="margin-top:10px">
+              <div class="field">
+                <label for="fa-area">Towns or counties you cover *</label>
+                <input id="fa-area" name="area" type="text" required placeholder="e.g. Suffolk and eastern Nassau">
+              </div>
+              <div class="field">
+                <label for="fa-radius">How far do you travel to a vehicle? *</label>
+                <select id="fa-radius" name="radius" required>
+                  <option value="">Choose a range&hellip;</option>
+                  <option value="10-miles">Within about 10 miles</option>
+                  <option value="25-miles">Within about 25 miles</option>
+                  <option value="50-miles">Within about 50 miles</option>
+                  <option value="statewide">Anywhere in the state</option>
+                  <option value="not-sure">Depends on the job</option>
+                </select>
+              </div>
+            </div>
+            <div class="field" style="margin-top:4px">
+              <label for="fa-hours">When can you take a job? (optional)</label>
+              <input id="fa-hours" name="hours" type="text" placeholder="e.g. 6am&ndash;6pm weekdays, on call weekends">
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:16px">
+            <label for="fa-notes">Anything else we should know? (optional)</label>
+            <textarea id="fa-notes" name="notes" rows="3" placeholder="The three things that waste the most time in your week are the most useful thing you can put here."></textarea>
+          </div>
+          <div class="form-msg" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="planner-step" data-step="3" style="display:none">
+          <h3>How do we reach you?</h3>
+          <div class="two">
+            <div class="field">
+              <label for="fa-company">Business name *</label>
+              <input id="fa-company" name="company" type="text" required autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="fa-name">Your name *</label>
+              <input id="fa-name" name="name" type="text" required autocomplete="name">
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label for="fa-phone">Phone *</label>
+              <input id="fa-phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel">
+            </div>
+            <div class="field">
+              <label for="fa-email">Email</label>
+              <input id="fa-email" name="email" type="email" autocomplete="email">
+            </div>
+          </div>
+          <div class="field">
+            <label for="fa-best">Best time to reach you</label>
+            <input id="fa-best" name="best_time" type="text" placeholder="e.g. mornings, after the run">
+          </div>
+          <div class="fapanel" data-review hidden>
+            <h4>What you are sending</h4>
+            <dl data-review-list></dl>
+          </div>
+          <label class="facheck"><input type="checkbox" name="sms_consent" required> <span>You can call or text me about Piets Fleet. Msg &amp; data rates may apply, reply STOP to opt out. *</span></label>
+          <p class="consent">Piets Fleet is in development. Sending this puts you on the list &mdash; it is not an order, there is nothing to pay and no date is being promised.</p>
+          <div class="form-msg" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="planner-nav">
+          <button type="button" class="btn btn-outline fleet-prev" style="display:none">Back</button>
+          <button type="button" class="btn btn-navy fleet-next">Next</button>
+          <button type="submit" class="btn btn-navy fleet-submit" style="display:none">Put me on the list</button>
+        </div>
+      </form>
+
+      <div class="planner-success" data-success style="display:none">
+        <h3>You are on the list.</h3>
+        <p>We will call or text you about Piets Fleet. If you would rather start the conversation now, the number answers 24/7.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="tel:+16318715957">Call 631-871-5957</a>
+          <a class="btn btn-light" href="sms:+16318715957">Text 631-871-5957</a>
+        </div>
+      </div>
+
+      <div class="fapanel fapanel--fall" data-fallback hidden>
+        <h4>This demo has no server behind it</h4>
+        <p>Your answers are still right here &mdash; nothing was lost and nothing was sent anywhere. Send them to us whichever way suits you.</p>
+        <label class="sr-only" for="fa-out">Your answers</label>
+        <textarea id="fa-out" data-out rows="8" readonly></textarea>
+        <div class="btn-row" style="margin-top:14px">
+          <a class="btn btn-primary" data-out-sms href="sms:+16318715957">Text it to us</a>
+          <a class="btn btn-outline" data-out-mail href="mailto:pietstechsolutions@gmail.com">Email it to us</a>
+          <a class="btn btn-outline" href="tel:+16318715957">Call 631-871-5957</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="ailine" style="margin-top:26px">Piets Technology Solutions Inc &middot; 631-871-5957 &middot; pietstechsolutions.com &middot; Much of this page was prepared with AI. We work hard to keep it right &mdash; if you spot a mistake or have a suggestion, call 631-871-5957 so we can fix it.</p>
+  </div>
+</section>
+
+<section class="darkwrap">
+  <div class="wrap" style="text-align:center">
+    <span class="ptag"><i></i>Early access</span>
+    <h2 style="margin:16px 0 10px">Tell us what your fleet costs you in lost hours.</h2>
+    <p style="max-width:58ch;margin:0 auto 24px">That is the whole intake conversation. The ones that come up most often are the ones that get built first.</p>
+    <div class="btn-row btn-row--center">
+      <a class="btn btn-primary btn-lg" href="#apply">Join the pilot list</a>
+      <a class="btn btn-ghost btn-lg" href="/software.html">See the rest of the Piets software</a>
+    </div>
+    <p class="ailine" style="margin:22px auto 0">Piets Technology Solutions Inc &middot; 631-871-5957 &middot; pietstechsolutions.com &middot; Much of this page was prepared with AI. We work hard to keep it right &mdash; if you spot a mistake or have a suggestion, call 631-871-5957 so we can fix it.</p>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="brand" href="/index.html" aria-label="Piets Technology Solutions home"><img src="/assets/brand/logo-mark.svg" width="40" height="40" alt=""><span class="brand__text"><strong>PIETS</strong><small>Technology Solutions</small></span></a>
+        <p>Wi-Fi, Wires, Whatever — Piet Makes It Better</p>
+        <a class="btn btn-primary btn-sm" href="/plan.html">Get a free quote</a>
+        <p class="site-footer__247">Questions? We&#39;re here 24/7</p>
+      </div>
+      <div class="site-footer__cols">
+        <div><h4>Services</h4><ul>
+          <li><a href="/services.html#security-cameras">Security Cameras</a></li>
+          <li><a href="/services.html#it-support">IT Support &amp; Repair</a></li>
+          <li><a href="/services.html#networking-wifi">Networking &amp; Wi-Fi</a></li>
+          <li><a href="/services.html#structured-cabling">Structured Cabling</a></li>
+          <li><a href="/services.html#smart-home">Smart Home</a></li>
+          <li><a href="/lighting.html">Holiday &amp; Permanent Lighting</a></li>
+          <li><a href="/payments.html">POS &amp; Merchant</a></li>
+          <li><a href="/services.html#ip-phones">Business Phones</a></li>
+          <li><a href="/services.html#menu-boards">Digital Menu Boards</a></li>
+          <li><a href="/ghost-kitchen.html">Ghost Kitchen Setup</a></li>
+          <li><a href="/services.html#access-control">Access Control</a></li>
+          <li><a href="/services.html#remote-support">Remote Support</a></li>
+          <li><a href="/services.html#tech-support-247">24/7 Tech Support</a></li>
+          <li><a href="/services.html#managed-services">Managed Services</a></li>
+        </ul></div>
+        <div><h4>Company</h4><ul>
+          <li><a href="/about.html">About us</a></li>
+          <li><a href="/commercial.html">Commercial</a></li>
+          <li><a href="/plans.html">Managed plans</a></li>
+          <li><a href="/partners.html">Partners &amp; resellers</a></li>
+          <li><a href="/design-studio.html">Design Studio (free)</a></li>
+          <li><a href="/lighting.html">Holiday &amp; permanent lighting</a></li>
+          <li><a href="/payments.html">Merchant processing &amp; POS</a></li>
+          <li><a href="/ghost-kitchen.html">Ghost kitchen &amp; delivery</a></li>
+          <li><a href="/financing.html">Equipment financing</a></li>
+          <li><a href="/software.html">Piets Software</a></li>
+          <li><a href="/fleet.html">Piets Fleet</a></li>
+          <li><a href="/apps.html">Piets Apps (Pietvue)</a></li>
+          <li><a href="/fieldhq.html">Field HQ CRM</a></li>
+          <li><a href="/piet-box.html">The Piet Box</a></li>
+          <li><a href="/websites.html">Website demo (free)</a></li>
+          <li><a href="/coverage.html">Coverage Planner</a></li>
+          <li><a href="/remote-support.html">Remote support</a></li>
+          <li><a href="/blog/index.html">Blog</a></li>
+          <li><a href="/portal.html">Client login (Field HQ)</a></li>
+        </ul>
+        <h4>Service areas</h4><ul>
+          <li><a href="/locations/long-island.html">Long Island</a></li>
+          <li><a href="/locations/nyc.html">New York City</a></li>
+          <li><a href="/locations/hudson-valley.html">Hudson Valley</a></li>
+          <li><a href="/locations/johnstown-capital-region.html">Johnstown &amp; Capital Region</a></li>
+        </ul></div>
+        <div><h4>Contact</h4><ul>
+          <li><a href="tel:+16318715957">Call 631-871-5957</a></li>
+          <li><a href="sms:+16318715957">Text 631-871-5957</a></li>
+          <li><a href="mailto:pietstechsolutions@gmail.com">pietstechsolutions@gmail.com</a></li>
+        </ul></div>
+      </div>
+    </div>
+    <div class="site-footer__legal">
+      <p>© <span data-year>2026</span> Piets Technology Solutions Inc. All rights reserved. Licensed &amp; insured. InVid Tech Paramont authorized installer.</p>
+      <p class="site-footer__ai">Some content on this site was drafted with AI assistance. Spot a mistake or have a suggestion? Tell us at pietstechsolutions@gmail.com and we'll fix it.</p>
+    </div>
+  </div>
+</footer>
+<nav class="mobile-bar" aria-label="Quick contact">
+  <a href="tel:+16318715957">Call</a>
+  <a href="sms:+16318715957">Text</a>
+  <a class="mobile-bar__quote" href="/plan.html">Get a quote</a>
+</nav>
+</body>
+</html>

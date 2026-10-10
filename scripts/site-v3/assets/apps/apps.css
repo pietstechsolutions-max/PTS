@@ -1,0 +1,88 @@
+/* Piets Apps page — Navy · Cyan · Purple. Piets Technology Solutions Inc · 631-871-5957 */
+:root{--pg:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%)}
+
+/* pillar strip */
+.pillars{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:34px}
+.pillars a{display:flex;flex-direction:column;gap:6px;padding:14px 15px;border-radius:16px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);color:#fff;transition:.2s}
+.pillars a:hover{background:rgba(122,61,255,.18);border-color:rgba(167,139,250,.7);transform:translateY(-2px)}
+.pillars b{font-family:var(--font-display);font-size:1rem}
+.pillars span{font-size:.8rem;color:#A9B8D4}
+.pillars a[aria-current]{background:rgba(122,61,255,.26);border-color:rgba(167,139,250,.85)}
+@media(max-width:900px){.pillars{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.pillars{grid-template-columns:1fr}}
+
+/* app switcher */
+.appdeck{display:grid;grid-template-columns:300px 1fr;gap:26px;align-items:start}
+@media(max-width:980px){.appdeck{grid-template-columns:1fr}}
+.applist{display:flex;flex-direction:column;gap:8px}
+@media(max-width:980px){.applist{flex-direction:row;overflow:auto;padding-bottom:6px}}
+.applist button{display:flex;gap:12px;align-items:center;text-align:left;width:100%;cursor:pointer;
+  padding:13px 14px;border-radius:16px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);color:#CFDCF2;font:inherit;transition:.18s}
+@media(max-width:980px){.applist button{width:auto;white-space:nowrap}}
+.applist button:hover{background:rgba(255,255,255,.08);color:#fff}
+.applist button[aria-selected="true"]{background:rgba(122,61,255,.22);border-color:rgba(167,139,250,.8);color:#fff}
+.applist .dot{width:30px;height:30px;border-radius:9px;background:var(--pg);display:grid;place-items:center;flex:0 0 auto}
+.applist .dot svg{width:17px;height:17px;stroke:#071024;fill:none;stroke-width:2}
+.applist small{display:block;font-size:.76rem;color:#8EA3C9;font-weight:400}
+.applist strong{font-size:.97rem;font-weight:600}
+
+.appstage{border-radius:26px;overflow:hidden;border:1px solid rgba(255,255,255,.13);
+  background:linear-gradient(180deg,#0A1430,#0E1A3A);box-shadow:0 30px 80px rgba(3,6,20,.5)}
+.appbar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.03)}
+.appbar .lg{width:26px;height:26px;border-radius:8px;background:#011F5D;display:grid;place-items:center}
+.appbar .lg i{display:block;width:12px;height:3px;border-radius:2px;background:var(--pg);box-shadow:0 5px 0 0 #02D7F5,0 10px 0 0 #7A3DFF}
+.appbar b{font-family:var(--font-display);font-size:.98rem}
+.appbar .live{margin-left:auto;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#2EE59D}
+.appbar .live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#2EE59D;margin-right:6px}
+.approles{display:flex;gap:6px;padding:12px 16px 0;flex-wrap:wrap}
+.approles button{cursor:pointer;font:inherit;font-size:.84rem;padding:7px 14px;border-radius:999px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#B9C8E2}
+.approles button[aria-selected="true"]{background:var(--pg);color:#061024;font-weight:700;border-color:transparent}
+.appbody{padding:16px 16px 22px}
+.appbody h4{font-family:var(--font-display);font-size:1.3rem;margin:4px 0 2px;color:#fff}
+.appbody .sub{color:#93A6C6;font-size:.88rem;margin-bottom:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{padding:13px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1)}
+.kpi b{display:block;font-family:var(--font-display);font-size:1.6rem;line-height:1.05;color:#fff}
+.kpi span{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#8EA3C9}
+.kpi.warn b{color:#FFB020}.kpi.bad b{color:#FF5D5D}.kpi.good b{color:#2EE59D}
+.rows{margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+.rows .r{display:flex;gap:12px;align-items:center;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.07);font-size:.9rem}
+.rows .r:last-child{border-bottom:0}
+.rows .r:nth-child(odd){background:rgba(255,255,255,.025)}
+.rows .r b{color:#fff;font-weight:600}
+.rows .r .m{color:#8EA3C9;font-size:.82rem}
+.rows .r .tail{margin-left:auto;display:flex;gap:8px;align-items:center}
+.chip{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.18);color:#C8D6EE;white-space:nowrap}
+.chip.ok{color:#2EE59D;border-color:rgba(46,229,157,.45)}
+.chip.warn{color:#FFB020;border-color:rgba(255,176,32,.45)}
+.chip.bad{color:#FF5D5D;border-color:rgba(255,93,93,.45)}
+.chip.pur{color:#CDB4FF;border-color:rgba(167,139,250,.6);background:rgba(122,61,255,.16)}
+.appnote{margin-top:14px;font-size:.8rem;color:#7F91B0}
+.appbtn{cursor:pointer;font:inherit;font-size:.82rem;font-weight:600;padding:7px 14px;border-radius:999px;border:0;background:var(--pg);color:#061024}
+.appbtn.ghost{background:transparent;border:1px solid rgba(255,255,255,.22);color:#DCE6F7}
+
+/* screenshot strip */
+.shots{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px}
+@media(max-width:900px){.shots{grid-template-columns:repeat(2,1fr)}}
+.shots figure{margin:0;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#0A1430}
+.shots img{width:100%;height:300px;object-fit:cover;object-position:top}
+.shots figcaption{padding:11px 14px;font-size:.84rem;color:#A9B8D4}
+
+/* white feature cards */
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+@media(max-width:900px){.fgrid{grid-template-columns:1fr}}
+.fcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)}
+.fcard .it{width:44px;height:44px;border-radius:13px;background:#CDEAF7;display:grid;place-items:center;margin-bottom:12px}
+.fcard .it svg{width:22px;height:22px;stroke:#016FD6;fill:none;stroke-width:1.9}
+.fcard h3{font-size:1.15rem;margin-bottom:6px}
+.fcard p{color:var(--muted);font-size:.95rem;margin:0}
+
+/* lists inside product cards stack */
+.fcard .check-list{display:block}
+.fcard .check-list li{margin-bottom:9px}

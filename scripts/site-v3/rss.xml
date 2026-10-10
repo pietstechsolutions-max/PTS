@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Piets Technology Solutions Blog</title>
+  <link>https://pietstechsolutions.com/blog</link>
+  <atom:link href="https://pietstechsolutions.com/rss.xml" rel="self" type="application/rss+xml"/>
+  <description>Tech tips on security cameras, Wi-Fi, cabling, POS and IT for New York homes and small businesses.</description>
+  <language>en-us</language>
+  <lastBuildDate>Sat, 10 Oct 2026 16:00:00 GMT</lastBuildDate>
+  <item>
+    <title><![CDATA[Permanent Lighting vs Putting Them Up Every Year]]></title>
+    <link>https://pietstechsolutions.com/blog/permanent-lighting-vs-putting-them-up-every-year</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/permanent-lighting-vs-putting-them-up-every-year</guid>
+    <pubDate>Sat, 10 Oct 2026 16:00:00 GMT</pubDate>
+    <description><![CDATA[Permanent roofline track or strings up every November? The real trade-offs — the ladder, the fascia, the takedown, the storage — and how to see both on a photo of your own house first.]]></description>
+    <category>lighting</category><category>permanent lighting</category><category>holiday lighting</category><category>home improvement</category>
+  </item>
+  <item>
+    <title><![CDATA[What Your Card Statement Is Actually Costing You]]></title>
+    <link>https://pietstechsolutions.com/blog/what-your-card-statement-is-costing-you</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/what-your-card-statement-is-costing-you</guid>
+    <pubDate>Sat, 10 Oct 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Your real processing cost is not the rate on page one. Here is how to work out your effective rate from your own statement, and every line item that quietly adds to it.]]></description>
+    <category>payments</category><category>merchant services</category><category>point of sale</category><category>small business</category>
+  </item>
+  <item>
+    <title><![CDATA[What a Website Should Actually Do for a Long Island Contractor in 2026]]></title>
+    <link>https://pietstechsolutions.com/blog/website-for-contractors-long-island</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/website-for-contractors-long-island</guid>
+    <pubDate>Wed, 07 Oct 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Most local service websites look fine and bring in nothing. Here is what a contractor, plumber or landscaper site needs to turn visitors into calls, and how to see yours free before paying.]]></description>
+    <category>websites</category><category>small business</category><category>marketing</category><category>local seo</category>
+  </item>
+  <item>
+    <title><![CDATA[Do You Need a Permit for Security Cameras in Suffolk County?]]></title>
+    <link>https://pietstechsolutions.com/blog/permit-for-security-cameras-suffolk-county</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/permit-for-security-cameras-suffolk-county</guid>
+    <pubDate>Tue, 22 Sep 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Need a permit for security cameras in Suffolk County? Usually not. Here's when you might, plus the privacy rules Long Island homeowners should know.]]></description>
+    <category>security cameras</category><category>Suffolk County</category><category>Long Island</category><category>permits</category><category>home security</category>
+  </item>
+  <item>
+    <title><![CDATA[Restaurant Wi-Fi Setup in the Hudson Valley: What Works]]></title>
+    <link>https://pietstechsolutions.com/blog/restaurant-wifi-setup-hudson-valley</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/restaurant-wifi-setup-hudson-valley</guid>
+    <pubDate>Mon, 21 Sep 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Planning a restaurant Wi-Fi setup in the Hudson Valley? Here's how to keep your POS, guest Wi-Fi, and menu boards fast and secure on one network.]]></description>
+    <category>restaurant Wi-Fi</category><category>Hudson Valley</category><category>networking</category><category>POS</category><category>small business</category>
+  </item>
+  <item>
+    <title><![CDATA[What a Small Business POS Setup Actually Costs (and What to Ask)]]></title>
+    <link>https://pietstechsolutions.com/blog/small-business-pos-setup-cost</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/small-business-pos-setup-cost</guid>
+    <pubDate>Wed, 02 Sep 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[The real line items behind a restaurant or retail POS install — hardware, processing, software, network — and the questions that keep you from overpaying.]]></description>
+    <category>point of sale</category><category>restaurants</category><category>small business</category>
+  </item>
+  <item>
+    <title><![CDATA[Wi-Fi Dead Zones: Why Your Router Isn't Enough]]></title>
+    <link>https://pietstechsolutions.com/blog/wifi-dead-zones-why-your-router-isnt-enough</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/wifi-dead-zones-why-your-router-isnt-enough</guid>
+    <pubDate>Tue, 25 Aug 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Why one router can't cover a Long Island or Hudson Valley home, why mesh kits disappoint, and what a real whole-home Wi-Fi upgrade looks like.]]></description>
+    <category>wi-fi</category><category>networking</category><category>home network</category>
+  </item>
+  <item>
+    <title><![CDATA[How Many Security Cameras Does a Long Island Home Need?]]></title>
+    <link>https://pietstechsolutions.com/blog/how-many-security-cameras-long-island-home</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/how-many-security-cameras-long-island-home</guid>
+    <pubDate>Tue, 18 Aug 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[A practical guide to camera counts for Suffolk and Nassau homes: which spots matter, what 4K and night vision buy you, and how to avoid overpaying.]]></description>
+    <category>security cameras</category><category>long island</category><category>home security</category>
+  </item>
+</channel>
+</rss>

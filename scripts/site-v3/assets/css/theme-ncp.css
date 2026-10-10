@@ -1,0 +1,92 @@
+/* Piets — theme "Navy · Cyan · Purple" (Oct 9 2026, option B)
+   Loaded LAST on every page. Piets Technology Solutions Inc · 631-871-5957
+   Much of this was prepared with AI. Tell the owner about any mistake so it gets fixed. */
+
+:root{
+  --ncp-purple:#7A3DFF; --ncp-purple-deep:#5B2EE6; --ncp-purple-light:#9B6BFF;
+  --ncp-purple-wash:#E9DDFF; --ncp-purple-ink:#4B1FC4; --ncp-navy-purple:#1B0B55;
+  --ncp-grad:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%);
+}
+
+/* ---------- header nav: "More" dropdown (no JS, <details>) ---------- */
+.site-nav__links .nav-more{position:relative}
+.site-nav__links .nav-more>summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;
+  padding:8px 11px;border-radius:999px;color:#C9D4E8;font-size:.93rem;font-weight:500;transition:color .2s,background .2s}
+.site-nav__links .nav-more>summary::-webkit-details-marker{display:none}
+.site-nav__links .nav-more>summary:hover,.site-nav__links .nav-more[open]>summary{color:#fff;background:rgba(122,61,255,.28)}
+.site-nav__links .nav-more>summary svg{transition:transform .2s}
+.site-nav__links .nav-more[open]>summary svg{transform:rotate(180deg)}
+.nav-more__panel{
+  list-style:none;margin:0;
+  position:absolute;top:calc(100% + 10px);right:0;left:auto;
+  min-width:232px;padding:8px;border-radius:18px;z-index:60;
+  background:linear-gradient(180deg,#0A1430,#140B3A);
+  border:1px solid rgba(167,139,250,.35);
+  box-shadow:0 24px 60px rgba(3,6,20,.6),0 0 0 1px rgba(2,215,245,.08)}
+.nav-more__panel li a{display:block;padding:10px 12px;border-radius:12px;font-size:.95rem}
+.nav-more__panel li a:hover{background:rgba(122,61,255,.26);color:#fff}
+@media (max-width:1020px){
+  .site-nav__links .nav-more{width:100%}
+  .site-nav__links .nav-more>summary{font-size:1.25rem;padding:14px 12px;color:#fff;border-radius:12px;justify-content:space-between}
+  .nav-more__panel{position:static;right:auto;min-width:0;margin:2px 0 6px;background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);box-shadow:none}
+  .nav-more__panel li a{font-size:1.08rem;padding:12px 14px}
+}
+/* products get a purple dot so the 5 pillars read as one family */
+.site-nav__links a[data-pillar]::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:7px;
+  background:var(--ncp-grad);vertical-align:middle}
+
+/* ---------- global purple polish ---------- */
+.btn-primary{box-shadow:0 8px 28px rgba(122,61,255,.42)}
+.btn-primary:hover{box-shadow:0 10px 34px rgba(122,61,255,.55)}
+.card:hover{border-color:rgba(122,61,255,.45)}
+.nfp__card:hover{border-color:rgba(167,139,250,.65);background:rgba(122,61,255,.12)}
+::selection{background:rgba(122,61,255,.35);color:#fff}
+
+/* ---------- shared blocks used by Apps + Field HQ pages ---------- */
+.phero{position:relative;overflow:hidden;color:#fff;padding:64px 0 72px;
+  background:linear-gradient(180deg,#011F5D 0%,#1B0B55 100%)}
+.phero__bg{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(60% 50% at 66% 42%,rgba(122,61,255,.55),transparent 70%),
+  radial-gradient(42% 42% at 12% 18%,rgba(2,215,245,.25),transparent 70%),
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/44px 44px,
+  linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/44px 44px;
+  mask-image:linear-gradient(to bottom,#000 72%,transparent)}
+.phero .wrap{position:relative;z-index:1}
+.phero h1{font-size:clamp(2.3rem,4.4vw,3.9rem);margin:14px 0 14px}
+.phero p.lead{color:#CBD6EC;font-size:1.15rem;max-width:62ch}
+.phero__kick{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#02D7F5}
+.phero__stats{display:flex;flex-wrap:wrap;gap:28px;margin-top:30px}
+.phero__stats b{display:block;font-family:var(--font-display);font-size:1.9rem;line-height:1}
+.phero__stats span{font-family:var(--font-mono);font-weight:500;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#9FB1D0}
+
+.darkwrap{position:relative;overflow:hidden;color:#fff;background:#050A1F;padding:72px 0}
+.darkwrap::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(50% 40% at 80% 8%,rgba(122,61,255,.26),transparent 70%),
+  radial-gradient(40% 36% at 8% 90%,rgba(2,215,245,.16),transparent 70%)}
+.darkwrap .wrap{position:relative;z-index:1}
+.darkwrap h2,.darkwrap h3{color:#fff}
+.darkwrap p{color:#AFBED8}
+
+.glass{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:22px}
+.ptag{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;
+  background:rgba(122,61,255,.18);border:1px solid rgba(167,139,250,.6);color:#E9DDFF;
+  font-family:var(--font-mono);font-weight:500;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.ptag i{width:6px;height:6px;border-radius:50%;background:#02D7F5;display:block}
+
+.ailine{font-size:.8rem;color:#7D8DA8;max-width:70ch;margin-top:10px}
+
+/* gradient text: make all three stops land in short headlines */
+.grad-text{background:linear-gradient(100deg,#02D7F5 0%,#3A8BFF 42%,#A479FF 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.phero .ptag{margin-bottom:4px}
+.crumbs a{color:#9FB1D0}.crumbs{color:#7F91B0;font-size:.85rem;margin-bottom:14px}
+
+/* home "five ways" band — 5 across on wide, navy→navy-purple */
+#new{background:linear-gradient(180deg,#011F5D 0%,#1B0B55 100%);position:relative;overflow:hidden}
+#new::after{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(45% 45% at 85% 20%,rgba(122,61,255,.35),transparent 70%),
+  radial-gradient(35% 35% at 6% 85%,rgba(2,215,245,.14),transparent 70%)}
+#new>.wrap{position:relative;z-index:1}
+@media(min-width:1180px){#new .nfp__grid{grid-template-columns:repeat(5,minmax(0,1fr))}}

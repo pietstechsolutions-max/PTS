@@ -3,7 +3,7 @@
 // regenerates blog index, sitemap.xml and rss.xml. Also (re)generates the
 // static marketing pages via ./lib/pages.js so sitemap stays complete.
 // Usage: node scripts/build-blog.js   (npm run build)
-import { readdirSync, readFileSync, writeFileSync, mkdirSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, statSync, cpSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
@@ -189,6 +189,11 @@ function walk(dir) {
     else if (/\.xml$/.test(f)) writeFileSync(fp, cleanUrls(readFileSync(fp, 'utf8')));
   }
 }
+/* ---- v3 site: scripts/site-v3/ is the finished v3 page set (home, services, payments, POS, ghost kitchen,
+   fleet, lighting, design studio, financing, apps, Partners, ...) plus its assets. It is laid over public/ just
+   before the clean-URL / asset-version pass so v3 pages replace the generated ones. Remove the folder to go back. ---- */
+const V3 = join(ROOT, 'scripts', 'site-v3');
+if (existsSync(V3)) { cpSync(V3, PUB, { recursive: true, force: true }); console.log('Laid scripts/site-v3 over public'); }
 walk(PUB);
 
 console.log(`Built ${pageFiles.length} pages, ${posts.length} posts, blog/index.html, sitemap.xml, rss.xml`);

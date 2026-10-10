@@ -1,0 +1,25 @@
+/* Partners page - Piets Technology Solutions Inc - 631-871-5957
+   Rules carried over from the live site, using the v3 look. */
+.card-grid--5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.card--link{text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.card--link p{flex:1}
+.card__go{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--blue-deep);margin-top:12px}
+.partner-who{margin-top:40px;padding:26px 28px;border-radius:var(--r);background:#fff;border:1px solid var(--line)}
+.partner-who .check-list{margin:12px 0 0}
+.partner-apply{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:48px;align-items:start}
+.partner-apply .check-list{margin-top:18px}
+.partner-form{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;box-shadow:var(--shadow-lg)}
+.partner-form .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.partner-form label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem;color:var(--navy)}
+.partner-form input:not([type=checkbox]),.partner-form select,.partner-form textarea{width:100%;padding:12px 14px;border:1.5px solid #c3cfdd;border-radius:12px;font:inherit;color:var(--text);background:#fff}
+.partner-form input:focus,.partner-form select:focus,.partner-form textarea:focus{outline:none;border-color:#5B2EE6;box-shadow:0 0 0 3px rgba(122,61,255,.2)}
+.partner-form .btn{margin-top:8px}
+.partner-form .form-note{font-size:.78rem;color:var(--muted);margin-top:12px}
+.partner-form__what{border:1.5px solid #c3cfdd;border-radius:12px;padding:12px 14px;margin:14px 0 0;display:flex;flex-wrap:wrap;gap:8px 18px}
+.partner-form__what legend{font-weight:600;font-size:.92rem;color:var(--navy);padding:0 6px}
+.partner-form__what label{flex-direction:row;align-items:center;gap:8px;font-weight:500}
+.partner-form__what input{width:auto}
+.partner-form .form-msg{margin:10px 0 0;font-weight:600}
+.page-head--dark .page-head__eyebrow{display:inline-block;margin-bottom:10px}
+@media (max-width:1020px){.card-grid--5{grid-template-columns:repeat(2,minmax(0,1fr))}.partner-apply{grid-template-columns:1fr;gap:28px}}
+@media (max-width:760px){.card-grid--5{grid-template-columns:1fr}.partner-form .form-grid{grid-template-columns:1fr}.partner-form{padding:20px}}
