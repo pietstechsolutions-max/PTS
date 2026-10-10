@@ -6,7 +6,7 @@ body::before{content:"";position:fixed;top:0;left:0;right:0;height:4px;
 .hero::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:
   radial-gradient(60% 50% at 66% 44%,rgba(122,61,255,.5),transparent 70%),
   radial-gradient(40% 40% at 12% 18%,rgba(2,215,245,.22),transparent 70%)}
-.hero>*{position:relative;z-index:1}
+.hero>*:not(.bghub){position:relative;z-index:1}
 .btn-go{background:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%)!important;color:#061024!important;
   box-shadow:0 8px 28px rgba(122,61,255,.42)}
 .pill{background:rgba(122,61,255,.18)!important;border:1px solid rgba(167,139,250,.6)!important;color:#E9DDFF!important}

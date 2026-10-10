@@ -369,12 +369,15 @@
       var f = document.createElement('iframe');
       f.setAttribute('sandbox', 'allow-scripts'); f.setAttribute('tabindex', '-1'); f.setAttribute('loading', 'eager'); f.title = 'Sample demo site';
       f.srcdoc = src; box.appendChild(f); fit();
-      f.addEventListener('load', function () {
+      var shown = false;
+      function reveal() {
+        if (shown) return; shown = true;
         f.classList.add('on');
         var old = Array.prototype.filter.call(box.querySelectorAll('iframe'), function (o) { return o !== f; });
         setTimeout(function () { old.forEach(function (o) { if (o.parentNode) o.parentNode.removeChild(o); }); }, 1000);
         var ph = box.querySelector('.live__ph'); if (ph) ph.remove();
-      });
+      }
+      f.addEventListener('load', reveal); setTimeout(reveal, 700);
     }
     var LN = {}; (E.LANGS || []).forEach(function (l) { LN[l[0]] = l[1]; });
     function show() {
