@@ -1,5 +1,21 @@
+# pietstechsolutions.com — search engines and AI assistants are welcome.
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
+
+# AI search and assistant crawlers (named so the intent is explicit)
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+
 Sitemap: https://pietstechsolutions.com/sitemap.xml
+# Plain-language summary for AI assistants: https://pietstechsolutions.com/llms.txt
