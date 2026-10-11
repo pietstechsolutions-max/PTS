@@ -6,7 +6,55 @@
   <atom:link href="https://pietstechsolutions.com/rss.xml" rel="self" type="application/rss+xml"/>
   <description>Tech tips on security cameras, Wi-Fi, cabling, POS and IT for New York homes and small businesses.</description>
   <language>en-us</language>
-  <lastBuildDate>Sat, 10 Oct 2026 16:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Sun, 11 Oct 2026 17:00:00 GMT</lastBuildDate>
+  <item>
+    <title><![CDATA[Internet Backup for Small Business: Stay Open When the Line Goes Down]]></title>
+    <link>https://pietstechsolutions.com/blog/internet-backup-for-small-business</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/internet-backup-for-small-business</guid>
+    <pubDate>Sun, 11 Oct 2026 17:00:00 GMT</pubDate>
+    <description><![CDATA[When the internet drops, your card terminal, phones, online orders and cameras go with it. Here is how automatic 4G/5G failover keeps the doors open, and how to set it up so it actually works on the day you need it.]]></description>
+    <category>networking</category><category>small business</category><category>long island</category><category>internet backup</category>
+  </item>
+  <item>
+    <title><![CDATA[Cat6 vs Cat6A: Which Network Cable Should You Run in 2026?]]></title>
+    <link>https://pietstechsolutions.com/blog/cat6-vs-cat6a-which-cable-to-run</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/cat6-vs-cat6a-which-cable-to-run</guid>
+    <pubDate>Sun, 11 Oct 2026 16:00:00 GMT</pubDate>
+    <description><![CDATA[Cable outlasts every device you plug into it, and the walls only close once. Here is the honest difference between Cat6 and Cat6A, where each one makes sense, and what matters more than the label on the box.]]></description>
+    <category>structured cabling</category><category>networking</category><category>small business</category><category>long island</category>
+  </item>
+  <item>
+    <title><![CDATA[Key Fobs, Keypads or Your Phone? Access Control for Small Businesses]]></title>
+    <link>https://pietstechsolutions.com/blog/access-control-for-small-business</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/access-control-for-small-business</guid>
+    <pubDate>Sun, 11 Oct 2026 15:00:00 GMT</pubDate>
+    <description><![CDATA[Keys get copied, codes get shared and nobody knows who came in at 2 AM. Here is how fobs, keypads, phone credentials and video intercoms compare, which old cards are easy to copy, and the fire-code rules every locked door has to meet.]]></description>
+    <category>access control</category><category>small business</category><category>long island</category><category>security cameras</category>
+  </item>
+  <item>
+    <title><![CDATA[Is Remote Computer Support Safe? How to Tell Real Help From a Scam]]></title>
+    <link>https://pietstechsolutions.com/blog/is-remote-computer-support-safe</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/is-remote-computer-support-safe</guid>
+    <pubDate>Sun, 11 Oct 2026 14:00:00 GMT</pubDate>
+    <description><![CDATA[Remote support fixes most computer problems without a truck, and it is also the favorite trick of tech-support scammers. Here is exactly how a legitimate session works, the warning signs the FBI lists, and what to do if you already let someone in.]]></description>
+    <category>IT support</category><category>remote support</category><category>security</category><category>small business</category>
+  </item>
+  <item>
+    <title><![CDATA[A Smart Home Without Monthly Fees: Why We Build on Home Assistant]]></title>
+    <link>https://pietstechsolutions.com/blog/smart-home-without-monthly-fees-home-assistant</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/smart-home-without-monthly-fees-home-assistant</guid>
+    <pubDate>Sun, 11 Oct 2026 13:00:00 GMT</pubDate>
+    <description><![CDATA[Five apps, three subscriptions and a doorbell that stops working when the internet does. There is a better way to run a smart home. Here is what Home Assistant is, why local control matters, and where we tell Long Island homeowners to start.]]></description>
+    <category>smart home</category><category>home automation</category><category>long island</category><category>home network</category>
+  </item>
+  <item>
+    <title><![CDATA[Digital Menu Boards for Small Restaurants: What You Actually Need]]></title>
+    <link>https://pietstechsolutions.com/blog/digital-menu-boards-for-small-restaurants</link>
+    <guid isPermaLink="true">https://pietstechsolutions.com/blog/digital-menu-boards-for-small-restaurants</guid>
+    <pubDate>Sun, 11 Oct 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[Taped-over prices, a sold-out special still on the wall and a printer bill every time something changes. Here is what a small restaurant, deli or cafe really needs for a digital menu board, what to skip, and the rules worth knowing.]]></description>
+    <category>restaurants</category><category>digital signage</category><category>small business</category><category>long island</category>
+  </item>
   <item>
     <title><![CDATA[Permanent Lighting vs Putting Them Up Every Year]]></title>
     <link>https://pietstechsolutions.com/blog/permanent-lighting-vs-putting-them-up-every-year</link>
