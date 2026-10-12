@@ -44,8 +44,8 @@
   function sub(){var s=0;D.lines.forEach(function(l){s+=(+l.q||0)*(+l.p||0);});return s;}
 
   var TABS = [
-    ['today','Today'], ['pipe','Pipeline'], ['quote','Quote builder'],
-    ['inv','Invoice'], ['sched','Schedule'], ['client','Client portal']
+    ['today','Today'], ['pipe','Pipeline'], ['quote','Quote Builder'],
+    ['inv','Invoice'], ['sched','Schedule'], ['client','Client Portal']
   ];
 
   var V = {};
@@ -56,10 +56,10 @@
       + '<div class="k4">'+k(String(open.length),'Open jobs')+k('Coming soon','Pipeline value','pur')
       + k('2','Quotes waiting on a yes','warn')+k('1','Unpaid invoice','bad')+'</div>'
       + lst([
-        row('8-camera install · Sample Home','Quote sent Tue — no answer yet',[['Follow up','t-warn']]),
+        row('8-camera install · Sample Home','Quote sent Tue — no answer yet',[['Follow Up','t-warn']]),
         row('Piet Box setup · Sample Dental','Thursday 9:00 AM — equipment already ordered',[['Scheduled','t-ok']]),
         row('POS network fix · Sample Deli','Today 2:00 PM — 1 hour',[['Today','t-pur']]),
-        row('Smart home hub · Sample Home 2','Finished — invoice not sent',[['Bill it','t-bad']]),
+        row('Smart home hub · Sample Home 2','Finished — invoice not sent',[['Bill It','t-bad']]),
         row('Access control · Sample Shop','New lead from the website form, 11 min ago',[['New','t-ok']])
       ])
       + '<div class="note">Field HQ tells you the money step on every job: send it, invoice it, schedule it, or follow up.</div>';
@@ -91,7 +91,7 @@
         + '<td class="n"><button type="button" class="x" data-del="'+i+'" aria-label="Remove line">&times;</button></td></tr>';
     }).join('');
     var s = sub(), tax = s*TAX, tot = s+tax;
-    return '<h4>Quote builder</h4><div class="sub">Change a number — the tax, the total and the deposit schedule all redo themselves</div>'
+    return '<h4>Quote Builder</h4><div class="sub">Change a number — the tax, the total and the deposit schedule all redo themselves</div>'
       + '<div class="qb"><table><thead><tr><th>Line</th><th class="n">Qty</th><th class="n">Each</th><th class="n">Line total</th><th></th></tr></thead>'
       + '<tbody>'+rows+'</tbody></table>'
       + '<button type="button" class="add" data-add="1">+ Add a line</button>'

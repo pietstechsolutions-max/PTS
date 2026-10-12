@@ -136,7 +136,7 @@
             + rows([
               row('Menu board','Prices change from your phone in seconds',[['Live','ok']]),
               row('Promo rotation','Happy hour auto-swaps at 4 PM',[['Timed','pur']]),
-              row('Photo wall','Customers scan the QR and their shot appears',[['Moderated','ok']]),
+              row('Photo Wall','Customers scan the QR and their shot appears',[['Moderated','ok']]),
               row('Closed-day screen','Hours, phone and a map',[['Ready','ok']])
             ]) + '<div class="appnote">Build your own screen on the Piet Box page — it takes about a minute.</div>';
         },

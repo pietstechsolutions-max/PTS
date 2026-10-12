@@ -279,7 +279,7 @@
     });
     h += '</div>';
     if (state.channel === "Delivery") {
-      h += '<p class="note">Delivery tickets hand off to your own driver or to DoorDash Drive &mdash; ' +
+      h += '<p class="note">Delivery tickets can go to your own driver or to a delivery service such as DoorDash Drive &mdash; ' +
         '<a href="ghost-kitchen.html#drive" style="color:#8FE9FB">see the dispatch demo</a>.</p>';
     }
     h += '</div>';
@@ -325,7 +325,7 @@
       h += '<div class="pos__sw" style="margin-top:8px">Card rate ' +
         '<input type="number" data-rate value="' + state.rate + '" min="0" max="10" step="0.25" ' +
         'style="width:74px;height:32px;padding:0 9px;border-radius:9px;background:rgba(255,255,255,.08);' +
-        'border:1px solid rgba(255,255,255,.18);color:#fff;font-family:var(--font-mono);text-align:right" ' +
+        'border:1px solid rgba(255,255,255,.18);color:#fff;font-family:var(--font-mono);font-weight:500;text-align:right" ' +
         'aria-label="Card surcharge percent"> %</div>';
     }
 
@@ -461,14 +461,14 @@
       '<p><b>Cameras over the register.</b> Because Piets installs the cameras too, a void or a no-sale ' +
       'can be pulled up next to the footage of the drawer at that second. One system, one phone call.</p></div>';
     h += '<div class="macts"><button type="button" class="mbtn g" data-tab="reg">Back to the register</button>' +
-      '<a class="mbtn" href="plan.html">Book a walkthrough</a></div>';
+      '<a class="mbtn" href="plan.html">Book a Walkthrough</a></div>';
     return h;
   }
 
   /* ---------------- render ---------------- */
 
   function render() {
-    var tabs = [["reg", "Register"], ["office", "Back office"], ["kit", "What gets installed"]];
+    var tabs = [["reg", "Register"], ["office", "Back Office"], ["kit", "What Gets Installed"]];
     var h = '<div class="mcon">';
     h += '<div class="mcon__bar"><span class="mcon__lg"><i></i></span>' +
       '<b>Piets POS &middot; ' + esc(venue().name) + '</b><span class="mcon__demo">Demo</span>' +

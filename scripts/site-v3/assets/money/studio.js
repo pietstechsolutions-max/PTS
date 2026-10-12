@@ -203,8 +203,8 @@
     '</svg>';
 
   var SAMPLES = {
-    home: { nm: "Sample home", svg: SAMPLE_HOME, hint: "A two-storey house with an attached garage." },
-    shop: { nm: "Sample storefront", svg: SAMPLE_SHOP, hint: "A storefront and a neighbouring plaza unit." }
+    home: { nm: "Sample home", svg: SAMPLE_HOME, hint: "A two-story house with an attached garage." },
+    shop: { nm: "Sample Storefront", svg: SAMPLE_SHOP, hint: "A storefront and a neighbouring plaza unit." }
   };
 
   function sampleUrl(k) {
@@ -854,7 +854,13 @@
       ' aria-selected="' + (on ? "true" : "false") + '" tabindex="' + (on ? "0" : "-1") + '"';
   }
   /* keeps aria-selected, the roving tabindex and the panel's label in step */
+  /* Oct 12 2026: the Design Studio page puts Cameras · Lighting · Coverage Planner in ONE
+     tab strip above the tools (assets/money/ds-modes.js). When the page asks for that
+     (data-outer-tabs on #studio-app) this file draws no tab strip of its own and the
+     page switches modes through window.PietsStudio. */
+  var OUTER = root && root.hasAttribute("data-outer-tabs");
   function markModes() {
+    if (OUTER) return;
     var cur = modeKey();
     root.querySelectorAll("[data-mode]").forEach(function (b) {
       var on = b.getAttribute("data-mode") === cur;
@@ -873,11 +879,13 @@
         '<div class="mcon__bar"><span class="mcon__lg"><i></i></span><b>Piets Design Studio</b>' +
           '<span class="mcon__demo">Demo</span>' +
           '<span class="mcon__live">Runs on your device</span></div>' +
+        (OUTER ? '' :
         '<div class="mcon__tabs" role="tablist" aria-label="Design mode">' +
-          '<button type="button" data-mode="cam"' + tabAttrs("cam") + '>Security cameras</button>' +
-          '<button type="button" data-mode="light"' + tabAttrs("light") + '>Holiday &amp; permanent lighting</button>' +
-        '</div>' +
-        '<div class="mcon__body" id="' + PANEL_ID + '" role="tabpanel" aria-labelledby="' + tabId(modeKey()) + '">' +
+          '<button type="button" data-mode="cam"' + tabAttrs("cam") + '>Security Cameras</button>' +
+          '<button type="button" data-mode="light"' + tabAttrs("light") + '>Holiday &amp; Permanent Lighting</button>' +
+        '</div>') +
+        (OUTER ? '<div class="mcon__body" id="' + PANEL_ID + '">' :
+        '<div class="mcon__body" id="' + PANEL_ID + '" role="tabpanel" aria-labelledby="' + tabId(modeKey()) + '">') +
           '<div class="studio">' +
             '<div class="studio__stage">' +
               '<div class="studio__cv"><canvas id="stCanvas" tabindex="0" role="application" ' +
@@ -890,16 +898,16 @@
                 '<kbd>,</kbd> and <kbd>.</kbd> aim it, <kbd>Delete</kbd> takes the last thing back.</p>' +
               '<p class="sr-only" role="status" aria-live="polite" data-stsay></p>' +
               '<div class="studio__tools">' +
-                '<label class="mbtn g" style="cursor:pointer">Upload a photo' +
+                '<label class="mbtn g" style="cursor:pointer">Upload a Photo' +
                   '<input type="file" accept="image/*" data-file class="studio__file"></label>' +
                 '<span class="studio__samples" role="group" aria-label="Sample property">' +
                   '<button type="button" class="mbtn g" data-sample="home" aria-pressed="true">Sample home</button>' +
-                  '<button type="button" class="mbtn g" data-sample="shop" aria-pressed="false">Sample storefront</button>' +
+                  '<button type="button" class="mbtn g" data-sample="shop" aria-pressed="false">Sample Storefront</button>' +
                 '</span>' +
                 '<button type="button" class="mbtn g" data-undo2>Undo</button>' +
                 '<button type="button" class="mbtn g" data-clear>Clear</button>' +
-                '<button type="button" class="mbtn" data-save>Download the design</button>' +
-                '<button type="button" class="mbtn g" data-forget hidden>Clear saved design</button>' +
+                '<button type="button" class="mbtn" data-save>Download the Design</button>' +
+                '<button type="button" class="mbtn g" data-forget hidden>Clear Saved Design</button>' +
               '</div>' +
               '<p class="note" data-fname>Sample home &middot; your own photo never leaves this device.</p>' +
               '<p class="note" data-savedline hidden></p>' +
@@ -1077,6 +1085,17 @@
     if (!RM && S.mode === "light" && S.chase) draw();
     requestAnimationFrame(loop);
   }
+
+  /* what the page-level mode strip calls (see OUTER above) */
+  window.PietsStudio = {
+    mode: function () { return modeKey(); },
+    setMode: function (m) {
+      var want = m === "light" ? "light" : "cam";
+      if (want === S.mode) return;
+      S.mode = want; markModes(); draw(); panel(); saveSoon();
+    },
+    refit: function () { fit(); }
+  };
 
   try {
     shell();

@@ -18,14 +18,14 @@
       {
         id: "CB-4471", who: "Order #8812 · delivery", amt: "$64.20", plat: "Delivery platform",
         reason: "Customer says the order never arrived", days: 6, state: "open",
-        ev: [["Itemised order receipt", 1], ["POS timestamp at handoff", 1],
+        ev: [["Itemized order receipt", 1], ["POS timestamp at handoff", 1],
              ["Camera clip at the pickup door", 1], ["Driver GPS drop pin", 1],
              ["Photo of the drop", 0]]
       },
       {
         id: "CB-4468", who: "Order #8790 · pickup", amt: "$28.75", plat: "Card issuer",
-        reason: "Cardholder does not recognise the charge", days: 11, state: "open",
-        ev: [["Itemised order receipt", 1], ["POS timestamp at handoff", 1],
+        reason: "Cardholder does not recognize the charge", days: 11, state: "open",
+        ev: [["Itemized order receipt", 1], ["POS timestamp at handoff", 1],
              ["Camera clip at the counter", 1], ["Signature on the terminal", 1],
              ["Matching loyalty account", 1]]
       },
@@ -95,11 +95,11 @@
       '<g transform="translate(86,268)"><circle r="13" fill="#011F5D" stroke="#02D7F5" stroke-width="2.5"/>' +
       '<path d="M-5 -2v6a2 2 0 0 0 4 0v-6M-3 4v-8M3 -5c-1 0-2 1.5-2 3.5S2 1 3 1v5" stroke="#02D7F5" ' +
       'stroke-width="1.6" fill="none" stroke-linecap="round"/></g>' +
-      '<text x="86" y="300" fill="#8FE9FB" font-family="monospace" font-size="11" text-anchor="middle">KITCHEN</text>' +
+      '<text x="86" y="300" fill="#8FE9FB" font-family="JetBrains Mono,Consolas,monospace" font-weight="500" font-size="11" text-anchor="middle">KITCHEN</text>' +
       /* customer pin */
       '<g transform="translate(618,74)"><circle r="13" fill="#2A1352" stroke="#B08CFF" stroke-width="2.5"/>' +
       '<path d="M-5 2l5-5 5 5v5h-10z" stroke="#B08CFF" stroke-width="1.6" fill="none" stroke-linejoin="round"/></g>' +
-      '<text x="618" y="106" fill="#CDB4FF" font-family="monospace" font-size="11" text-anchor="middle">CUSTOMER</text>' +
+      '<text x="618" y="106" fill="#CDB4FF" font-family="JetBrains Mono,Consolas,monospace" font-weight="500" font-size="11" text-anchor="middle">CUSTOMER</text>' +
       /* driver */
       (S.stage >= 2 ?
         '<g transform="translate(' + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ')">' +
@@ -110,8 +110,8 @@
 
   var STEPS = [
     ["Order lands", "Straight off your own ordering page — your customer, your data."],
-    ["Driver quoted", "Piets asks DoorDash Drive for a quote on that address."],
-    ["Driver assigned", "A Dasher takes it. The customer gets a tracking link automatically."],
+    ["Driver quoted", "A delivery service such as DoorDash Drive quotes that address."],
+    ["Driver assigned", "A driver takes it. The customer gets a tracking link."],
     ["Picked up", "Kitchen hands it over. The camera over the door records the handoff."],
     ["Delivered", "Drop confirmed, GPS pin and timestamp filed against the order."]
   ];
@@ -119,8 +119,8 @@
   function driveView() {
     var eta = S.stage < 2 ? "—" : S.stage >= 4 ? "0" : String(Math.max(1, Math.ceil(18 - (S.t / 100) * 16)));
     var h = '<h4>Your own delivery, somebody else&rsquo;s driver</h4>' +
-      '<p class="sub">Take the order on your own page and keep the customer. Hand only the driving to ' +
-      'DoorDash Drive. Sample order, running here in your browser.</p>';
+      '<p class="sub">Take the order on your own page and keep the customer. Hand only the driving to an ' +
+      'on-demand delivery service such as DoorDash Drive. A sample of how it can work, running here in your browser.</p>';
 
     h += '<div class="drive"><div>';
     h += '<div class="dmap">' +
@@ -131,9 +131,9 @@
       mapSvg() + '</div>';
 
     h += '<div class="macts">';
-    if (S.stage === 0) h += '<button type="button" class="mbtn" data-go>Dispatch a driver</button>';
+    if (S.stage === 0) h += '<button type="button" class="mbtn" data-go>Dispatch a Driver</button>';
     else h += '<button type="button" class="mbtn g" data-reset>Run it again</button>';
-    h += '<a class="mbtn g" href="payments.html#pos">See the register that took this order</a></div>';
+    h += '<a class="mbtn g" href="payments.html#pos">See the Register That Took This Order</a></div>';
     h += '</div>';
 
     h += '<div>';
@@ -143,7 +143,7 @@
         '<span><b>' + s[0] + '</b><em>' + s[1] + '</em></span></div>';
     });
     h += '<p class="note">Sample timings. Real quotes, fees and driver availability come from the ' +
-      'platform at the moment you dispatch — Piets wires the integration, it does not set their prices.</p>';
+      'platform at the moment you dispatch. Piets does not set their prices. Ask us what can be set up for your kitchen today.</p>';
     h += '</div></div>';
     return h;
   }
@@ -204,20 +204,20 @@
         '<div class="tsplit__bar" id="chBar" role="img" aria-label="Ticket breakdown"></div>' +
         '<div class="tsplit__legend" id="chLegend" aria-live="polite"></div>' +
         '<p class="ask" id="chAsk" hidden>Put your food cost percentage in above and this fills in.</p>' +
-        '<p class="note">What is left is what is left <em>of the ticket</em> &mdash; before labour, rent, ' +
+        '<p class="note">What is left is what is left <em>of the ticket</em> &mdash; before labor, rent, ' +
         'packaging, utilities, delivery fees the platform charges separately, card processing and tax. Those are ' +
         'real and they come out of the same slice. Bring three months of statements and we will do the whole ' +
         'picture with you properly.</p>' +
       '</div>' +
       '<div class="chan" style="margin-top:22px">' +
-        '<div><h6>One menu</h6><div class="ln"><span>Your site</span><b>synced</b></div>' +
+        '<div><h6>One Menu</h6><div class="ln"><span>Your site</span><b>synced</b></div>' +
           '<div class="ln"><span>Marketplaces</span><b>synced</b></div>' +
           '<div class="ln"><span>In-store POS</span><b>synced</b></div></div>' +
         '<div><h6>86 an item once</h6><div class="ln"><span>Pushes to</span><b>all channels</b></div>' +
           '<div class="ln"><span>Time to update</span><b>seconds</b></div></div>' +
         '<div><h6>Hours &amp; pauses</h6><div class="ln"><span>Holiday hours</span><b>one place</b></div>' +
           '<div class="ln"><span>Pause orders</span><b>one tap</b></div></div>' +
-        '<div><h6>One report</h6><div class="ln"><span>All channels</span><b>combined</b></div>' +
+        '<div><h6>One Report</h6><div class="ln"><span>All channels</span><b>combined</b></div>' +
           '<div class="ln"><span>Exports to</span><b>your books</b></div></div>' +
       '</div>';
   }
@@ -283,7 +283,7 @@
       ["comm", "Platform commission", cut, "Your own agreement&rsquo;s rate of " + (rate || 0) + "% on this ticket."],
       ["keep", "What is left", keep, over
         ? "At those two numbers this ticket is underwater before you pay anybody."
-        : "Everything else has to come out of this \u2014 labour, rent, packaging, utilities."]
+        : "Everything else has to come out of this \u2014 labor, rent, packaging, utilities."]
     ];
     var h = "";
     rows.forEach(function (r) {
@@ -352,7 +352,7 @@
 
   /* ---------------- paint ---------------- */
   function paint() {
-    var tabs = [["drive", "Dispatch a driver"], ["chan", "What platforms cost"], ["disputes", "Chargebacks &amp; disputes"]];
+    var tabs = [["drive", "Dispatch a Driver"], ["chan", "What Platforms Cost"], ["disputes", "Chargebacks &amp; Disputes"]];
     var keys = tabs.map(function (t) { return t[0]; });
     var curTab = keys.indexOf(S.tab) < 0 ? keys[0] : S.tab;
     var h = '<div class="mcon"><div class="mcon__bar"><span class="mcon__lg"><i></i></span>' +

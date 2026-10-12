@@ -162,18 +162,18 @@
 
       // Build services text for display
       const serviceLabels = {
-        'security-cameras': 'Security cameras',
+        'security-cameras': 'Security Cameras',
         'networking-wifi': 'Networking & Wi-Fi',
-        'structured-cabling': 'Structured cabling',
+        'structured-cabling': 'Structured Cabling',
         'access-control': 'Access control & intercoms',
         'ip-phones': 'Business phones (VoIP)',
         'pos': 'POS & merchant',
         'menu-boards': 'TV menu boards',
         'ghost-kitchen': 'Ghost kitchen setup',
         'smart-home': 'Smart home (Home Assistant)',
-        'lighting': 'Holiday & permanent lighting',
-        'it-support': 'IT support & repair',
-        'remote-support': 'Remote support'
+        'lighting': 'Holiday & Permanent Lighting',
+        'it-support': 'IT Support & Repair',
+        'remote-support': 'Remote Support'
       };
 
       const propertyLabels = {
@@ -229,28 +229,28 @@
             <div class="reco-step">
               <div class="reco-step-number">1</div>
               <div class="reco-step-content">
-                <h4>Free walkthrough or video demo</h4>
+                <h4>Free Walkthrough or Video Demo</h4>
                 <p>We assess your property and discuss your goals.</p>
               </div>
             </div>
             <div class="reco-step">
               <div class="reco-step-number">2</div>
               <div class="reco-step-content">
-                <h4>Tailored design & quote</h4>
+                <h4>Tailored Design & Quote</h4>
                 <p>You get a custom plan showing exactly what we'll install.</p>
               </div>
             </div>
             <div class="reco-step">
               <div class="reco-step-number">3</div>
               <div class="reco-step-content">
-                <h4>Clean, labeled install</h4>
+                <h4>Clean, Labeled Install</h4>
                 <p>We run the cables, mount the equipment and label everything clearly.</p>
               </div>
             </div>
             <div class="reco-step">
               <div class="reco-step-number">4</div>
               <div class="reco-step-content">
-                <h4>Training & 24/7 support</h4>
+                <h4>Training & 24/7 Support</h4>
                 <p>We show you how to use your new system and remain available for help.</p>
               </div>
             </div>

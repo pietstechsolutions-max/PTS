@@ -37,6 +37,38 @@
   content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:7px;
   background:var(--ncp-grad);vertical-align:middle}
 
+/* ---------- FONT_STANDARD.md rule 1 ----------
+   Every rule in this file that sets font-family now also sets font-weight. A family
+   with no weight inherits whatever the element defaults to — 400 on a div or span, and
+   the keyword `bolder` on a <b>, whose computed value is decided by its PARENT: 700
+   under a 400 parent, 900 under a 700 one, and no family here has a 900. That is rule 2
+   of FONT_STANDARD.md waiting to happen. Two rules in this file carried a family and no
+   weight; both are now pinned, and each weight below is the value the page ALREADY
+   computed, measured on the live DOM before it was written in, so nothing moves:
+
+     .phero__stats b  700  Bricolage Grotesque. The hero stat numbers on apps,
+                           coverage, design-studio, fieldhq, financing, fleet,
+                           ghost-kitchen, lighting, payments, products, remote-support
+                           and software — 44 elements across 12 pages, every one of them
+                           measured as Bricolage Grotesque 700 at 1440 and 360. The 700
+                           is the UA's `bolder` resolving against a 400 parent
+                           (.phero__stats computes 400 on all 12), not a rule — which is
+                           exactly why it had to be pinned: a later rule that set the
+                           parent to 700 would have sent these to 900 silently.
+     .phero__kick     500  house value for a mono label. The rule MATCHES NOTHING
+                           today — the string `phero__kick` appears only in this file,
+                           in no HTML page and in no script, and
+                           document.querySelectorAll('.phero__kick').length === 0 is
+                           asserted on every page in QA — so there was no computed value
+                           to pin and it takes the house value a future eyebrow should
+                           get.
+
+   DELIBERATELY NOT CHANGED: .phero__stats b is NOT raised to the house 800 for display
+   numbers. It renders on 12 pages, so 800 would be a visible change to the hero of
+   every money page, and this item is rule 1, not a redesign — for the owner to say yes to.
+   The other families in this file (.ptag, .phero__stats span) already carried their
+   500 and were left alone. No bolder/lighter anywhere. */
+
 /* ---------- global purple polish ---------- */
 .btn-primary{box-shadow:0 8px 28px rgba(122,61,255,.42)}
 .btn-primary:hover{box-shadow:0 10px 34px rgba(122,61,255,.55)}
@@ -56,9 +88,9 @@
 .phero .wrap{position:relative;z-index:1}
 .phero h1{font-size:clamp(2.3rem,4.4vw,3.9rem);margin:14px 0 14px}
 .phero p.lead{color:#CBD6EC;font-size:1.15rem;max-width:62ch}
-.phero__kick{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#02D7F5}
+.phero__kick{font-family:var(--font-mono);font-weight:500;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#02D7F5}
 .phero__stats{display:flex;flex-wrap:wrap;gap:28px;margin-top:30px}
-.phero__stats b{display:block;font-family:var(--font-display);font-size:1.9rem;line-height:1}
+.phero__stats b{display:block;font-family:var(--font-display);font-weight:700;font-size:1.9rem;line-height:1}
 .phero__stats span{font-family:var(--font-mono);font-weight:500;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#9FB1D0}
 
 .darkwrap{position:relative;overflow:hidden;color:#fff;background:#050A1F;padding:72px 0}

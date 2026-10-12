@@ -9,8 +9,15 @@
   var ATTRS = ['placeholder', 'aria-label', 'title', 'alt'];
   var busy = false;
 
+  /* labels moved to Title Case (Oct 12 2026); packs keep their original keys, so match without case too */
+  function look(k) {
+    if (!k) return null;
+    if (U.dict[k]) return U.dict[k];
+    if (!U.lc) { U.lc = {}; for (var x in U.dict) U.lc[x.toLowerCase()] = U.dict[x]; }
+    return U.lc[k.toLowerCase()] || null;
+  }
   U.T = function (s, v) {
-    var r = (U.dict && U.dict[s]) || s;
+    var r = (U.dict && look(s)) || s;
     return v ? String(r).replace(/\{(\w+)\}/g, function (m, k) { return v[k] != null ? v[k] : m; }) : r;
   };
   function skip(el) {
@@ -21,7 +28,7 @@
     if (n.__set != null && n.nodeValue === n.__set) return;     // our own write
     var v = n.nodeValue; if (!v || !/[A-Za-z]/.test(v)) { n.__en = null; return; }
     n.__en = v;
-    var k = v.trim(), t = U.dict[k];
+    var k = v.trim(), t = look(k);
     var out = t ? v.replace(k, t) : v;
     if (out !== v) { n.__set = out; n.nodeValue = out; } else n.__set = null;
   }
@@ -32,7 +39,7 @@
       var v = el.getAttribute(a), mine = el.__ena[a + '_set'];
       if (mine != null && v === mine) return;
       el.__ena[a] = v;
-      var t = U.dict[v.trim()];
+      var t = look(v.trim());
       if (t) { el.__ena[a + '_set'] = t; el.setAttribute(a, t); } else el.__ena[a + '_set'] = null;
     });
   }
@@ -84,7 +91,7 @@
     return Promise.all(jobs).then(function () {
       var d = {}, k;
       if (code !== 'en') { var a = tradePairs(code), b = (g.PietsUILang && g.PietsUILang[code]) || {}; for (k in a) d[k] = a[k]; for (k in b) d[k] = b[k]; }
-      U.lang = (code === 'en' || Object.keys(d).length) ? code : 'en'; U.dict = d;
+      U.lang = (code === 'en' || Object.keys(d).length) ? code : 'en'; U.dict = d; U.lc = null;
       document.documentElement.lang = U.lang;
       try { localStorage.setItem('piets_ui_lang', U.lang); } catch (e) { }
       reapply();

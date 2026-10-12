@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Piets Beta Crew</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Inter:wght@400..800&amp;family=JetBrains+Mono:wght@400..800&amp;display=swap" rel="stylesheet">
 <style>
 /* Layout: one narrow column — pitch, fee card, then the report builder that turns answers into a ready-to-send message. Piets brand (navy/cyan), single dark look by choice. */
 :root{
@@ -8,6 +8,7 @@
   --cy:#00FFFF; --cy2:#02D7F5; --bl:#01A2E8; --bl2:#016FD6;
   --txt:#eef5ff; --mut:#9fb3d1; --line:rgba(255,255,255,.13); --field:#071733;
   --ok:#2fd27a; --warn:#f5b301;
+  --pu:#7A3DFF; --pu2:#9B6BFF; /* palette B purple accent */
   --disp:"Bricolage Grotesque",system-ui,sans-serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
   color-scheme:dark;
 }
@@ -20,15 +21,15 @@ h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800}
 h2{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800}
 h3{font-size:1.1rem}
 p{margin:0}
-em.g{font-style:normal;background:linear-gradient(100deg,var(--cy),var(--bl));-webkit-background-clip:text;background-clip:text;color:transparent}
-.eye{font:600 .7rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cy2)}
+em.g{font-style:normal;background:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eye{font:600 .7rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--pu2)}
 a{color:var(--cy2)}
 :focus-visible{outline:2px solid var(--cy2);outline-offset:3px}
 
 .hdr{display:flex;align-items:center;gap:12px;padding-block:18px;border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt);margin-right:auto}
 .brand svg{width:28px;height:32px;flex:none}
-.brand strong{display:block;font:italic 900 1.25rem var(--disp);letter-spacing:.04em;line-height:1}
+.brand strong{display:block;font:italic 800 1.25rem var(--disp);letter-spacing:.04em;line-height:1}
 .brand small{display:block;font:500 .5rem var(--mono);letter-spacing:.3em;text-transform:uppercase;color:#9fc4ff;margin-top:3px}
 .hdr .ph{font:600 .9rem var(--mono);color:var(--txt);user-select:all}
 
@@ -36,7 +37,7 @@ a{color:var(--cy2)}
 .hero .lead{color:#c8d6ea;font-size:1.08rem;max-width:40em}
 .jump{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:99px;padding:0 22px;min-height:48px;font:700 .98rem var(--body);text-decoration:none;cursor:pointer;color:inherit}
-.go{background:linear-gradient(135deg,var(--cy2),var(--bl2));color:#001024}
+.go{background:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%);color:#021033;box-shadow:0 12px 30px -12px rgba(122,61,255,.7)}
 .gh{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.24)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 
@@ -53,6 +54,7 @@ section{padding-block:26px;border-top:1px solid var(--line);display:grid;gap:16p
 .fees th{font:600 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mut);background:var(--ink2)}
 .fees td:last-child{font:700 1rem var(--disp);white-space:nowrap;color:var(--cy)}
 .fees tr:last-child td{border-bottom:0}
+.fees td.feeline{white-space:normal;vertical-align:middle;font:700 1rem var(--disp);color:var(--cy);border-left:1px solid var(--line);max-width:14rem}
 .fees small{display:block;color:var(--mut);font:400 .82rem var(--body)}
 .tblwrap{overflow-x:auto}
 .rules{display:grid;gap:6px;margin:0;padding:0 0 0 18px;color:var(--mut);font-size:.93rem}
@@ -94,7 +96,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
 <div class="wrap">
   <header class="hdr">
     <a class="brand" href="https://pietstechsolutions.com" aria-label="Piets Technology Solutions">
-      <svg viewBox="0 0 40 44" aria-hidden="true"><rect width="30" height="6" rx="3" fill="#00FFFF"/><rect y="9" width="36" height="6" rx="3" fill="#02D7F5"/><rect y="18" width="30" height="6" rx="3" fill="#01A2E8"/><rect y="27" width="8" height="6" rx="3" fill="#016FD6"/><rect y="36" width="8" height="6" rx="3" fill="#016FD6"/></svg>
+      <img src="/assets/brand/logo-mark.svg" width="34" height="34" alt="">
       <span><strong>PIETS</strong><small>Technology Solutions</small></span>
     </a>
     <span class="ph">631-871-5957</span>
@@ -102,9 +104,9 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
 
   <div class="hero">
     <span class="eye">Beta Crew &middot; invite only</span>
-    <h1>Break it, tell Matt, <em class="g">get paid for the good ones.</em></h1>
+    <h1>Break it, tell us, <em class="g">get paid for the good ones.</em></h1>
     <p class="lead">You're one of the first business owners trying Piets Site Studio and Field HQ. Use it like you would on a busy day. When something breaks, confuses you, or gives you an idea, send it here. When you send a client our way, you get a finder's fee.</p>
-    <div class="jump"><a class="btn go" href="#report">Send a report</a><a class="btn gh" href="#fees">See finder's fees</a></div>
+    <div class="jump"><a class="btn go" href="#report">Send a Report</a><a class="btn gh" href="#fees">See Finder's Fees</a></div>
   </div>
 
   <section aria-labelledby="whatH">
@@ -118,41 +120,37 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
 
   <section id="fees" aria-labelledby="feesH">
     <h2 id="feesH">Finder's fees</h2>
-    <p class="hint">Send a business or homeowner who becomes a paying Piets client. Matt pays you once their deposit clears and 30 days pass.</p>
+    <p class="hint">Send a business or homeowner who becomes a paying Piets client. We pay you once their deposit clears and 30 days pass.</p>
     <div class="fees"><div class="tblwrap"><table>
-      <thead><tr><th>They buy</th><th>You get</th></tr></thead>
+      <thead><tr><th>What counts</th><th>Your fee</th></tr></thead>
       <tbody>
-        <tr><td>Website, Starter <small>$997 setup</small></td><td>$250</td></tr>
-        <tr><td>Website, Pro <small>$2,497 setup</small></td><td>$500</td></tr>
-        <tr><td>Website, Premium with full Field HQ <small>$4,997 setup</small></td><td>$1,000</td></tr>
-        <tr><td>The Whole Shabang <small>$19,997 setup</small></td><td>$2,000</td></tr>
-        <tr><td>Field HQ on its own <small>monthly plan</small></td><td>10% &times; 12 mo</td></tr>
-        <tr><td>Managed IT plan <small>Basic $299 or Pro $599 a month</small></td><td>1st month</td></tr>
-        <tr><td>Cameras, Wi-Fi, network or POS install <small>completed and paid</small></td><td>$100</td></tr>
-        <tr><td>Install job over $5,000 <small>completed and paid</small></td><td>5%</td></tr>
+        <tr><td>New website <small>Starter, Pro, Premium or The Whole Shabang</small></td><td rowspan="5" class="feeline">Fee confirmed in writing before you refer anyone</td></tr>
+        <tr><td>Field HQ on its own <small>monthly plan</small></td></tr>
+        <tr><td>Managed IT plan <small>Basic or Pro, monthly</small></td></tr>
+        <tr><td>Cameras, Wi-Fi, network or POS install <small>completed and paid</small></td></tr>
+        <tr><td>Larger install jobs <small>completed and paid</small></td></tr>
       </tbody>
     </table></div></div>
     <div class="perks" aria-label="Beta Crew perks">
-      <span class="perk">Your first referral pays double</span>
       <span class="perk">Founding price on Field HQ, locked for life</span>
       <span class="perk">Your name on the thank-you list (if you want it)</span>
     </div>
     <ul class="rules">
       <li>The client has to be new to Piets and name you when they sign up.</li>
       <li>No fee on your own purchase. Homeowners can take a Piets service credit instead of cash.</li>
-      <li>Matt needs a W-9 from you before paying. You handle your own taxes on what you earn.</li>
+      <li>We need a W-9 from you before paying. You handle your own taxes on what you earn.</li>
       <li>Reports are never paid per bug and never tied to saying nice things. Tell it straight.</li>
       <li>If you post about Piets after getting a fee or perk, say so in the post.</li>
     </ul>
   </section>
 
   <section id="report" aria-labelledby="repH">
-    <h2 id="repH">Send a report</h2>
+    <h2 id="repH">Send a Report</h2>
     <div class="tabs" role="tablist" aria-label="Report type">
-      <button class="tab" role="tab" type="button" id="tab-bug" aria-selected="true" data-kind="Bug">Something broke</button>
+      <button class="tab" role="tab" type="button" id="tab-bug" aria-selected="true" data-kind="Bug">Something Broke</button>
       <button class="tab" role="tab" type="button" id="tab-confusing" aria-selected="false" data-kind="Confusing">Confusing</button>
       <button class="tab" role="tab" type="button" id="tab-idea" aria-selected="false" data-kind="Idea">Idea</button>
-      <button class="tab" role="tab" type="button" id="tab-ref" aria-selected="false" data-kind="Referral">Refer a client</button>
+      <button class="tab" role="tab" type="button" id="tab-ref" aria-selected="false" data-kind="Referral">Refer a Client</button>
     </div>
 
     <form id="rep" novalidate>
@@ -170,7 +168,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
           <div class="chips" id="prodChips" role="radiogroup" aria-label="Product">
             <button type="button" class="chip" aria-pressed="true" data-v="Site Studio">Site Studio</button>
             <button type="button" class="chip" aria-pressed="false" data-v="Field HQ">Field HQ</button>
-            <button type="button" class="chip" aria-pressed="false" data-v="Field HQ client portal">Client portal</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Field HQ client portal">Client Portal</button>
             <button type="button" class="chip" aria-pressed="false" data-v="Piets website">Piets website</button>
             <button type="button" class="chip" aria-pressed="false" data-v="Other">Other</button>
           </div></div>
@@ -212,25 +210,25 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
             <button type="button" class="chip" aria-pressed="false" data-v="POS">POS</button>
             <button type="button" class="chip" aria-pressed="false" data-v="Backup internet">Backup internet</button>
           </div></div>
-        <div class="fld"><label for="f_note">Anything Matt should know?</label><textarea id="f_note" maxlength="800" placeholder="How you know them, best time to call, what they're unhappy with now"></textarea></div>
+        <div class="fld"><label for="f_note">Anything we should know?</label><textarea id="f_note" maxlength="800" placeholder="How you know them, best time to call, what they're unhappy with now"></textarea></div>
         <label style="display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font:400 .93rem var(--body);color:var(--mut)"><input type="checkbox" id="f_ok" style="width:20px;min-height:20px;height:20px;margin-top:2px;flex:none"> They know I'm passing their info to Piets and said it's OK.</label>
       </div>
 
-      <label style="display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font:400 .93rem var(--body);color:var(--mut)"><input type="checkbox" id="r_contact" checked style="width:20px;min-height:20px;height:20px;margin-top:2px;flex:none"> Matt can contact me about this.</label>
+      <label style="display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font:400 .93rem var(--body);color:var(--mut)"><input type="checkbox" id="r_contact" checked style="width:20px;min-height:20px;height:20px;margin-top:2px;flex:none"> Piets can contact me about this.</label>
       <p class="err" id="err" role="alert" hidden></p>
-      <div><button class="btn go" type="submit" id="makeBtn">Get my message ready</button></div>
+      <div><button class="btn go" type="submit" id="makeBtn">Get My Message Ready</button></div>
     </form>
 
     <div class="out" id="out" hidden aria-live="polite">
       <h3>Ready to send</h3>
-      <p class="hint">Copy it, then paste it into an email or text to Matt. Add a screenshot or screen recording if you have one.</p>
+      <p class="hint">Copy it, then paste it into an email or text to Piets. Add a screenshot or screen recording if you have one.</p>
       <pre id="msg"></pre>
       <div class="send">
-        <button class="btn go" type="button" id="copyBtn">Copy message</button>
-        <a class="btn gh" id="mailBtn" href="#">Open email</a>
-        <a class="btn gh" id="smsBtn" href="#">Open text</a>
+        <button class="btn go" type="button" id="copyBtn">Copy Message</button>
+        <a class="btn gh" id="mailBtn" href="#">Open Email</a>
+        <a class="btn gh" id="smsBtn" href="#">Open Text</a>
       </div>
-      <p class="done" id="copied" hidden>Copied. Now paste it into an email or text to Matt.</p>
+      <p class="done" id="copied" hidden>Copied. Now paste it into an email or text to Piets.</p>
       <div class="addr"><span>Send it to</span><b>pietstechsolutions@gmail.com</b><b>631-871-5957</b><span>If the email or text button doesn't open anything on your device, copy the message and send it to one of these yourself.</span></div>
     </div>
   </section>
@@ -238,7 +236,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
   <footer class="ftr">
     <p><strong>Piets Technology Solutions Inc</strong> &middot; 631-871-5957 &middot; pietstechsolutions@gmail.com &middot; pietstechsolutions.com</p>
     <p>Wi-Fi, Wires, Whatever &mdash; Piet Makes It Better. Questions? We're here 24/7.</p>
-    <p class="ai">Much of this page was drafted with AI. Matt does his best to keep it perfect. Spot a mistake or have a question or suggestion? Send it with the form above so he can fix it and keep it from happening again. Finder's fee terms can change; the amount confirmed by Matt in writing for your referral is what gets paid.</p>
+    <p class="ai">Much of this page was drafted with AI. Piets does its best to keep it perfect. Spot a mistake or have a question or suggestion? Send it with the form above so we can fix it and keep it from happening again. Finder's fee terms can change; the amount Piets confirms in writing for your referral is what gets paid.</p>
   </footer>
 </div>
 
@@ -274,8 +272,8 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
 
   function build() {
     $('#err').hidden = true;
-    if (!val('r_name')) return fail('Add your name so Matt knows who sent it.', 'r_name');
-    if (!val('r_phone')) return fail('Add your phone or email so Matt can follow up.', 'r_phone');
+    if (!val('r_name')) return fail('Add your name so we know who sent it.', 'r_name');
+    if (!val('r_phone')) return fail('Add your phone or email so we can follow up.', 'r_phone');
     var stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
     var L = [], subject;
     if (kind === 'Referral') {
@@ -287,7 +285,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
     } else {
       var prod = picked('prodChips')[0] || 'Other', sev = picked('sevChips')[0] || '-';
       if (kind === 'Idea' && !val('r_idea')) return fail('Write your idea in a sentence or two.', 'r_idea');
-      if (kind !== 'Idea' && !val('r_happen')) return fail('Tell Matt what happened.', 'r_happen');
+      if (kind !== 'Idea' && !val('r_happen')) return fail('Tell us what happened.', 'r_happen');
       subject = '[PIETS-FEEDBACK] ' + kind + ' | ' + prod + (val('r_where') ? ' | ' + val('r_where').slice(0, 50) : '');
       L.push('TYPE: ' + kind, 'PRODUCT: ' + prod, 'WHERE: ' + (val('r_where') || '-'));
       if (kind === 'Idea') L.push('IDEA: ' + val('r_idea'));
@@ -308,7 +306,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
 
   $('#copyBtn').addEventListener('click', function () {
     var t = $('#msg').textContent, ok = function () { $('#copied').hidden = false; };
-    function selectIt() { var r = document.createRange(); r.selectNodeContents($('#msg')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); $('#copied').textContent = 'Selected. Press copy on your device, then paste it into an email or text to Matt.'; $('#copied').hidden = false; }
+    function selectIt() { var r = document.createRange(); r.selectNodeContents($('#msg')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); $('#copied').textContent = 'Selected. Press copy on your device, then paste it into an email or text to Piets.'; $('#copied').hidden = false; }
     try { navigator.clipboard.writeText(t).then(ok, selectIt); } catch (e) { selectIt(); }
   });
 })();

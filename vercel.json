@@ -67,6 +67,16 @@
       "permanent": true
     },
     {
+      "source": "/coverage",
+      "destination": "/design-studio?mode=coverage",
+      "permanent": true
+    },
+    {
+      "source": "/coverage.html",
+      "destination": "/design-studio?mode=coverage",
+      "permanent": true
+    },
+    {
       "source": "/contact-us",
       "destination": "/contact",
       "permanent": true

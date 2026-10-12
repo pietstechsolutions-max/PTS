@@ -10,9 +10,9 @@
   if (!mount) return;
 
   var TABS = [
-    { k: 'run',   id: 'rsTab-run',   label: 'A session, start to finish' },
-    { k: 'scope', id: 'rsTab-scope', label: 'What we can fix from here' },
-    { k: 'real',  id: 'rsTab-real',  label: 'Make sure it is really us' }
+    { k: 'run',   id: 'rsTab-run',   label: 'A Session, Start to Finish' },
+    { k: 'scope', id: 'rsTab-scope', label: 'What We Can Fix from Here' },
+    { k: 'real',  id: 'rsTab-real',  label: 'Make Sure It Is Really Us' }
   ];
 
   var S = { tab: 'run', step: 0, log: [] };
@@ -167,7 +167,7 @@
       ['Email and accounts', 'Mail client setup, send and receive problems, spam filtering, Microsoft 365 and Google Workspace.'],
       ['Printers and devices', 'Drivers, print queues, scan-to-email, wireless printing &mdash; as long as the device is powered and on the network.'],
       ['Network checks', 'Router and Wi-Fi settings, what the machine can and cannot reach, and talking to your internet provider with you.'],
-      ['Camera systems', 'InVid Tech Paramont recorder settings, checking that cameras are recording, and setting up viewing on your phone.'],
+      ['Camera Systems', 'InVid Tech Paramont recorder settings, checking that cameras are recording, and setting up viewing on your phone.'],
       ['Showing you how', 'Walking through something on your own screen so you can do it yourself next time.']
     ];
     var cant = [
@@ -202,7 +202,7 @@
     var doo = [
       ['Hang up and call us back', 'Call 631-871-5957 yourself. Do not use a number someone on the phone gave you, and do not call back the number that rang you.'],
       ['Check what you are being asked to install', 'A Piets remote session uses RustDesk, downloaded from rustdesk.com. Nothing else.'],
-      ['You read the ID to us, not the other way round', 'We cannot start anything from our side. The ID comes from your screen, in your words.'],
+      ['You read the ID to us, not the other way around', 'We cannot start anything from our side. The ID comes from your screen, in your words.'],
       ['Read the prompt before you accept', 'The accept box names what is asking. If it is not what you expect, decline &mdash; nothing happens.'],
       ['Watch the screen', 'Everything we do is on your monitor while it happens. If something looks wrong, close RustDesk and the session is over.']
     ];

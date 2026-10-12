@@ -7,7 +7,7 @@ import { readdirSync, readFileSync, writeFileSync, mkdirSync, statSync, cpSync, 
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
-import { SITE, SERVICES, esc, head, banner, nav, footer, breadcrumbLd, slugify, versionAssets } from './lib/site.js';
+import { SITE, SERVICES, esc, head, banner, nav, footer, breadcrumbLd, slugify, versionAssets, resetAssetVersions } from './lib/site.js';
 import { buildPages } from './lib/pages.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -124,7 +124,6 @@ const today = new Date().toISOString().slice(0, 10);
       { loc: '/', priority: '1.0', changefreq: 'weekly' },
       { loc: '/services.html', priority: '0.9', changefreq: 'monthly' },
       { loc: '/plan.html', priority: '0.9', changefreq: 'monthly' },
-      { loc: '/coverage.html', priority: '0.8', changefreq: 'monthly' },
       { loc: '/commercial.html', priority: '0.8', changefreq: 'monthly' },
       { loc: '/plans.html', priority: '0.8', changefreq: 'monthly' },
       { loc: '/remote-support.html', priority: '0.8', changefreq: 'monthly' },
@@ -194,6 +193,7 @@ function walk(dir) {
    before the clean-URL / asset-version pass so v3 pages replace the generated ones. Remove the folder to go back. ---- */
 const V3 = join(ROOT, 'scripts', 'site-v3');
 if (existsSync(V3)) { cpSync(V3, PUB, { recursive: true, force: true }); console.log('Laid scripts/site-v3 over public'); }
+resetAssetVersions();
 walk(PUB);
 
 console.log(`Built ${pageFiles.length} pages, ${posts.length} posts, blog/index.html, sitemap.xml, rss.xml`);

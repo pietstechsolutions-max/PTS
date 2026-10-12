@@ -137,8 +137,8 @@
               '<div class="studio__tools">' +
                 '<button type="button" class="mbtn g" data-undo>Undo</button>' +
                 '<button type="button" class="mbtn g" data-clear>Clear</button>' +
-                '<button type="button" class="mbtn" data-send>Send my layout to Piets</button>' +
-                '<a class="mbtn g" href="design-studio.html">See it on your own house</a>' +
+                '<button type="button" class="mbtn" data-send>Send My Layout to Piets</button>' +
+                '<a class="mbtn g" href="/design-studio.html?mode=cameras#studio">See It on Your Own House</a>' +
               '</div>' +
               '<p class="note" id="covNote">A rough visual, not a survey. We confirm exact placement on a free ' +
                 'walkthrough or video call &middot; 631-871-5957.</p>' +
@@ -148,8 +148,8 @@
               '<p class="sub">Counted off the cameras you placed.</p>' +
               '<div class="mk cov__mk">' +
                 '<div><b id="covCams">0</b><span>Cameras</span></div>' +
-                '<div class="pur"><b id="covPct">0%</b><span>Rough coverage</span></div>' +
-                '<div id="covMixCell"><b id="covMix">&mdash;</b><span>Lens mix</span></div>' +
+                '<div class="pur"><b id="covPct">0%</b><span>Rough Coverage</span></div>' +
+                '<div id="covMixCell"><b id="covMix">&mdash;</b><span>Lens Mix</span></div>' +
               '</div>' +
               '<div class="calcf" style="margin-top:16px">' +
                 '<div class="f"><label id="covLensLab">Lens for the next camera</label>' +

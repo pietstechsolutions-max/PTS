@@ -20,12 +20,60 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:90px}
-body{margin:0;font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--text);background:var(--paper);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+/* ---------- FONT_STANDARD.md rule 1 — the last eight rules in the artifact ----------
+   Oct 12 2026. Every rule in this file that names a font-family now also names a
+   font-weight. A family with no weight inherits whatever the element happens to
+   default to — 400 on a div or span, 700 on a heading, and the keyword `bolder` on a
+   <b> or <strong>, whose computed value is decided by its PARENT: 700 under a 400
+   parent and 900 under a 700 one, and no family on this site has a 900. That is rule 2
+   of FONT_STANDARD.md waiting to happen, and it is how the site once ended up asking
+   Google for faces it never loaded. Eight rules here carried a family and no weight.
+   Each weight below is the value the page ALREADY computed, measured on the live DOM
+   of all 34 shared-header pages at 1440 and 360 before it was written in, so nothing
+   moves:
+
+     body                  400  Inter. 68 of 68 page-widths measured Inter 400.
+     h1,h2,h3,h4           700  Bricolage Grotesque. h1 (800), h2 (800) and h3 (700)
+                                each have their own rule on the three lines below this
+                                one, so this value reaches h4 alone — and 700 is exactly
+                                what every live h4 computes today: 272 footer headings
+                                and 52 in-page ones take the UA's `bold`, and the one
+                                that does not (.fhq h4 on portal.html, 800) sets its own
+                                weight in a later sheet and still wins. Not a rule
+                                before today — which is why it had to be pinned.
+     .brand__text strong   700  Bricolage Grotesque. The PIETS wordmark in the header
+                                and the footer, 136 elements across the 34 pages, every
+                                one measured 700 — the UA's `bolder` resolving against a
+                                400 parent, not a rule. Pinning it also closes the rule-2
+                                route: a later rule that set .brand__text to 700 would
+                                have sent the wordmark to 900 silently.
+     .site-footer h4       700  JetBrains Mono. The four footer column headings on every
+                                page, 272 elements, all measured 700.
+
+   The remaining four rules MATCH NOTHING on any of the 34 pages — the class strings
+   appear in no HTML file and in no script, and QA asserts
+   document.querySelectorAll(sel).length === 0 for each of them on every page. They are
+   left-overs from the pre-v3 home page. There was no computed value to pin, so each
+   takes the house value from FONT_STANDARD.md — mono labels 500, display names 800:
+
+     .works-with__label    500   .marquee__run span  500
+     .stat__label          500   .nfp__card h3       800
+
+   DELIBERATELY NOT CHANGED: nothing is RAISED to a house value where a live element
+   would move. .site-footer h4 is a mono label, whose house value is 500, and it stays
+   at the 700 it renders today on all 34 pages; .brand__text strong and the h4s stay at
+   700 rather than the display house 800. Those are a look change on every page of the
+   site, and this item is rule 1, not a redesign — they are the owner's to say yes to, and
+   they are logged with the same open question theme-ncp.css, money.css, crm-demo.css,
+   apps.css, pietbox.css and studio.css left. No bolder/lighter anywhere in this file;
+   the five `font:` shorthands all carry a weight or are `font:inherit` on a form
+   control, which is correct. */
+body{margin:0;font-family:var(--font-body);font-weight:400;font-size:17px;line-height:1.6;color:var(--text);background:var(--paper);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 img,svg{max-width:100%}
 img{height:auto;display:block}
 a{color:var(--blue-deep);text-decoration:none}
 a:hover{text-decoration:underline}
-h1,h2,h3,h4{font-family:var(--font-display);line-height:1.08;letter-spacing:-.02em;margin:0 0 .5em;text-wrap:balance;color:inherit}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;line-height:1.08;letter-spacing:-.02em;margin:0 0 .5em;text-wrap:balance;color:inherit}
 h1{font-size:clamp(2.4rem,5vw,4.3rem);font-weight:800}
 h2{font-size:clamp(1.9rem,3.4vw,2.9rem);font-weight:800}
 h3{font-size:1.2rem;font-weight:700;letter-spacing:-.01em}
@@ -96,7 +144,7 @@ a:hover .card-link svg,.card-link:hover svg{transform:translateX(3px)}
 .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none!important;flex:none}
 .brand img{width:36px;height:36px}
 .brand__text{display:flex;flex-direction:column;line-height:1}
-.brand__text strong{font-family:var(--font-display);font-size:1.22rem;letter-spacing:.06em}
+.brand__text strong{font-family:var(--font-display);font-weight:700;font-size:1.22rem;letter-spacing:.06em}
 .brand__text small{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan-2);margin-top:3px}
 .site-nav{flex:1}
 .site-nav__links{list-style:none;display:flex;gap:4px;align-items:center;justify-content:center}
@@ -183,11 +231,11 @@ a:hover .card-link svg,.card-link:hover svg{transform:translateX(3px)}
 
 /* ---------- Works-with marquee ---------- */
 .works-with{display:flex;align-items:center;gap:18px;background:var(--ink-2);color:#BFCBE0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:0 0 0 20px;overflow:hidden}
-.works-with__label{flex:none;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.works-with__label{flex:none;font-family:var(--font-mono);font-weight:500;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
 .marquee{flex:1;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .marquee__track{display:flex;width:max-content;animation:marquee 50s linear infinite}
 .marquee__run{display:flex;align-items:center;white-space:nowrap;padding:16px 0}
-.marquee__run span{padding:0 22px;font-family:var(--font-mono);font-size:.86rem}
+.marquee__run span{padding:0 22px;font-family:var(--font-mono);font-weight:500;font-size:.86rem}
 
 /* ---------- Stats ---------- */
 .stats{background:var(--ink);color:#fff;padding:56px 0;position:relative}
@@ -195,7 +243,7 @@ a:hover .card-link svg,.card-link:hover svg{transform:translateX(3px)}
 .stat{display:flex;flex-direction:column;gap:6px;padding:4px 20px;border-left:1px solid rgba(255,255,255,.12)}
 .stat:first-child{border-left:0}
 .stat__value{font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,5vw,3.6rem);line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.stat__label{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-dark)}
+.stat__label{font-family:var(--font-mono);font-weight:500;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-dark)}
 
 /* ---------- Cards ---------- */
 .card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
@@ -453,9 +501,17 @@ section>.wrap>.planner-container,main>.planner-container{margin:56px auto}
 .site-footer__brand p{margin-bottom:16px}
 .site-footer__247{margin-top:14px;color:#fff;font-weight:600}
 .site-footer__cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
-.site-footer h4{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin:0 0 14px}
+.site-footer h4{font-family:var(--font-mono);font-weight:700;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin:0 0 14px}
 .site-footer h4:not(:first-child){margin-top:26px}
 .site-footer ul{list-style:none;display:grid;gap:8px}
+/* Long addresses must wrap, not widen the page. The three footer columns are
+   minmax(0,1fr) tracks, but a grid ITEM keeps min-width:auto, so the <ul> could
+   not shrink below the width of the email address and the page picked up about
+   11px of horizontal overflow between 1021px and 1079px -- the band where the
+   footer is still three across and the page is at its narrowest. Fixed Oct 10
+   2026. No font-family is set here, so the font standard is untouched. */
+.site-footer__cols>*,.site-footer ul,.site-footer li{min-width:0}
+.site-footer a,.site-footer__ai,.site-footer__legal p{overflow-wrap:anywhere}
 .site-footer__legal{padding-top:22px;font-size:.84rem;display:grid;gap:6px}
 .site-footer__legal p{margin:0}
 .site-footer__ai{color:#7F8CA6;font-size:.78rem}
@@ -607,7 +663,7 @@ body.menu-open{overflow:hidden}
 .nfp__card:hover{transform:translateY(-2px);border-color:rgba(0,229,255,.55);background:rgba(255,255,255,.08)}
 .nfp__ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(100deg,#02D7F5,#016FD6 55%,#7A3DFF);color:#021033}
 .nfp__tag{font:600 .7rem "JetBrains Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:#02D7F5}
-.nfp__card h3{margin:0;font-family:"Bricolage Grotesque",Inter,sans-serif;font-size:1.45rem;color:#fff;line-height:1.1}
+.nfp__card h3{margin:0;font-family:"Bricolage Grotesque",Inter,sans-serif;font-weight:800;font-size:1.45rem;color:#fff;line-height:1.1}
 .nfp__card p{margin:0;color:#b9c9e2;flex:1}
 .nfp__go{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#7ff3ff}
 @media(prefers-reduced-motion:reduce){.nfp__card{transition:none}}
