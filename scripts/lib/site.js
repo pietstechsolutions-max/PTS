@@ -5,8 +5,12 @@ import { fileURLToPath } from 'node:url';
 const PUBLIC_DIR = fileURLToPath(new URL('../../public/', import.meta.url));
 const _vcache = {};
 // Adds ?v=<content hash> to local CSS/JS so browsers pick up changes (Vercel caches /assets for a year).
+// Clears the hash cache. build-blog.js calls it after scripts/site-v3 is laid over public/, so a CSS/JS file
+// the overlay replaced gets the hash of its NEW content (Oct 12 2026: main.css kept its old ?v= and visitors
+// were served the old file). A link that already carries ?v= is re-stamped too.
+export function resetAssetVersions() { for (const k of Object.keys(_vcache)) delete _vcache[k]; }
 export function versionAssets(html) {
-  return html.replace(/(["'])(\/assets\/[^"'?#]+\.(?:css|js))\1/g, (m, q, url) => {
+  return html.replace(/(["'])(\/assets\/[^"'?#]+\.(?:css|js))(?:\?v=[0-9a-f]*)?\1/g, (m, q, url) => {
     if (!(url in _vcache)) {
       try { _vcache[url] = createHash('sha1').update(readFileSync(PUBLIC_DIR + url.slice(1))).digest('hex').slice(0, 8); }
       catch { _vcache[url] = ''; }
