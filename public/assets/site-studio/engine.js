@@ -37,11 +37,15 @@
     var aOnDark = base; for (var j = 0; j < 8 && contrast(aOnDark, ink) < 4.5; j++) aOnDark = mix(aOnDark, '#ffffff', .2);
     return { a: base, a2: a2, on: on, ink: ink, ink2: ink2, ink3: ink3, aTxt: aTxt, aDark: aOnDark, dark: dark, sky1: mix(base, '#020509', .86), sky2: mix(base, '#0a1420', .7) };
   }
+  /* TYPE: three families only (Bricolage Grotesque, Inter, JetBrains Mono), one font request
+     for every theme. Themes differ by display weight and letter-spacing, not by family. */
+  var FONT_HREF = 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Inter:wght@400..800&amp;family=JetBrains+Mono:wght@400..800&amp;display=swap';
+  var DISP = '"Bricolage Grotesque",system-ui,sans-serif', BODY = '"Inter",system-ui,sans-serif';
   var FONTS = {
-    industrial: { disp: '"Archivo","Arial Narrow",system-ui,sans-serif', body: '"Inter",system-ui,sans-serif', href: 'Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700' },
-    modern: { disp: '"Bricolage Grotesque",system-ui,sans-serif', body: '"DM Sans",system-ui,sans-serif', href: 'Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:wght@400;500;700' },
-    elegant: { disp: '"Fraunces",Georgia,serif', body: '"Jost",system-ui,sans-serif', href: 'Fraunces:opsz,wght@9..144,600;9..144,700&family=Jost:wght@400;500;600' },
-    clean: { disp: '"Manrope",system-ui,sans-serif', body: '"Manrope",system-ui,sans-serif', href: 'Manrope:wght@400;500;600;700;800' }
+    industrial: { disp: DISP, body: BODY, dw: 800, dls: '-.03em' },
+    modern: { disp: DISP, body: BODY, dw: 800, dls: '-.012em' },
+    elegant: { disp: DISP, body: BODY, dw: 700, dls: '.004em' },
+    clean: { disp: DISP, body: BODY, dw: 600, dls: '-.004em' }
   };
 
   /* ---------- icons ---------- */
@@ -201,10 +205,10 @@
     var css = [
       ':root{--a:' + P.a + ';--a2:' + P.a2 + ';--on:' + P.on + ';--ink:' + P.ink + ';--ink2:' + P.ink2 + ';--ink3:' + P.ink3 + ';--atx:' + P.aTxt + ';--adk:' + P.aDark + ';--sky1:' + P.sky1 + ';--sky2:' + P.sky2 + ';',
       '--txt:#eef3f7;--mut:#a4b2bf;--line:rgba(255,255,255,.11);--paper:' + (light ? '#ffffff' : '#f3f5f7') + ';--dk:#0d141b;--dkm:#53606c;--pline:#dde3e9;',
-      '--disp:' + F.disp + ';--body:' + F.body + ';--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:' + (light ? 'light' : 'dark') + '}',
+      '--disp:' + F.disp + ';--body:' + F.body + ';--dw:' + F.dw + ';--dls:' + F.dls + ';--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:' + (light ? 'light' : 'dark') + '}',
       '*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;background:' + (light ? '#f7f8fa' : 'var(--ink)') + ';color:' + (light ? 'var(--dk)' : 'var(--txt)') + ';font:17px/1.6 var(--body);overflow-x:hidden}',
       'img{max-width:100%;display:block}a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}[hidden]{display:none!important}:focus-visible{outline:2px solid var(--a2);outline-offset:3px}',
-      '.wrap{max-width:1160px;margin:0 auto;padding:0 18px}h1,h2,h3{font-family:var(--disp);line-height:1.06;margin:0;letter-spacing:-.01em;text-wrap:balance}h1{font-size:clamp(2.3rem,6.6vw,4.2rem);font-weight:800}h2{font-size:clamp(1.8rem,4.6vw,2.8rem);font-weight:800}h3{font-size:1.18rem}p{margin:0}',
+      '.wrap{max-width:1160px;margin:0 auto;padding:0 18px}h1,h2,h3{font-family:var(--disp);font-weight:var(--dw,800);line-height:1.06;margin:0;letter-spacing:var(--dls,-.012em);text-wrap:balance}h1{font-size:clamp(2.3rem,6.6vw,4.2rem);font-weight:var(--dw,800)}h2{font-size:clamp(1.8rem,4.6vw,2.8rem);font-weight:var(--dw,800)}h3{font-size:1.18rem;font-weight:700}p{margin:0}',
       'h1 em,h2 em{font-style:normal;color:var(--adk)}.lt h2 em{color:var(--atx)}',
       '.eye{font:600 .72rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--adk)}.lt .eye{color:var(--atx)}',
       'section{padding:72px 0}.lt{background:var(--paper);color:var(--dk)}.d2{background:var(--ink2)}' + (light ? '.d2{background:#eef1f4;color:var(--dk)}.d2 .eye,.d2 h2 em{color:var(--atx)}.d2 .mut{color:var(--dkm)}' : ''),
@@ -287,7 +291,7 @@
       '<title>' + esc(biz) + (town ? ' | ' + esc(fill(L.title_in, { label: t.label.split(' /')[0], town: town })) : '') + '</title>' +
       '<meta name="description" content="' + esc(String(copy.sub || '').slice(0, 155)) + '">' +
       '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
-      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + F.href + '&family=JetBrains+Mono:wght@500;600&display=swap">' +
+      '<link rel="stylesheet" href="' + FONT_HREF + '">' +
       '<style>' + css + '</style></head><body>' +
       (demo ? '<div class="ribbon"><b>DEMO</b> ' + esc(L.rib_built) + ' <b>PIETS TECHNOLOGY SOLUTIONS</b> &middot; <a href="tel:' + PIETS.tel + '">' + PIETS.phone + '</a> &middot; ' + esc(L.rib_preview) + '</div><div class="wm">DEMO &middot; PIETS</div>' : '') +
       '<div class="tick" aria-hidden="true"><div class="run">' + tickRun + tickRun + tickRun + tickRun + '</div></div>' +
@@ -333,7 +337,7 @@
       '<div><h4>' + esc(L.ft_services) + '</h4><ul>' + services.slice(0, 6).map(function (s) { return '<li><a href="#services">' + esc(s.name) + '</a></li>'; }).join('') + '</ul></div>' +
       '<div><h4>' + esc(L.ft_contact) + '</h4><ul>' + (telHref ? '<li><a href="tel:' + telHref + '">' + esc(fill(L.call_x, { phone: phone })) + '</a></li><li><a href="sms:' + telHref + '">' + esc(fill(L.text_x, { phone: phone })) + '</a></li>' : '') + '<li>' + esc(hours) + '</li>' + social.map(function (s) { return '<li><a href="' + esc(s[1]) + '" target="_blank" rel="noopener">' + s[0] + '</a></li>'; }).join('') + '</ul></div></div>' +
       '<p style="margin-top:22px;font-size:.8rem">&copy; ' + new Date().getFullYear() + ' ' + esc(biz) + '. ' + esc(L.rights) + '</p>' +
-      '<div class="pbox"><svg viewBox="0 0 40 44" aria-hidden="true"><rect width="30" height="6" rx="3" fill="#00FFFF"/><rect y="9" width="36" height="6" rx="3" fill="#02D7F5"/><rect y="18" width="30" height="6" rx="3" fill="#01A2E8"/><rect y="27" width="8" height="6" rx="3" fill="#016FD6"/><rect y="36" width="8" height="6" rx="3" fill="#016FD6"/></svg>' +
+      '<div class="pbox"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="pmk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00FFFF"/><stop offset="1" stop-color="#016FD6"/></linearGradient></defs><rect width="120" height="120" rx="18" fill="#011F5D"/><rect x="26" y="22" width="14" height="76" rx="4" fill="#FFFFFF"/><rect x="44" y="22" width="52" height="11" rx="5.5" fill="url(#pmk)"/><rect x="44" y="39" width="44" height="11" rx="5.5" fill="url(#pmk)"/><rect x="44" y="56" width="52" height="11" rx="5.5" fill="url(#pmk)"/><rect x="44" y="76" width="30" height="8" rx="4" fill="#02D7F5" opacity=".55"/><rect x="44" y="90" width="18" height="8" rx="4" fill="#02D7F5" opacity=".3"/></svg>' +
       '<div>' + esc(L.web_by) + ' <b>PIETS TECHNOLOGY SOLUTIONS</b> &middot; <a href="tel:' + PIETS.tel + '">' + PIETS.phone + '</a> &middot; <a href="' + PIETS.url + '/websites">pietstechsolutions.com</a>' +
       '<small>' + esc(L.ai_note) + '</small></div></div></div></footer>' +
       '<nav class="stk" aria-label="Quick contact">' + (telHref ? '<a class="btn go" href="tel:' + telHref + '">' + esc(L.stk_call) + '</a><a class="btn gh" href="sms:' + telHref + '">' + esc(L.stk_text) + '</a>' : '') + '<a class="btn gh" href="#quote">' + esc(L.stk_quote) + '</a></nav>' +

@@ -252,10 +252,10 @@
       if (f.website && f.website.value) return;
       var btn = $('rqBtn'); btn.disabled = true; btn.textContent = 'Sending…';
       var msg = 'Piet Box (screen) request. Business: ' + (S.name || '-') + ' (' + T().label + '). TVs: ' + $('rq_tvs').value + '. Wants: ' + S.shows.join(', ') + '.';
-      var body = { name: n.value.trim(), phone: p.value.trim(), email: $('rq_email').value.trim(), town: '', service: 'menu-boards', message: msg, source: 'piet-box', page: '/piet-box', website: '' };
+      var body = { name: n.value.trim(), phone: p.value.trim(), email: $('rq_email').value.trim(), town: '', service: 'menu-boards', message: msg, source: 'Piet Box Studio', page: location.pathname, website: '' };
       var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
       var done = function (ok) { clearTimeout(to); btn.disabled = false; btn.textContent = 'Request my Piet Box walkthrough';
-        out.innerHTML = ok ? '<div class="ok"><b>Got it.</b> Piets will call or text you to set up your walkthrough.</div>' : '<div class="warnbox"><b>This demo can’t send requests.</b> Please call or text Piets at <span class="copy">631-871-5957</span> or email pietstechsolutions@gmail.com and mention the Piet Box.</div>'; };
+        out.innerHTML = ok ? '<div class="ok"><b>Got it.</b> Piets will call or text you to set up your walkthrough.</div>' : '<div class="warnbox"><b>That didn’t go through.</b> Please call or text Piets at <span class="copy">631-871-5957</span> and mention the Piet Box.</div>'; };
       try { fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined }).then(function (r) { done(r.ok); }).catch(function () { done(false); }); } catch (x) { done(false); }
     });
   }

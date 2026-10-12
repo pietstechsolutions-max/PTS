@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Piets Beta Crew</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Inter:wght@400..800&amp;family=JetBrains+Mono:wght@400..800&amp;display=swap" rel="stylesheet">
 <style>
 /* Layout: one narrow column — pitch, fee card, then the report builder that turns answers into a ready-to-send message. Piets brand (navy/cyan), single dark look by choice. */
 :root{
@@ -8,6 +8,7 @@
   --cy:#00FFFF; --cy2:#02D7F5; --bl:#01A2E8; --bl2:#016FD6;
   --txt:#eef5ff; --mut:#9fb3d1; --line:rgba(255,255,255,.13); --field:#071733;
   --ok:#2fd27a; --warn:#f5b301;
+  --pu:#7A3DFF; --pu2:#9B6BFF; /* palette B purple accent */
   --disp:"Bricolage Grotesque",system-ui,sans-serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
   color-scheme:dark;
 }
@@ -20,15 +21,15 @@ h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800}
 h2{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800}
 h3{font-size:1.1rem}
 p{margin:0}
-em.g{font-style:normal;background:linear-gradient(100deg,var(--cy),var(--bl));-webkit-background-clip:text;background-clip:text;color:transparent}
-.eye{font:600 .7rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cy2)}
+em.g{font-style:normal;background:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eye{font:600 .7rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--pu2)}
 a{color:var(--cy2)}
 :focus-visible{outline:2px solid var(--cy2);outline-offset:3px}
 
 .hdr{display:flex;align-items:center;gap:12px;padding-block:18px;border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt);margin-right:auto}
 .brand svg{width:28px;height:32px;flex:none}
-.brand strong{display:block;font:italic 900 1.25rem var(--disp);letter-spacing:.04em;line-height:1}
+.brand strong{display:block;font:italic 800 1.25rem var(--disp);letter-spacing:.04em;line-height:1}
 .brand small{display:block;font:500 .5rem var(--mono);letter-spacing:.3em;text-transform:uppercase;color:#9fc4ff;margin-top:3px}
 .hdr .ph{font:600 .9rem var(--mono);color:var(--txt);user-select:all}
 
@@ -36,7 +37,7 @@ a{color:var(--cy2)}
 .hero .lead{color:#c8d6ea;font-size:1.08rem;max-width:40em}
 .jump{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:99px;padding:0 22px;min-height:48px;font:700 .98rem var(--body);text-decoration:none;cursor:pointer;color:inherit}
-.go{background:linear-gradient(135deg,var(--cy2),var(--bl2));color:#001024}
+.go{background:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%);color:#021033;box-shadow:0 12px 30px -12px rgba(122,61,255,.7)}
 .gh{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.24)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 
@@ -94,7 +95,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
 <div class="wrap">
   <header class="hdr">
     <a class="brand" href="https://pietstechsolutions.com" aria-label="Piets Technology Solutions">
-      <svg viewBox="0 0 40 44" aria-hidden="true"><rect width="30" height="6" rx="3" fill="#00FFFF"/><rect y="9" width="36" height="6" rx="3" fill="#02D7F5"/><rect y="18" width="30" height="6" rx="3" fill="#01A2E8"/><rect y="27" width="8" height="6" rx="3" fill="#016FD6"/><rect y="36" width="8" height="6" rx="3" fill="#016FD6"/></svg>
+      <img src="/assets/brand/logo-mark.svg" width="34" height="34" alt="">
       <span><strong>PIETS</strong><small>Technology Solutions</small></span>
     </a>
     <span class="ph">631-871-5957</span>
@@ -122,12 +123,12 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
     <div class="fees"><div class="tblwrap"><table>
       <thead><tr><th>They buy</th><th>You get</th></tr></thead>
       <tbody>
-        <tr><td>Website, Starter <small>$997 setup</small></td><td>$250</td></tr>
-        <tr><td>Website, Pro <small>$2,497 setup</small></td><td>$500</td></tr>
-        <tr><td>Website, Premium with full Field HQ <small>$4,997 setup</small></td><td>$1,000</td></tr>
-        <tr><td>The Whole Shabang <small>$19,997 setup</small></td><td>$2,000</td></tr>
+        <tr><td>Website, Starter <small>new website</small></td><td>$250</td></tr>
+        <tr><td>Website, Pro <small>new website</small></td><td>$500</td></tr>
+        <tr><td>Website, Premium with full Field HQ <small>new website + Field HQ</small></td><td>$1,000</td></tr>
+        <tr><td>The Whole Shabang <small>everything Piets builds</small></td><td>$2,000</td></tr>
         <tr><td>Field HQ on its own <small>monthly plan</small></td><td>10% &times; 12 mo</td></tr>
-        <tr><td>Managed IT plan <small>Basic $299 or Pro $599 a month</small></td><td>1st month</td></tr>
+        <tr><td>Managed IT plan <small>Basic or Pro, monthly</small></td><td>1st month</td></tr>
         <tr><td>Cameras, Wi-Fi, network or POS install <small>completed and paid</small></td><td>$100</td></tr>
         <tr><td>Install job over $5,000 <small>completed and paid</small></td><td>5%</td></tr>
       </tbody>

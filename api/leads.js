@@ -3,6 +3,7 @@
 // Environment Variables. Without them this returns 503 and the form tells the
 // visitor to call or text instead — it never fakes a success.
 import nodemailer from 'nodemailer';
+import { customerReplySubject, customerReplyText, customerReplyHtml } from './_lead-email.js';
 
 const OWNER_EMAIL = process.env.OWNER_EMAIL || 'pietstechsolutions@gmail.com';
 const PHONE = '631-871-5957';
@@ -139,14 +140,15 @@ export default async function handler(req, res) {
      });
      
      // Send auto-reply to customer if they provided a valid email
-     if (lead.email && lead.email.trim() !== '') {
+     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) {
        try {
-         const firstName = lead.name.split(' ')[0] || 'there';
          await transport.sendMail({
-           from: '"Piets Website" <' + user + '>',
+           from: '"Piets Technology Solutions" <' + user + '>',
            to: lead.email,
-           subject: 'Thanks for contacting Piets Technology Solutions',
-           text: `Thanks, ${firstName} — we got your request for ${serviceLabel}. We'll reach out shortly. Questions? We're here 24/7: ${PHONE} — Piets Technology Solutions`
+           replyTo: OWNER_EMAIL,
+           subject: customerReplySubject(),
+           text: customerReplyText(lead, serviceLabel),
+           html: customerReplyHtml(lead, serviceLabel)
          });
        } catch (autoReplyError) {
          // Failure of the auto-reply must never fail the request
