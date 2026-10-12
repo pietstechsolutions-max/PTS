@@ -243,3 +243,47 @@ body.home-page .hero__studio-note::before{content:"";display:inline-block;width:
 .announcement__close{z-index:3;background:var(--ink,#050A1F);border:1px solid rgba(122,61,255,.55);box-shadow:none}
 .announcement__run i{background:#7A3DFF;opacity:.9}
 @media(max-width:620px){.announcement::before,.announcement::after{width:56px}}
+
+/* ---------- top nav: bigger and easier to see (owner, Oct 10 2026, item B) ----------
+   "The top bar next to Piets Technology Solutions (Services, Design Studio, Payments...)
+   should be bigger and stick out more." Was 14.9px / 500 in a grey-blue. Now 16px / 600
+   in near-white, a clear purple hover, and the current page also gets a cyan underline.
+   Every rule sets the <a> items AND the <summary> dropdowns together (lesson 8).
+   Room for it: the phone becomes a round icon button (it was hidden under 1441px), and the PIETS wordmark steps aside under 1180px (the logo mark stays).
+   Swept 1px by 1px, 1021-1600px: one row, nothing touching. Under 1021px = phone menu. */
+@media (min-width:1021px){
+  .site-nav__links{gap:2px}
+  .site-nav__links>li>a,
+  .site-nav__links>li>.nav-more>summary{
+    font-family:var(--font-body);font-size:1rem;font-weight:600;letter-spacing:0;
+    color:#EEF3FB;padding:9px 10px;min-height:42px;border-radius:999px}
+  .site-nav__links>li>a:hover,
+  .site-nav__links>li>.nav-more>summary:hover,
+  .site-nav__links>li>.nav-more[open]>summary{color:#fff;background:rgba(122,61,255,.34)}
+  .site-nav__links>li>a[aria-current="page"],
+  .site-nav__links>li>.nav-more>summary[data-on]{
+    color:#fff;background:rgba(122,61,255,.26);box-shadow:inset 0 -2px 0 #02D7F5}
+  .site-nav__links>li>.nav-more>summary>svg{opacity:.75}
+  /* the phone: a round icon button on every desktop width (the bar is capped at 1400px, so the
+     number itself never fits beside a bigger nav; it is in the top bar, the footer and the button's name) */
+  .site-header__actions .header-phone{display:inline-flex;justify-content:center;width:42px;height:42px;padding:0;
+    border-radius:999px;border:1px solid rgba(2,215,245,.45);font-size:0;gap:0;flex:none}
+  .site-header__actions .header-phone svg{width:18px;height:18px}
+  .site-header__actions .header-phone:hover{background:rgba(122,61,255,.3)}
+}
+
+@media (max-width:1320px) and (min-width:1021px){
+  .site-nav__links>li>a,
+  .site-nav__links>li>.nav-more>summary{font-size:.95rem;padding:9px 8px}
+}
+/* the small "Technology Solutions" line under PIETS waits until the bar has room for it */
+@media (max-width:1400px) and (min-width:1321px){
+  .site-header .brand__text small{display:none}
+}
+@media (max-width:1180px) and (min-width:1021px){
+  .site-header .brand__text{display:none}
+  .site-nav__links>li>a,
+  .site-nav__links>li>.nav-more>summary{font-size:.94rem;padding:8px 6px;gap:4px}
+  .site-header__inner{gap:12px}
+  .site-header__actions{gap:8px}
+}

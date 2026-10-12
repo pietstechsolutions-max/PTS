@@ -323,3 +323,9 @@ body::before{content:"";position:fixed;top:0;left:0;right:0;height:4px;backgroun
    and it can never be compressed again. the owner's rule: only the official mark, never
    redrawn or restyled — and squeezing it is restyling it. */
 .brand svg{flex:0 0 auto}
+
+/* top nav sticks out more, same look as the main site bar (owner, Oct 10 2026, item B).
+   Brighter text, weight 600, purple hover. The size stays: this bar was already swept to fit. */
+.hnav a{font-family:var(--body);font-weight:600;color:#EEF3FB}
+.hnav a:hover{color:#fff;background:rgba(122,61,255,.34)}
+.hnav a:focus-visible{outline:2px solid #02D7F5;outline-offset:2px}

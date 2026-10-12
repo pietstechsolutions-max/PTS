@@ -2,7 +2,7 @@
    the TV rolling the Piet Box, the InVid Tech Paramont recorder view, the
    computer running Piets Software and the phone running the Piets Apps.
 
-   Everything on these screens is drawn in code and labelled as a demo with
+   Everything on these screens is drawn in code and labeled as a demo with
    sample data. This file only MOVES what is already in the page: if it never
    loads, the hero still renders a complete, correct first frame.
 

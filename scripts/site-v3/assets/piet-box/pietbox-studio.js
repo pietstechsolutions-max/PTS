@@ -22,8 +22,8 @@
     { id: 'other', label: 'Something else', icon: 'building', menu: 'Item one | $10\nItem two | $15\nItem three | $20', promo: 'Ask about today’s deal' }
   ];
   var SHOWS = [['welcome', 'Welcome screen'], ['menu', 'Menu / price board'], ['promo', 'Specials & promos'], ['qr-photo', 'Photo wall (scan to post)'], ['qr-ad', 'Scan to advertise here']];
-  var FEATS = [['menu', 'Menu boards', 'Items and prices, changed remotely.'], ['megaphone', 'Promos', 'Specials, events, welcome screens.'], ['store', 'Scan to advertise', 'Local businesses ask to buy ad time.'],
-    ['photo', 'Photo wall', 'Customers post photos by QR.'], ['shield', 'Approved first', 'Nothing shows until it is OK’d.'], ['qr', 'QR setup', 'Scan the TV to link the box.'], ['cloud', 'Run by Piets', 'Changes sent from the Piets Hub.'], ['lock', 'No router setup', 'The box only calls out.']];
+  var FEATS = [['menu', 'Menu boards', 'Items and prices, changed remotely.'], ['megaphone', 'Promos', 'Specials, events, welcome screens.'], ['store', 'Scan to Advertise', 'Local businesses ask to buy ad time.'],
+    ['photo', 'Photo Wall', 'Customers post photos by QR.'], ['shield', 'Approved First', 'Nothing shows until it is OK’d.'], ['qr', 'QR Setup', 'Scan the TV to link the box.'], ['cloud', 'Run by Piets', 'Changes sent from the Piets Hub.'], ['lock', 'No router setup', 'The box only calls out.']];
   var S = { step: 1, type: 'deli', name: '', promo: '', shows: ['welcome', 'menu', 'promo', 'qr-photo', 'qr-ad'], menu: '' };
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
   function load() { try { var o = JSON.parse(localStorage.getItem(KEY) || 'null'); if (o && o.type) { S = Object.assign(S, o); S.step = 1; } } catch (e) {} }
@@ -47,7 +47,7 @@
         if (s === 'welcome') out.push({ type: 'promo', k: 'Welcome', t: 'Welcome to ' + d.name, x: d.tag || 'Glad you are here', sec: 7 });
         if (s === 'menu' && d.items.length) out.push({ type: 'menu', t: d.menuTitle || 'Menu', items: d.items, sec: 11 });
         if (s === 'promo') out.push({ type: 'promo', k: 'Today', t: d.promo || 'Ask about today’s special', x: 'At ' + d.name, sec: 7, color: '#0a3a8a' });
-        if (s === 'qr-photo') { out.push({ type: 'qr', k: 'Photo wall', t: 'Put your photo on the screen', x: 'Scan, post, and look up in a minute.', sec: 9, pics: true }); me.photos.forEach(function (p) { out.push({ type: 'photo', t: p.name, x: p.text, img: p.img, sec: 7 }); }); }
+        if (s === 'qr-photo') { out.push({ type: 'qr', k: 'Photo Wall', t: 'Put your photo on the screen', x: 'Scan, post, and look up in a minute.', sec: 9, pics: true }); me.photos.forEach(function (p) { out.push({ type: 'photo', t: p.name, x: p.text, img: p.img, sec: 7 }); }); }
         if (s === 'qr-ad') out.push({ type: 'qr', k: 'Advertise here', t: 'Your business on this screen', x: 'Local businesses: scan to ask about an ad.', sec: 9 });
       });
       me.ads.forEach(function (a, n) { out.splice(Math.min(out.length, 2 + n * 2), 0, { type: 'ad', t: a.name, x: a.text, color: a.color, sec: 8 }); });
@@ -254,7 +254,7 @@
       var msg = 'Piet Box (screen) request. Business: ' + (S.name || '-') + ' (' + T().label + '). TVs: ' + $('rq_tvs').value + '. Wants: ' + S.shows.join(', ') + '.';
       var body = { name: n.value.trim(), phone: p.value.trim(), email: $('rq_email').value.trim(), town: '', service: 'menu-boards', message: msg, source: 'Piet Box Studio', page: location.pathname, website: '' };
       var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
-      var done = function (ok) { clearTimeout(to); btn.disabled = false; btn.textContent = 'Request my Piet Box walkthrough';
+      var done = function (ok) { clearTimeout(to); btn.disabled = false; btn.textContent = 'Request My Piet Box Walkthrough';
         out.innerHTML = ok ? '<div class="ok"><b>Got it.</b> Piets will call or text you to set up your walkthrough.</div>' : '<div class="warnbox"><b>That didn’t go through.</b> Please call or text Piets at <span class="copy">631-871-5957</span> and mention the Piet Box.</div>'; };
       try { fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined }).then(function (r) { done(r.ok); }).catch(function () { done(false); }); } catch (x) { done(false); }
     });

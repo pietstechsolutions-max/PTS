@@ -307,3 +307,9 @@ h1 em,h2 em{font-style:normal;background:linear-gradient(100deg,var(--cy),var(--
    guarantee for whatever the next translation turns out to be. */
 .tier .price{overflow-wrap:anywhere}
 @media(min-width:1180px){.tier .price{font-size:1.8rem}}
+
+/* top nav sticks out more, same look as the main site bar (owner, Oct 10 2026, item B).
+   Brighter text, weight 600, purple hover. The size stays: this bar was already swept to fit. */
+.hnav a{font-family:var(--body);font-weight:600;color:#EEF3FB}
+.hnav a:hover{color:#fff;background:rgba(122,61,255,.34)}
+.hnav a:focus-visible{outline:2px solid #02D7F5;outline-offset:2px}

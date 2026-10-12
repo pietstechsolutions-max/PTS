@@ -124,7 +124,6 @@ const today = new Date().toISOString().slice(0, 10);
       { loc: '/', priority: '1.0', changefreq: 'weekly' },
       { loc: '/services.html', priority: '0.9', changefreq: 'monthly' },
       { loc: '/plan.html', priority: '0.9', changefreq: 'monthly' },
-      { loc: '/coverage.html', priority: '0.8', changefreq: 'monthly' },
       { loc: '/commercial.html', priority: '0.8', changefreq: 'monthly' },
       { loc: '/plans.html', priority: '0.8', changefreq: 'monthly' },
       { loc: '/remote-support.html', priority: '0.8', changefreq: 'monthly' },

@@ -35,8 +35,8 @@ Key facts:
 - [Johnstown and Capital Region](https://pietstechsolutions.com/locations/johnstown-capital-region)
 
 ## Tools
-- [Camera Coverage Planner](https://pietstechsolutions.com/coverage): see camera coverage before any wire is run
-- [Design Studio](https://pietstechsolutions.com/design-studio): put cameras or lighting on a photo of your own house
+- [Camera Coverage Planner](https://pietstechsolutions.com/design-studio?mode=coverage): a mode of the Design Studio; lay cameras out on a sample floor plan before any wire is run
+- [Design Studio](https://pietstechsolutions.com/design-studio): one free tool with three modes: cameras or lighting on a photo of your own house, and the Coverage Planner on a sample floor plan
 - [Project planner](https://pietstechsolutions.com/plan)
 
 ## Contact

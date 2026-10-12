@@ -24,7 +24,7 @@
   var NAV = {
     client: [['home', 'home', 'Home'], ['quote', 'quote', 'Quotes', 1], ['visits', 'cal', 'Visits'], ['photos', 'photo', 'Photos'], ['bills', 'bill', 'Invoices'], ['msgs', 'chat', 'Messages']],
     team: [['today', 'today', 'Today'], ['board', 'pipe', 'Jobs board'], ['inbox', 'chat', 'Conversations']],
-    partner: [['phome', 'home', 'Overview'], ['pleads', 'pipe', 'My leads'], ['pdeals', 'jobs', 'Deals'], ['pres', 'photo', 'Resources'], ['ppay', 'bill', 'Payouts']]
+    partner: [['phome', 'home', 'Overview'], ['pleads', 'pipe', 'My Leads'], ['pdeals', 'jobs', 'Deals'], ['pres', 'photo', 'Resources'], ['ppay', 'bill', 'Payouts']]
   };
   /* Partner (VAR / reseller) sample data — no amounts on purpose */
   var PD = { leads: [
@@ -51,16 +51,16 @@
       if (page === 'phome') return '<h4>Hi Alex</h4><p class="sub">Sample Partner Co. · your Piets partner portal</p><div class="grid">' +
         st('Leads sent', String(PD.leads.length)) + st('Open quotes', String(open)) + st('Installed', String(inst)) + st('Next payout', 'Nov 1') + '</div>' +
         '<div class="list">' + PD.leads.slice(0, 3).map(function (l) { return row('jobs', esc(l.biz) + ' · ' + esc(l.what), 'Sent ' + l.when, l.st === 3 ? 'ok' : (l.st === 0 ? '' : 'warn'), PSTAGES[l.st]); }).join('') + '</div>' +
-        '<div class="fhq-cta"><button class="fbtn" type="button" data-page="pleads">Submit a lead</button><button class="fbtn ghost" type="button" data-page="pres">Demo kit &amp; resources</button></div>';
-      if (page === 'pleads') return '<h4>My leads</h4><p class="sub">Send Piets a business. We quote, install, support and bill. You follow it here.</p>' +
-        '<div class="quote"><div class="hd"><b>Submit a lead</b><span class="pill dk">Takes 20 seconds</span></div><div class="sign" style="flex-wrap:wrap"><input id="fhqLeadBiz" maxlength="60" placeholder="Business name"><input id="fhqLeadWhat" maxlength="60" placeholder="What they need (Piet Box, cameras, website…)"><button class="fbtn" type="button" data-act="plead">Send to Piets</button></div></div>' +
+        '<div class="fhq-cta"><button class="fbtn" type="button" data-page="pleads">Submit a Lead</button><button class="fbtn ghost" type="button" data-page="pres">Demo Kit &amp; Resources</button></div>';
+      if (page === 'pleads') return '<h4>My Leads</h4><p class="sub">Send Piets a business. We quote, install, support and bill. You follow it here.</p>' +
+        '<div class="quote"><div class="hd"><b>Submit a Lead</b><span class="pill dk">Takes 20 seconds</span></div><div class="sign" style="flex-wrap:wrap"><input id="fhqLeadBiz" maxlength="60" placeholder="Business name"><input id="fhqLeadWhat" maxlength="60" placeholder="What they need (Piet Box, cameras, website…)"><button class="fbtn" type="button" data-act="plead">Send to Piets</button></div></div>' +
         '<div class="list">' + PD.leads.map(function (l) { return row('jobs', esc(l.biz) + ' · ' + esc(l.what), 'Sent ' + l.when, l.st === 3 ? 'ok' : (l.st === 0 ? '' : 'warn'), PSTAGES[l.st]); }).join('') + '</div>';
       if (page === 'pdeals') return '<h4>Deals</h4><p class="sub">Every lead moves left to right. Piets updates it; you just watch.</p><div class="board">' + PSTAGES.map(function (sname, i) {
         var ls = PD.leads.filter(function (l) { return l.st === i; });
         return '<div class="col"><h5>' + sname + '<span>' + ls.length + '</span></h5>' + ls.map(function (l) { return '<div class="jc"><b>' + esc(l.biz) + '</b><span>' + esc(l.what) + '</span></div>'; }).join('') + '</div>';
       }).join('') + '</div>';
       if (page === 'pres') return '<h4>Resources</h4><p class="sub">Everything you need to sell Piets. Co-branded versions on request.</p><div class="list">' +
-        row('photo', 'Piet Box one-pager + TV demo', 'pietstechsolutions.com/piet-box', '', 'Open') + row('photo', 'Website demo builder', 'pietstechsolutions.com/websites — build a demo in a minute, in front of the client', '', 'Open') +
+        row('photo', 'Piet Box one-pager + TV demo', 'pietstechsolutions.com/piet-box', '', 'Open') + row('photo', 'Website Demo Builder', 'pietstechsolutions.com/websites — build a demo in a minute, in front of the client', '', 'Open') +
         row('photo', 'Field HQ client portal tour', 'pietstechsolutions.com/portal', '', 'Open') + row('photo', 'Pietvue apps: MarinaVue, StableVue, PuppyVue', 'pietstechsolutions.com/apps', '', 'Open') +
         row('photo', 'Logo pack + brand colors', 'Ask Piets · sent as a zip', '', 'Request') + '</div>';
       if (page === 'ppay') return '<h4>Payouts</h4><p class="sub">Paid monthly for installed deals. Amounts show on your real statement.</p><div class="quote"><table>' +

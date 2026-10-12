@@ -27,7 +27,7 @@ Signal that has to pass through two floors and three walls arrives weak, and wea
 
 Mesh kits from the big-box store solve the problem on paper: put a few pods around the house and they talk to each other. In practice, two things go wrong.
 
-**They talk to each other over Wi-Fi.** Every hop from pod to pod cuts your speed roughly in half, and the pods have to be close enough to hear each other — which, in a house with dead zones, is exactly the problem you started with.
+**They talk to each other over Wi-Fi.** Every wireless hop from pod to pod can cut your speed roughly in half, and the pods have to be close enough to hear each other — which, in a house with dead zones, is exactly the problem you started with.
 
 **They get placed wherever there's an outlet.** On a dresser, behind a couch, next to the microwave. Access points work best on a ceiling or high on a wall with nothing around them.
 

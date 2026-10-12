@@ -175,7 +175,7 @@ function servicesPage() {
     'remote-support': [
       'Secure RustDesk screen-share sessions',
       'No account needed',
-      'Software fixes assistance',
+      'Software fix help',
       'Printer setup help',
       'Email support',
       'Available to clients anywhere'
@@ -212,7 +212,7 @@ function servicesPage() {
           ${checklist.map(item => `<li>${esc(item)}</li>`).join('')}
         </ul>
         <div class="service-actions">
-          <a href="/plan.html?service=${s.id}" class="btn btn-outline">Plan this</a>
+          <a href="/plan.html?service=${s.id}" class="btn btn-outline">Plan This</a>
           <a href="tel:${SITE.phoneE164}" class="btn btn-navy">Call ${SITE.phone}</a>
         </div>
       </div>
@@ -226,7 +226,7 @@ ${nav('services')}
 ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Services', path: '/services.html' }], h1: 'Services', intro: 'Everything low-voltage, from one local team. Every service comes with a free demo, references and a solution tailored to your space.' })}
 ${subnav}
 ${sections}
-  ${planner({source:'Planner - services', heading:'Get a tailored plan', id:'services-planner'})}
+  ${planner({source:'Planner - services', heading:'Get a Tailored Plan', id:'services-planner'})}
 </main>
 ${footer()}`;
     return head({ title, description, path: '/services.html', extraLd: ld, bodyClass: '', extraScripts: '<script src="/assets/js/planner.js" defer></script>' }) + body;
@@ -304,7 +304,7 @@ ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Locations', path: '/
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Local tech, local answers</div><h2>Serving ${esc(loc.short)}</h2></div>
     <p style="max-width:52rem">${c.para}</p>
-    <div class="btn-row"><a class="btn btn-navy" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a><a class="btn btn-outline" href="sms:${SITE.phoneE164}">Text us</a><a class="btn btn-outline" href="#quote">Get a free quote</a></div>
+    <div class="btn-row"><a class="btn btn-navy" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a><a class="btn btn-outline" href="sms:${SITE.phoneE164}">Text Us</a><a class="btn btn-outline" href="#quote">Get a Free Quote</a></div>
   </div>
 </section>
 <section class="section section-soft" id="services">
@@ -380,13 +380,13 @@ ${nav('plan')}
   <section class="section section-soft" id="quote">
     <div class="wrap">
       <div class="section-head">
-        <div class="eyebrow">Free quote</div>
+        <div class="eyebrow">Free Quote</div>
         <h2>Ready to talk about your project?</h2>
         <p>Call or text <a href="tel:${SITE.phoneE164}">${SITE.phone}</a>, email <a href="mailto:${SITE.email}">${SITE.email}</a>, or <a href="/#quote">send the quote form</a>. ${esc(SITE.clientLine)}</p>
       </div>
       <div class="btn-row">
-        <a class="btn btn-navy" href="/#quote">Get a free quote</a>
-        <a class="btn btn-outline" href="/services.html">See all services</a>
+        <a class="btn btn-navy" href="/#quote">Get a Free Quote</a>
+        <a class="btn btn-outline" href="/services.html">See All Services</a>
       </div>
     </div>
   </section>
@@ -446,13 +446,13 @@ ${nav('coverage')}
     <div class="coverage-controls">
       <div class="coverage-stats">
         <div class="stat"><span class="stat-label">Cameras</span><span class="stat-value" id="camera-count" aria-live="polite">0</span></div>
-        <div class="stat"><span class="stat-label">Rough coverage</span><span class="stat-value" id="coverage-percent" aria-live="polite">0%</span></div>
-        <div class="stat"><span class="stat-label">Lens mix</span><span class="stat-value stat-value--sm" id="lens-mix" aria-live="polite">0 wide · 0 std · 0 long</span></div>
+        <div class="stat"><span class="stat-label">Rough Coverage</span><span class="stat-value" id="coverage-percent" aria-live="polite">0%</span></div>
+        <div class="stat"><span class="stat-label">Lens Mix</span><span class="stat-value stat-value--sm" id="lens-mix" aria-live="polite">0 wide · 0 std · 0 long</span></div>
       </div>
       <div class="coverage-actions">
         <button type="button" class="btn btn-outline" id="undo-btn">Undo</button>
         <button type="button" class="btn btn-outline" id="clear-btn">Clear</button>
-        <button type="button" class="btn btn-primary" id="send-layout-btn">Send my layout to Piets</button>
+        <button type="button" class="btn btn-primary" id="send-layout-btn">Send My Layout to Piets</button>
       </div>
     </div>
     <p class="coverage-note">This is a rough visual. We confirm exact placement on a free walkthrough or video call.</p>
@@ -472,7 +472,7 @@ ${nav('coverage')}
           <div class="field"><label for="coverage-town">Town / ZIP *</label><input id="coverage-town" name="town" type="text" required autocomplete="postal-code"></div>
         </div>
         <div class="field"><label for="coverage-message">Layout details</label><textarea id="coverage-message" name="message" rows="4"></textarea></div>
-        <button class="btn btn-navy btn-block" type="submit">Send layout</button>
+        <button class="btn btn-navy btn-block" type="submit">Send Layout</button>
         <div class="form-msg" role="status" aria-live="polite"></div>
       </form>
     </div>
@@ -514,13 +514,13 @@ ${nav('commercial')}
         <h2>Built around how your business runs</h2>
       </div>
       <div class="who-we-serve-grid">
-        <div class="serve-card"><h3>Restaurants &amp; ghost kitchens</h3><p>POS and payment terminals, kitchen printers, digital menu boards, cameras and Wi-Fi that hold up through the rush.</p></div>
-        <div class="serve-card"><h3>Dental &amp; medical offices</h3><p>Segmented office networks, cameras for entrances and common areas, access control and business phones.</p></div>
-        <div class="serve-card"><h3>Auto &amp; mechanic shops</h3><p>Cameras over bays and lots, Wi-Fi for the office and waiting room, and phones that ring where you are.</p></div>
-        <div class="serve-card"><h3>Convenience stores, bodegas &amp; liquor stores</h3><p>Cameras over registers, doors and aisles, POS and card terminals, and remote viewing from your phone.</p></div>
+        <div class="serve-card"><h3>Restaurants &amp; Ghost Kitchens</h3><p>POS and payment terminals, kitchen printers, digital menu boards, cameras and Wi-Fi that hold up through the rush.</p></div>
+        <div class="serve-card"><h3>Dental &amp; Medical Offices</h3><p>Segmented office networks, cameras for entrances and common areas, access control and business phones.</p></div>
+        <div class="serve-card"><h3>Auto &amp; Mechanic Shops</h3><p>Cameras over bays and lots, Wi-Fi for the office and waiting room, and phones that ring where you are.</p></div>
+        <div class="serve-card"><h3>Convenience Stores, Bodegas &amp; Liquor Stores</h3><p>Cameras over registers, doors and aisles, POS and card terminals, and remote viewing from your phone.</p></div>
         <div class="serve-card"><h3>Offices &amp; retail</h3><p>Structured cabling, network upgrades, access control, phone systems and IT support.</p></div>
-        <div class="serve-card"><h3>Multi-family &amp; property managers</h3><p>Video intercoms, access control, cameras for lobbies and hallways, and Wi-Fi for common areas.</p></div>
-        <div class="serve-card"><h3>Builders &amp; general contractors</h3><p>Your low-voltage partner on new builds and renovations: pre-wire, cabling, cameras and access control.</p></div>
+        <div class="serve-card"><h3>Multi-Family &amp; Property Managers</h3><p>Video intercoms, access control, cameras for lobbies and hallways, and Wi-Fi for common areas.</p></div>
+        <div class="serve-card"><h3>Builders &amp; General Contractors</h3><p>Your low-voltage partner on new builds and renovations: pre-wire, cabling, cameras and access control.</p></div>
         <div class="serve-card"><h3>Warehouses &amp; industrial</h3><p>Camera coverage for large spaces, networking across the building and access control for secure areas.</p></div>
       </div>
     </div>
@@ -660,7 +660,7 @@ ${nav('remote-support')}
     </div>
     <ol class="steps">
       <li>
-        <h3>Call or text us</h3>
+        <h3>Call or Text Us</h3>
         <p>Reach out at 631-871-5957 and let us know you need remote support.</p>
       </li>
       <li>
@@ -668,15 +668,15 @@ ${nav('remote-support')}
         <p>Get it free at <a href="https://rustdesk.com/" target="_blank" rel="noopener">rustdesk.com</a>, then open it.</p>
       </li>
       <li>
-        <h3>Read us your RustDesk ID</h3>
+        <h3>Read Us Your RustDesk ID</h3>
         <p>We connect only with your permission.</p>
       </li>
       <li>
-        <h3>We fix it together</h3>
+        <h3>We Fix It Together</h3>
         <p>You watch everything we do on screen as we resolve software issues, printer problems, email setup, and more.</p>
       </li>
       <li>
-        <h3>Session ends when you say</h3>
+        <h3>Session Ends When You Say</h3>
         <p>You're in control — close RustDesk anytime to end the session.</p>
       </li>
     </ol>
@@ -692,8 +692,8 @@ ${nav('remote-support')}
     <div class="trust">
       <div class="wrap">
         <ul>
-          <li>No account or installation required</li>
-          <li>One-time, secure connection codes</li>
+          <li>No account needed</li>
+          <li>You read us your ID; we cannot connect on our own</li>
           <li>We never connect without your explicit permission</li>
           <li>You see everything we do on your screen</li>
           <li>End-to-end encrypted RustDesk connection</li>
@@ -713,27 +713,27 @@ ${nav('remote-support')}
     </div>
     <div class="grid grid-3">
       <div class="support-card">
-        <h3>Software fixes</h3>
+        <h3>Software Fixes</h3>
         <p>Slow computers, application errors, email issues, Microsoft 365/Google Workspace problems.</p>
       </div>
       <div class="support-card">
-        <h3>Printer & peripheral setup</h3>
+        <h3>Printer & Peripheral Setup</h3>
         <p>Printer installation, wireless printing, scanner setup, device driver updates.</p>
       </div>
       <div class="support-card">
-        <h3>Network troubleshooting</h3>
+        <h3>Network Troubleshooting</h3>
         <p>Wi-Fi connectivity issues, router configuration, network diagnostics, ISP coordination.</p>
       </div>
       <div class="support-card">
-        <h3>Email & communication</h3>
+        <h3>Email & Communication</h3>
         <p>Email client setup, email delivery issues, spam filtering, video conferencing problems.</p>
       </div>
       <div class="support-card">
-        <h3>Updates & maintenance</h3>
+        <h3>Updates & Maintenance</h3>
         <p>Operating system updates, security patches, software upgrades, backup verification.</p>
       </div>
       <div class="support-card">
-        <h3>Camera system checks</h3>
+        <h3>Camera System Checks</h3>
         <p>InVid Tech Paramont camera system status, recording verification, remote viewing setup, motion detection testing.</p>
       </div>
     </div>
@@ -758,9 +758,9 @@ ${nav('')}
       <h1>That page isn't here.</h1>
       <p>The link may be old or mistyped. Try one of these, or call or text ${SITE.phone}. Questions? We're here 24/7.</p>
       <div class="btn-row">
-        <a href="/" class="btn btn-primary btn-lg">Go to the home page</a>
-        <a href="/services" class="btn btn-ghost btn-lg">See services</a>
-        <a href="/plan" class="btn btn-ghost btn-lg">Get a quote</a>
+        <a href="/" class="btn btn-primary btn-lg">Go to the Home Page</a>
+        <a href="/services" class="btn btn-ghost btn-lg">See Services</a>
+        <a href="/plan" class="btn btn-ghost btn-lg">Get a Quote</a>
       </div>
     </div>
   </section>
@@ -888,7 +888,7 @@ ${nav('plans')}
               <li>Discounted on-site rates</li>
             </ul>
             <div class="plan-cta">
-              <a href="/plan.html?service=managed-services" class="btn btn-outline">Ask for pricing</a>
+              <a href="/plan.html?service=managed-services" class="btn btn-outline">Ask for Pricing</a>
             </div>
           </div>
         </div>
@@ -908,7 +908,7 @@ ${nav('plans')}
               <li>Vendor coordination (ISP, POS, phones)</li>
             </ul>
             <div class="plan-cta">
-              <a href="/plan.html?service=managed-services" class="btn btn-navy">Ask for pricing</a>
+              <a href="/plan.html?service=managed-services" class="btn btn-navy">Ask for Pricing</a>
             </div>
           </div>
         </div>
@@ -928,7 +928,7 @@ ${nav('plans')}
               <li>Custom SLA and reporting</li>
             </ul>
             <div class="plan-cta">
-              <a href="/plan.html?service=managed-services" class="btn btn-outline">Ask for pricing</a>
+              <a href="/plan.html?service=managed-services" class="btn btn-outline">Ask for Pricing</a>
             </div>
           </div>
         </div>
@@ -962,7 +962,7 @@ function portalPage() {
   const base = SITE.fieldhqUrl || '';
   const q = SITE.fieldhqTenant ? `?t=${encodeURIComponent(SITE.fieldhqTenant)}` : '';
   const login = base ? `${base}/login${q}` : '#tour';
-  const loginLabel = base ? 'Sign in' : 'Take the demo tour';
+  const loginLabel = base ? 'Sign in' : 'Take the Demo Tour';
   const demoQ = SITE.fieldhqTenant ? `&t=${encodeURIComponent(SITE.fieldhqTenant)}` : '';
   const live = (SITE.fieldhqDemo && base) ? `
     <div class="btn-row" style="margin-top:18px">
@@ -973,7 +973,7 @@ function portalPage() {
   const body = `${banner()}
 ${nav('portal')}
 <main id="main">
-${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Client Login', path: '/portal' }], eyebrow: 'Field HQ client portal', h1: 'Client login', intro: `Your quotes, visits, photos, invoices and messages in one place. ${esc(SITE.clientLine)}` })}
+${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Client Login', path: '/portal' }], eyebrow: 'Field HQ client portal', h1: 'Client Login', intro: `Your quotes, visits, photos, invoices and messages in one place. ${esc(SITE.clientLine)}` })}
 <section class="section">
   <div class="wrap">
     <div class="card-grid">
@@ -986,12 +986,12 @@ ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Client Login', path:
       </article>
       <article class="card">
         <div class="eyebrow">Team</div>
-        <h3>Piets team sign-in</h3>
+        <h3>Piets Team Sign-In</h3>
         <p>Schedule, jobs board, quotes, invoices and client messages for the Piets team.</p>
-        <p style="margin-top:18px"><a class="btn btn-navy" href="${base ? login : '#tour'}">${base ? 'Team sign-in' : 'See the team view'}</a></p>
+        <p style="margin-top:18px"><a class="btn btn-navy" href="${base ? login : '#tour'}">${base ? 'Team sign-in' : 'See the Team View'}</a></p>
       </article>
       <article class="card">
-        <div class="eyebrow">Partners &amp; resellers</div>
+        <div class="eyebrow">Partners &amp; Resellers</div>
         <h3>Partner portal</h3>
         <p>VARs, installers, agencies and referral partners: your leads, deals, resources and payouts, in Field HQ.</p>
         <p style="margin-top:18px"><a class="btn btn-navy" href="/partners.html#tour">Partner portal</a> <a class="btn btn-outline" href="/partners.html#apply">Apply</a></p>
@@ -1000,7 +1000,7 @@ ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Client Login', path:
         <div class="eyebrow">New here?</div>
         <h3>Not a client yet</h3>
         <p>Tell us about your project. Free on-site or video demo. Every quote is tailored to your place.</p>
-        <p style="margin-top:18px"><a class="btn btn-outline" href="/plan.html">Get a free quote</a></p>
+        <p style="margin-top:18px"><a class="btn btn-outline" href="/plan.html">Get a Free Quote</a></p>
       </article>
     </div>${live}
   </div>
@@ -1009,17 +1009,17 @@ ${pageHead({ crumbs: [{ name: 'Home', path: '/' }, { name: 'Client Login', path:
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Demo tour · sample data</div><h2>Click around the portal</h2><p>Switch between the client view and the Piets team view. Approve the sample quote, send a message, move a job. Nothing here is saved or sent.</p></div>
     <div class="fhq" id="fhqDemo">
-      <div class="fhq__top"><span class="fhq__brand"><i></i>PIETS <small>FIELD HQ</small></span><div class="fhq__role" role="group" aria-label="View"><button type="button" data-role="client" aria-pressed="true">Client view</button><button type="button" data-role="team" aria-pressed="false">Team view</button></div></div>
+      <div class="fhq__top"><span class="fhq__brand"><i></i>PIETS <small>FIELD HQ</small></span><div class="fhq__role" role="group" aria-label="View"><button type="button" data-role="client" aria-pressed="true">Client View</button><button type="button" data-role="team" aria-pressed="false">Team View</button></div></div>
       <div class="fhq__body"><nav class="fhq__nav" aria-label="Portal pages"></nav><div class="fhq__main" aria-live="polite"></div></div>
       <div class="fhq__note">Sample screens. Names, jobs and messages are made up. Real quotes show your exact gear, labor and price.</div>
     </div>
-    <div class="fhq-cta"><a class="btn btn-primary" href="/plan.html">Get a quote and your own portal</a><a class="btn btn-outline" href="/piet-box">See the Piet Box</a></div>
+    <div class="fhq-cta"><a class="btn btn-primary" href="/plan.html">Get a Quote and Your Own Portal</a><a class="btn btn-outline" href="/piet-box">See the Piet Box</a></div>
   </div>
 </section>
 <section class="section">
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">For business owners</div><h2>Run your own business on Field HQ</h2><p>The same app Piets uses: quotes, scheduling, a jobs board, invoices and a client portal, set up for your trade. Ask us about it, or start with a free website demo that already sends leads into it.</p></div>
-    <div class="btn-row"><a class="btn btn-navy" href="/websites">Build a free website demo</a><a class="btn btn-outline" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></div>
+    <div class="btn-row"><a class="btn btn-navy" href="/websites">Build a Free Website Demo</a><a class="btn btn-outline" href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></div>
     <p style="margin-top:24px;color:var(--muted)">Paying an invoice: Zelle, Venmo, Cash App, cash or check at no extra charge. Card by secure payment link (4% processing fee). Need help signing in? Call or text ${SITE.phone}.</p>
   </div>
 </section>
@@ -1038,7 +1038,7 @@ function appsPage() {
       text: 'One small box turns any TV into a menu board, an ad screen and a photo wall your customers fill. Plug it in, scan the code, and Piets runs it for you.',
       bullets: ['Menu boards and promos, changed remotely', 'Scan-to-advertise: local businesses pay to be on your screen', 'Photo wall by QR, every post approved first', 'No router changes, no port forwarding'],
       cta: { href: '/piet-box#build', label: 'Build your screen demo' }, demo: true },
-    { id: 'site-studio', name: 'Piets Site Studio', tag: 'Website demo builder', img: '/assets/photos/apps/site-studio.jpg', alt: 'Piets Site Studio website demo builder',
+    { id: 'site-studio', name: 'Piets Site Studio', tag: 'Website Demo Builder', img: '/assets/photos/apps/site-studio.jpg', alt: 'Piets Site Studio website demo builder',
       text: 'Answer five questions, add your logo and photos, and see a demo of your new website in about a minute — before you spend anything.',
       bullets: ['Real copy written for your business', 'Hero scenes built for your trade', 'Mobile-first, fast, hosted by Piets', 'Seven languages'],
       cta: { href: '/websites', label: 'Build my free website demo' }, demo: true },
@@ -1113,13 +1113,13 @@ function partnersPage() {
     ['tv', 'The Piet Box', 'Monthly recurring. Any TV becomes a menu board, promo screen and photo wall. The easiest thing to show in a store.', '/piet-box'],
     ['browser', 'Websites', 'Build a demo in front of the client in about a minute, then Piets builds and hosts the real site.', '/websites'],
     ['portal', 'Field HQ', 'Quotes, scheduling, jobs board, invoices and a client portal for any service business.', '/apps#fieldhq'],
-    ['camera', 'Cameras, Wi-Fi, doors', 'InVid Tech Paramont 4K systems, business Wi-Fi, access control, cabling — installed by Piets.', '/services.html'],
-    ['hub', 'Pietvue apps', 'MarinaVue, StableVue, PuppyVue — cameras plus the app that runs a marina, barn or kennel.', '/apps'],
+    ['camera', 'Cameras, Wi-Fi, Doors', 'InVid Tech Paramont 4K systems, business Wi-Fi, access control, cabling — installed by Piets.', '/services.html'],
+    ['hub', 'Pietvue Apps', 'MarinaVue, StableVue, PuppyVue — cameras plus the app that runs a marina, barn or kennel.', '/apps'],
   ];
   const steps = [
     ['Apply', 'Two minutes. Tell us who you are and what you sell today.'],
     ['Onboard', 'A short call, your demo kit, and your own partner portal in Field HQ.'],
-    ['Sell or refer', 'Show the demos, or just send Piets the business. Piets quotes, installs, supports and bills.'],
+    ['Sell or Refer', 'Show the demos, or just send Piets the business. Piets quotes, installs, supports and bills.'],
     ['Get paid', 'Every lead moves Lead → Quote → Scheduled → Installed in your portal. Payouts monthly for installed deals.'],
   ];
   const who = ['IT & MSP shops', 'Low-voltage and AV installers', 'POS and merchant-services reps', 'Marketing and web agencies', 'Business consultants and brokers', 'Anyone with restaurants, marinas, barns, kennels, offices or stores in their book'];
@@ -1132,7 +1132,7 @@ ${nav('partners')}
     <div class="page-head__eyebrow">VAR · partner · reseller program</div>
     <h1>Sell Piets. We install, support and bill. <em>You get paid.</em></h1>
     <p>Resell the Piet Box, Piets websites, Field HQ and the Pietvue apps under your name or ours. Every lead, quote, install and payout shows up in your own partner portal — built on Field HQ, the same app Piets runs on.</p>
-    <div class="btn-row"><a class="btn btn-primary btn-lg" href="#apply">Apply to partner ${icon('arrow', 18)}</a><a class="btn btn-ghost btn-lg" href="#tour">See the partner portal</a></div>
+    <div class="btn-row"><a class="btn btn-primary btn-lg" href="#apply">Apply to partner ${icon('arrow', 18)}</a><a class="btn btn-ghost btn-lg" href="#tour">See the Partner Portal</a></div>
   </div>
 </div>
 
@@ -1159,7 +1159,7 @@ ${nav('partners')}
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Your partner portal · Field HQ · sample data</div><h2>Click around the partner portal</h2><p>Submit a sample lead, watch it move across the board, see resources and payouts. Switch to the client or team view to see what your customers and Piets see. Nothing here is saved or sent.</p></div>
     <div class="fhq" id="fhqDemo" data-default-role="partner">
-      <div class="fhq__top"><span class="fhq__brand"><i></i>PIETS <small>FIELD HQ · PARTNER</small></span><div class="fhq__role" role="group" aria-label="View"><button type="button" data-role="partner" aria-pressed="true">Partner view</button><button type="button" data-role="client" aria-pressed="false">Client view</button><button type="button" data-role="team" aria-pressed="false">Piets team view</button></div></div>
+      <div class="fhq__top"><span class="fhq__brand"><i></i>PIETS <small>FIELD HQ · PARTNER</small></span><div class="fhq__role" role="group" aria-label="View"><button type="button" data-role="partner" aria-pressed="true">Partner View</button><button type="button" data-role="client" aria-pressed="false">Client View</button><button type="button" data-role="team" aria-pressed="false">Piets Team View</button></div></div>
       <div class="fhq__body"><nav class="fhq__nav" aria-label="Portal pages"></nav><div class="fhq__main" aria-live="polite"></div></div>
       <div class="fhq__note">Sample screens. Businesses, leads and dates are made up. Your real portal shows your own leads, statements and amounts.</div>
     </div>
@@ -1190,8 +1190,8 @@ ${nav('partners')}
           <label><input type="checkbox" name="resell" value="Piet Box" checked> Piet Box</label>
           <label><input type="checkbox" name="resell" value="Websites"> Websites</label>
           <label><input type="checkbox" name="resell" value="Field HQ"> Field HQ</label>
-          <label><input type="checkbox" name="resell" value="Cameras / Wi-Fi / doors"> Cameras, Wi-Fi, doors</label>
-          <label><input type="checkbox" name="resell" value="Pietvue apps"> Pietvue apps</label>
+          <label><input type="checkbox" name="resell" value="Cameras / Wi-Fi / doors"> Cameras, Wi-Fi, Doors</label>
+          <label><input type="checkbox" name="resell" value="Pietvue apps"> Pietvue Apps</label>
         </fieldset>
         <label>Anything else <textarea name="notes" rows="3" maxlength="600" placeholder="Who are your customers? How many could use this?"></textarea></label>
         <button class="btn btn-primary btn-lg" type="submit">Send my application ${icon('arrow', 18)}</button>
@@ -1212,7 +1212,8 @@ export function buildPages(pub) {
   out.push(write(pub, 'index.html', homePage()));
   out.push(write(pub, 'services.html', servicesPage()));
   out.push(write(pub, 'plan.html', planPage()));
-  out.push(write(pub, 'coverage.html', coveragePage()));
+  // coverage.html retired Oct 12 2026: the Coverage Planner is a mode of the Design Studio
+  // (/coverage and /coverage.html redirect there in vercel.json). coveragePage() is kept for reference.
   out.push(write(pub, 'commercial.html', commercialPage()));
   out.push(write(pub, 'plans.html', plansPage()));
   out.push(write(pub, 'remote-support.html', remotePage()));

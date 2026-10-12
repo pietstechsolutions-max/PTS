@@ -38,14 +38,43 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://pietstechsolutions.com/"},{"@type":"ListItem","position":2,"name":"Design Studio","item":"https://pietstechsolutions.com/design-studio.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Design Studio","serviceType":"Camera and lighting design previews","url":"https://pietstechsolutions.com/design-studio.html","description":"Upload a photo of your home or business and see where cameras or permanent lighting would go before anyone quotes you. Free from Piets Tech Solutions.","provider":{"@id":"https://pietstechsolutions.com/#business"},"areaServed":[{"@type":"Place","name":"Suffolk County, NY"},{"@type":"Place","name":"Nassau County, NY"},{"@type":"Place","name":"New York City, NY"},{"@type":"Place","name":"Westchester County, NY"},{"@type":"Place","name":"Putnam County, NY"},{"@type":"Place","name":"Dutchess County, NY"},{"@type":"Place","name":"Orange County, NY"},{"@type":"Place","name":"Albany, NY"},{"@type":"Place","name":"Saratoga Springs, NY"},{"@type":"Place","name":"Johnstown, NY"}]}</script>
+<style>
+/* Design Studio: page-level mode strip + the Coverage Planner pieces money.css does not carry.
+   Coverage block moved here from coverage.html on Oct 12 2026 (Coverage Planner is now a mode).
+   Page-scoped on purpose (roadmap item 21, Oct 10 2026): no shared stylesheet is
+   touched, so no other page can feel this. Palette B only. */
+.cov__cv{position:relative}
+.cov__badge{position:absolute;left:12px;top:12px;font-family:var(--font-mono);font-weight:500;font-size:.6rem;
+  letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px;
+  background:rgba(5,10,31,.74);border:1px solid rgba(167,139,250,.55);color:#E9DDFF;line-height:1.5}
+.cov__mk{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cov__mk>div#covMixCell{grid-column:1/-1}
+.cov__mk>div#covMixCell b{font-size:1.02rem;line-height:1.35}
+#coverage-form-container{margin:24px auto 0;max-width:760px}
+#coverage-form-container[hidden]{display:none}
+@media(max-width:1000px){.cov__mk{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* the one mode strip: Cameras · Lighting · Coverage Planner */
+.dsmodes{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 auto 18px;padding:6px;
+  max-width:max-content;border-radius:999px;background:rgba(5,10,31,.6);border:1px solid rgba(2,215,245,.3)}
+.dsmodes [role="tab"]{appearance:none;border:0;cursor:pointer;border-radius:999px;padding:11px 20px;min-height:44px;
+  font-family:var(--font-body);font-weight:600;font-size:1rem;color:#C9D4E8;background:transparent;display:inline-flex;align-items:center;gap:8px}
+.dsmodes [role="tab"] svg{width:18px;height:18px;flex:none}
+.dsmodes [role="tab"]:hover{color:#fff;background:rgba(122,61,255,.3)}
+.dsmodes [role="tab"][aria-selected="true"]{color:#021033;background:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%)}
+.dsmodes [role="tab"]:focus-visible{outline:3px solid #02D7F5;outline-offset:3px}
+[data-dspanel][hidden]{display:none!important}
+@media(max-width:560px){.dsmodes{border-radius:20px;width:100%;max-width:none}.dsmodes [role="tab"]{flex:1 1 30%;justify-content:center;padding:10px 8px;font-size:.92rem}.dsmodes [role="tab"] svg{display:none}}
+</style>
 </head>
 <body class="">
 <script>document.documentElement.classList.add('js');</script>
 <script src="/assets/js/core.js" defer></script>
 <script src="/assets/js/sections.js" defer></script>
 <script src="/assets/assistant.js" defer></script>
+<script src="/assets/js/coverage.js" defer></script>
 <script src="/assets/money/studio.js" defer></script>
 <script src="/assets/money/a11y.js" defer></script>
+<script src="/assets/money/ds-modes.js" defer></script>
 <a class="skip" href="#main">Skip to content</a>
 <div class="announcement" data-announcement>
   <div class="announcement__track" aria-hidden="true"><div class="announcement__run"><span>New: Design Studio &mdash; see cameras or holiday lights on a photo of your own house</span><i></i><span>Merchant processing, custom POS and equipment financing</span><i></i><span>Ghost kitchen setup &mdash; and we fight the delivery-platform chargebacks</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>No required cloud fees</span><i></i><span>Questions? We're here 24/7</span><i></i><span>New: Design Studio &mdash; see cameras or holiday lights on a photo of your own house</span><i></i><span>Merchant processing, custom POS and equipment financing</span><i></i><span>Ghost kitchen setup &mdash; and we fight the delivery-platform chargebacks</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>No required cloud fees</span><i></i><span>Questions? We're here 24/7</span><i></i></div><div class="announcement__run"><span>New: Design Studio &mdash; see cameras or holiday lights on a photo of your own house</span><i></i><span>Merchant processing, custom POS and equipment financing</span><i></i><span>Ghost kitchen setup &mdash; and we fight the delivery-platform chargebacks</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>No required cloud fees</span><i></i><span>Questions? We're here 24/7</span><i></i><span>New: Design Studio &mdash; see cameras or holiday lights on a photo of your own house</span><i></i><span>Merchant processing, custom POS and equipment financing</span><i></i><span>Ghost kitchen setup &mdash; and we fight the delivery-platform chargebacks</span><i></i><span>InVid Tech Paramont authorized installer</span><i></i><span>No required cloud fees</span><i></i><span>Questions? We're here 24/7</span><i></i></div></div>
@@ -58,22 +87,22 @@
     <nav class="site-nav" aria-label="Main">
       <ul id="primary-menu" class="site-nav__links">
         <li><details class="nav-more" name="pietsnav"><summary>Services <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
-        <li><a href="/services.html">All services</a></li>
-        <li><a href="/security-cameras.html">Security cameras</a></li>
+        <li><a href="/services.html">All Services</a></li>
+        <li><a href="/security-cameras.html">Security Cameras</a></li>
         <li><a href="/wifi-networking.html">Networks &amp; Wi-Fi</a></li>
-        <li><a href="/it-support.html">IT support &amp; repair</a></li>
-        <li><a href="/lighting.html">Holiday &amp; permanent lighting</a></li>
-        <li><a href="/access-control.html">Access control</a></li>
-        <li><a href="/smart-home.html">Smart home</a></li>
-        <li><a href="/structured-cabling.html">Structured cabling</a></li>
+        <li><a href="/it-support.html">IT Support &amp; Repair</a></li>
+        <li><a href="/lighting.html">Holiday &amp; Permanent Lighting</a></li>
+        <li><a href="/access-control.html">Access Control</a></li>
+        <li><a href="/smart-home.html">Smart Home</a></li>
+        <li><a href="/structured-cabling.html">Structured Cabling</a></li>
         <li><a href="/commercial.html">Commercial</a></li>
         </ul></details></li>
         <li><a href="/design-studio.html" data-pillar="1" aria-current="page">Design Studio</a></li>
         <li><details class="nav-more" name="pietsnav" data-navdot="1"><summary>Payments <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
-        <li><a href="/payments.html">Merchant processing &amp; POS</a></li>
-        <li><a href="/ghost-kitchen.html">Ghost kitchen &amp; delivery</a></li>
-        <li><a href="/ghost-kitchen.html#disputes">Chargebacks &amp; disputes</a></li>
-        <li><a href="/financing.html">Equipment financing</a></li>
+        <li><a href="/payments.html">Merchant Processing &amp; POS</a></li>
+        <li><a href="/ghost-kitchen.html">Ghost Kitchen &amp; Delivery</a></li>
+        <li><a href="/ghost-kitchen.html#disputes">Chargebacks &amp; Disputes</a></li>
+        <li><a href="/financing.html">Equipment Financing</a></li>
         </ul></details></li>
         <li><details class="nav-more" name="pietsnav" data-navdot="1"><summary>Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
         <li><a href="/software.html">Piets Software</a></li>
@@ -84,34 +113,33 @@
         <li><a href="/websites.html">Websites &middot; Site Studio</a></li>
         </ul></details></li>
         <li><a href="/plans.html">Plans</a></li>
-        <li><a href="/remote-support.html">Remote support</a></li>
+        <li><a href="/remote-support.html">Remote Support</a></li>
         <li><details class="nav-more" name="pietsnav"><summary>More <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
-        <li><a href="/coverage.html">Coverage Planner</a></li>
         <li><a href="/locations/index.html">Locations</a></li>
         <li><a href="/blog/index.html">Blog</a></li>
-        <li><a href="/portal.html">Client login</a></li>
+        <li><a href="/portal.html">Client Login</a></li>
         <li><a href="/partners.html">Partners</a></li>
-        <li><a href="/about.html">About us</a></li>
+        <li><a href="/about.html">About Us</a></li>
         <li><a href="/contact.html">Contact</a></li>
         </ul></details></li>
-        <li class="site-nav__mobile-only"><details class="nav-more" name="pietsnav"><summary>Log in <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
+        <li class="site-nav__mobile-only"><details class="nav-more" name="pietsnav"><summary>Log In <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel">
         <li><a href="/portal.html">Client &middot; Field HQ portal</a></li>
-        <li><a href="/fieldhq.html#console">Owner / staff &middot; Field HQ</a></li>
+        <li><a href="/fieldhq.html#console">Owner / Staff &middot; Field HQ</a></li>
         <li><a href="/fieldhq.html#console">Reseller / VAR &middot; Field HQ</a></li>
         </ul></details></li>
         <li class="site-nav__mobile-only"><a href="tel:+16318715957">Call 631-871-5957</a></li>
-        <li class="site-nav__mobile-only"><a href="/plan.html">Get a quote</a></li>
+        <li class="site-nav__mobile-only"><a href="/plan.html">Get a Quote</a></li>
         </ul>
     </nav>
     <div class="site-header__actions">
-      <a class="header-phone" href="tel:+16318715957"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>631-871-5957</a>
-      <details class="nav-more login-menu" name="pietsnav"><summary class="btn btn-ghost btn-sm header-login" aria-label="Log in"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>Log in<svg class="login-menu__chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel login-menu__panel">
+      <a class="header-phone" href="tel:+16318715957" title="Call 631-871-5957" aria-label="Call 631-871-5957"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>631-871-5957</a>
+      <details class="nav-more login-menu" name="pietsnav"><summary class="btn btn-ghost btn-sm header-login" aria-label="Log in"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>Log In<svg class="login-menu__chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><ul class="nav-more__panel login-menu__panel">
         <li><a href="/portal.html"><b>Client</b><span>Your quotes, visits, photos and invoices &mdash; the Field HQ client portal</span></a></li>
-        <li><a href="/fieldhq.html#console"><b>Owner / staff</b><span>The Field HQ console</span></a></li>
+        <li><a href="/fieldhq.html#console"><b>Owner / Staff</b><span>The Field HQ console</span></a></li>
         <li><a href="/fieldhq.html#console"><b>Reseller / VAR</b><span>Field HQ &mdash; the same console, partner access</span></a></li>
         <li class="login-menu__foot">All three run under Field HQ &middot; 631-871-5957</li>
         </ul></details>
-      <a class="btn btn-primary btn-sm" href="/plan.html">Get a quote</a>
+      <a class="btn btn-primary btn-sm" href="/plan.html">Get a Quote</a>
     </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
@@ -123,23 +151,23 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/index.html">Home</a> / <span>Design Studio</span></nav>
     <span class="ptag"><i></i>Free &middot; no sign-up &middot; runs on your device</span>
     <h1>See it on <span class="grad-text">your own house</span> before anyone quotes you.</h1>
-    <p class="lead">Upload a photo of your home or business, then place the cameras or draw the lighting yourself. Watch the coverage cones land where you actually want them, or run the roofline in warm white and see what the street sees.</p>
+    <p class="lead">Upload a photo of your home or business, then place the cameras or draw the lighting yourself. Watch the coverage cones land where you actually want them, or run the roofline in warm white and see what the street sees. Or lay the cameras out on a floor plan with the Coverage Planner &mdash; all in one tool.</p>
     <div class="btn-row" style="margin-top:22px">
-      <a class="btn btn-primary btn-lg" href="#studio">Start designing</a>
+      <a class="btn btn-primary btn-lg" href="#studio">Start Designing</a>
       <a class="btn btn-ghost btn-lg" href="#how">How the quote works</a>
     </div>
     <div class="phero__stats">
-      <div><b>2</b><span>Modes: cameras &amp; lights</span></div>
-      <div><b>2</b><span>Sample properties built in</span></div>
+      <div><b>3</b><span>Modes: cameras, lighting, floor plan</span></div>
+      <div><b>6</b><span>Sample properties &amp; spaces built in</span></div>
       <div><b>0</b><span>Photos uploaded anywhere</span></div>
       <div><b>Free</b><span>No account needed</span></div>
     </div>
     <div class="pillars">
-      <a href="/design-studio.html" aria-current="page"><b>Design Studio</b><span>See it on your house</span></a>
+      <a href="/design-studio.html" aria-current="page"><b>Design Studio</b><span>See It on Your House</span></a>
       <a href="/payments.html"><b>Payments</b><span>Processing &amp; POS</span></a>
-      <a href="/ghost-kitchen.html"><b>Ghost kitchen</b><span>Delivery &amp; disputes</span></a>
-      <a href="/fleet.html"><b>Piets Fleet</b><span>Trucks &amp; fuel</span></a>
-      <a href="/financing.html"><b>Financing</b><span>Spread the cost</span></a>
+      <a href="/ghost-kitchen.html"><b>Ghost Kitchen</b><span>Delivery &amp; Disputes</span></a>
+      <a href="/fleet.html"><b>Piets Fleet</b><span>Trucks &amp; Fuel</span></a>
+      <a href="/financing.html"><b>Financing</b><span>Spread the Cost</span></a>
       </div>
   </div>
 </section>
@@ -148,13 +176,57 @@
   <div class="wrap">
     <div class="section-head"><div class="eyebrow" style="color:#02D7F5">The studio</div>
       <h2>Tap the picture. That is the whole interface.</h2>
-      <p>Cameras mode drops a camera where you tap &mdash; drag it to move it, drag the purple dot to aim it. Lighting mode traces a run point by point and lights it up. Start on the sample home or the sample storefront &mdash; or load a photo of yours.</p></div>
-    <div id="studio-app"></div>
+      <p>Cameras mode drops a camera where you tap &mdash; drag it to move it, drag the purple dot to aim it. Lighting mode traces a run point by point and lights it up. Start on the sample home or the sample storefront &mdash; or load a photo of yours. Coverage Planner mode does the same on a floor plan: pick the kind of space and shade in what every camera faces.</p></div>
+    <div class="dsmodes" role="tablist" aria-label="Design Studio mode" data-dsmodes>
+      <button type="button" role="tab" id="dsTab-cameras" data-dsmode="cameras" aria-controls="dsPanel-studio" aria-selected="true" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h12l4-3v14l-4-3H3z"/></svg>Cameras</button>
+      <button type="button" role="tab" id="dsTab-lighting" data-dsmode="lighting" aria-controls="dsPanel-studio" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>Lighting</button>
+      <button type="button" role="tab" id="dsTab-coverage" data-dsmode="coverage" aria-controls="dsPanel-coverage" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v18H3zM3 12h8M11 3v18M15 12h6"/></svg>Coverage Planner</button>
+    </div>
+    <div id="dsPanel-studio" role="tabpanel" aria-labelledby="dsTab-cameras" data-dspanel>
+    <div id="studio-app" data-outer-tabs></div>
     <div class="callout" style="margin-top:22px">
       <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>
       <p><b>Your photo stays on your phone.</b> The studio runs entirely in your browser &mdash; the picture is never uploaded to Piets or anyone else. If you want us to see the design, you download it and send it yourself.</p>
-      <p>Your design is remembered in this browser, on this device, so closing the tab does not lose it &mdash; use <b>Clear saved design</b> to forget it. The photo itself is never saved, so load it again to see the design back on your own house.</p>
+      <p>Your design is remembered in this browser, on this device, so closing the tab does not lose it &mdash; use <b>Clear Saved Design</b> to forget it. The photo itself is never saved, so load it again to see the design back on your own house.</p>
     </div>
+    </div>
+    <div id="dsPanel-coverage" role="tabpanel" aria-labelledby="dsTab-coverage" data-dspanel hidden>
+
+
+    <div id="cov-app"></div>
+
+    <div class="callout" style="margin-top:22px">
+      <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>
+      <p><b>Nothing leaves your device.</b> The planner runs entirely in your browser. The only thing that ever reaches us is the summary line you choose to send with the form.</p>
+      <p>These are sample floor plans, not your building. They are here so you can show us the shape of what you want covered before anyone has measured anything.</p>
+    </div>
+
+    <div class="callout lightout" style="margin-top:16px">
+      <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      <p><b>What the number means, and what it does not.</b> &ldquo;Rough coverage&rdquo; is the share of the sample plan that falls inside the shapes you drew &mdash; arithmetic on your own layout, nothing else. It is not a measurement, not an industry figure and not a quote. What a camera really shows you depends on mounting height, what is in the way, and what you need to be able to recognise.</p>
+    </div>
+
+    <div class="coverage-form-container" id="coverage-form-container" hidden>
+      <form class="form coverage-form" data-cov-form action="/api/leads" method="post" novalidate>
+        <input type="hidden" name="source" value="Coverage Planner">
+        <input type="hidden" name="service" value="security-cameras">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
+        <h2>Send your layout to Piets</h2>
+        <div class="two">
+          <div class="field"><label for="coverage-name">Name *</label><input id="coverage-name" name="name" type="text" required autocomplete="name"></div>
+          <div class="field"><label for="coverage-phone">Phone *</label><input id="coverage-phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="coverage-email">Email</label><input id="coverage-email" name="email" type="email" autocomplete="email"></div>
+          <div class="field"><label for="coverage-town">Town / ZIP *</label><input id="coverage-town" name="town" type="text" required autocomplete="postal-code"></div>
+        </div>
+        <div class="field"><label for="coverage-message">Layout details</label><textarea id="coverage-message" name="message" rows="4"></textarea></div>
+        <button class="btn btn-navy btn-block" type="submit">Send layout</button>
+        <div class="form-msg" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+    </div>
+
   </div>
 </section>
 
@@ -190,8 +262,8 @@
           <li>Crossing pairs at the front and the rear &mdash; the layout we start from when nobody has walked the property yet</li>
         </ul>
         <div class="btn-row" style="margin-top:22px">
-          <a class="btn btn-navy" href="/security-cameras.html">About the camera systems</a>
-          <a class="btn btn-light" href="/coverage.html">Floor-plan coverage planner</a>
+          <a class="btn btn-navy" href="/security-cameras.html">About the Camera Systems</a>
+          <a class="btn btn-light" href="/design-studio.html?mode=coverage#studio">Open the Coverage Planner</a>
         </div>
       </div>
       <div>
@@ -205,9 +277,23 @@
           <li>Permanent year-round track or a seasonal install &mdash; the page explains what changes</li>
         </ul>
         <div class="btn-row" style="margin-top:22px">
-          <a class="btn btn-navy" href="/lighting.html">About the lighting</a>
-          <a class="btn btn-light" href="/plan.html">Get it quoted</a>
+          <a class="btn btn-navy" href="/lighting.html">About the Lighting</a>
+          <a class="btn btn-light" href="/plan.html">Get It Quoted</a>
         </div>
+      </div>
+    </div>
+    <div style="margin-top:34px;padding-top:30px;border-top:1px solid rgba(1,31,93,.12)">
+      <span class="kicker" style="color:#016FD6">Coverage Planner mode</span>
+      <h2 style="font-size:clamp(1.6rem,2.8vw,2.3rem)">The floor plan, for the shape of the place.</h2>
+      <p style="color:var(--muted);max-width:70ch">Cameras mode is for the building itself. The Coverage Planner is for the inside and the layout &mdash; which rooms, which doors, which corners matter &mdash; before anyone has measured anything.</p>
+      <ul class="check-list" style="margin-top:18px">
+        <li>Four sample spaces &mdash; house, storefront or restaurant, office, warehouse &mdash; and each one keeps its own layout</li>
+        <li>Three lens shapes, from a wide corner to a long run down a driveway</li>
+        <li>Cameras numbered CAM 1, CAM 2, the way the estimate will show them</li>
+        <li>Keyboard only, if you prefer &mdash; the plan itself takes focus and the arrow keys drive it</li>
+      </ul>
+      <div class="btn-row" style="margin-top:22px">
+        <a class="btn btn-navy" href="/design-studio.html?mode=coverage#studio">Open the Coverage Planner</a>
       </div>
     </div>
   </div>
@@ -215,12 +301,12 @@
 
 <section class="darkwrap">
   <div class="wrap" style="text-align:center">
-    <span class="ptag"><i></i>Send us what you made</span>
+    <span class="ptag"><i></i>Send Us What You Made</span>
     <h2 style="margin:16px 0 10px">Download the design, then text it to 631-871-5957.</h2>
     <p style="max-width:58ch;margin:0 auto 24px">Put the property address in the message. We will come back with a real layout and a real number, usually the same day.</p>
     <div class="btn-row btn-row--center">
-      <a class="btn btn-primary btn-lg" href="sms:+16318715957">Text the design over</a>
-      <a class="btn btn-ghost btn-lg" href="/plan.html">Or book a walk-through</a>
+      <a class="btn btn-primary btn-lg" href="sms:+16318715957">Text the Design Over</a>
+      <a class="btn btn-ghost btn-lg" href="/plan.html">Or Book a Walk-Through</a>
     </div>
     <p class="ailine" style="margin:22px auto 0">Piets Technology Solutions Inc &middot; 631-871-5957 &middot; pietstechsolutions.com &middot; Much of this page was prepared with AI. We work hard to keep it right &mdash; if you spot a mistake or have a suggestion, call 631-871-5957 so we can fix it.</p>
   </div>
@@ -233,7 +319,7 @@
       <div class="site-footer__brand">
         <a class="brand" href="/index.html" aria-label="Piets Technology Solutions home"><img src="/assets/brand/logo-mark.svg" width="40" height="40" alt=""><span class="brand__text"><strong>PIETS</strong><small>Technology Solutions</small></span></a>
         <p>Wi-Fi, Wires, Whatever — Piet Makes It Better</p>
-        <a class="btn btn-primary btn-sm" href="/plan.html">Get a free quote</a>
+        <a class="btn btn-primary btn-sm" href="/plan.html">Get a Free Quote</a>
         <p class="site-footer__247">Questions? We&#39;re here 24/7</p>
       </div>
       <div class="site-footer__cols">
@@ -254,27 +340,27 @@
           <li><a href="/services.html#managed-services">Managed Services</a></li>
         </ul></div>
         <div><h4>Company</h4><ul>
-          <li><a href="/about.html">About us</a></li>
+          <li><a href="/about.html">About Us</a></li>
           <li><a href="/commercial.html">Commercial</a></li>
-          <li><a href="/plans.html">Managed plans</a></li>
-          <li><a href="/partners.html">Partners &amp; resellers</a></li>
-          <li><a href="/design-studio.html">Design Studio (free)</a></li>
-          <li><a href="/lighting.html">Holiday &amp; permanent lighting</a></li>
-          <li><a href="/payments.html">Merchant processing &amp; POS</a></li>
-          <li><a href="/ghost-kitchen.html">Ghost kitchen &amp; delivery</a></li>
-          <li><a href="/financing.html">Equipment financing</a></li>
+          <li><a href="/plans.html">Managed Plans</a></li>
+          <li><a href="/partners.html">Partners &amp; Resellers</a></li>
+          <li><a href="/design-studio.html">Design Studio (Free)</a></li>
+          <li><a href="/lighting.html">Holiday &amp; Permanent Lighting</a></li>
+          <li><a href="/payments.html">Merchant Processing &amp; POS</a></li>
+          <li><a href="/ghost-kitchen.html">Ghost Kitchen &amp; Delivery</a></li>
+          <li><a href="/financing.html">Equipment Financing</a></li>
           <li><a href="/software.html">Piets Software</a></li>
           <li><a href="/fleet.html">Piets Fleet</a></li>
           <li><a href="/apps.html">Piets Apps (Pietvue)</a></li>
           <li><a href="/fieldhq.html">Field HQ CRM</a></li>
           <li><a href="/piet-box.html">The Piet Box</a></li>
-          <li><a href="/websites.html">Website demo (free)</a></li>
-          <li><a href="/coverage.html">Coverage Planner</a></li>
-          <li><a href="/remote-support.html">Remote support</a></li>
+          <li><a href="/websites.html">Website Demo (Free)</a></li>
+          <li><a href="/design-studio.html?mode=coverage#studio">Coverage Planner</a></li>
+          <li><a href="/remote-support.html">Remote Support</a></li>
           <li><a href="/blog/index.html">Blog</a></li>
-          <li><a href="/portal.html">Client login (Field HQ)</a></li>
+          <li><a href="/portal.html">Client Login (Field HQ)</a></li>
         </ul>
-        <h4>Service areas</h4><ul>
+        <h4>Service Areas</h4><ul>
           <li><a href="/locations/long-island.html">Long Island</a></li>
           <li><a href="/locations/suffolk-county.html">Suffolk County</a></li>
           <li><a href="/locations/nassau-county.html">Nassau County</a></li>
@@ -286,8 +372,8 @@
           <li><a href="tel:+16318715957">Call 631-871-5957</a></li>
           <li><a href="sms:+16318715957">Text 631-871-5957</a></li>
           <li><a href="mailto:pietstechsolutions@gmail.com">pietstechsolutions@gmail.com</a></li>
-          <li><a href="/contact.html">Contact page</a></li>
-          <li><a href="/links.html">All Piets links</a></li>
+          <li><a href="/contact.html">Contact Page</a></li>
+          <li><a href="/links.html">All Piets Links</a></li>
         </ul></div>
       </div>
     </div>
@@ -300,7 +386,7 @@
 <nav class="mobile-bar" aria-label="Quick contact">
   <a href="tel:+16318715957">Call</a>
   <a href="sms:+16318715957">Text</a>
-  <a class="mobile-bar__quote" href="/plan.html">Get a quote</a>
+  <a class="mobile-bar__quote" href="/plan.html">Get a Quote</a>
 </nav>
 </body>
 </html>

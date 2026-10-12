@@ -204,7 +204,7 @@
     $$('.ws').forEach(function (f) { f.hidden = +f.dataset.step !== step; });
     $$('#stepper li').forEach(function (li, i) { li.className = i + 1 < step ? 'done' : (i + 1 === step ? 'on' : ''); });
     $('#backBtn').hidden = step === 1;
-    $('#nextBtn').textContent = step === 5 ? T('Build my demo') + ' \u26A1' : T('Next') + ' \u2192';
+    $('#nextBtn').textContent = step === 5 ? T('Build My Demo') + ' \u26A1' : T('Next') + ' \u2192';
     if (step === 2) renderServices(); if (step === 4) { renderColors(); renderVibes(); }
     save();
     var w = $('#wiz'); if (w.getBoundingClientRect().top < 0) w.scrollIntoView({ behavior: 'smooth' });
@@ -300,8 +300,8 @@
     CFG.tiers.forEach(function (t) {
       var priced = t.setup != null, dep = priced ? Math.round(t.setup * pct) / 100 : null;
       var d = document.createElement('div'); d.className = 'tier' + (t.popular ? ' pop' : '') + (t.vip ? ' vip' : '');
-      d.innerHTML = (t.popular || t.vip ? '<span class="badge"></span>' : '') + '<span class="tg2"></span><h3></h3><div class="price"></div><div class="mo"></div><ul></ul><p class="dep"></p><button class="btn btn-go" type="button"></button><button class="btn btn-ghost" type="button">Send me an invoice</button>';
-      if (t.popular || t.vip) d.querySelector('.badge').textContent = t.vip ? 'All in' : 'Most popular';
+      d.innerHTML = (t.popular || t.vip ? '<span class="badge"></span>' : '') + '<span class="tg2"></span><h3></h3><div class="price"></div><div class="mo"></div><ul></ul><p class="dep"></p><button class="btn btn-go" type="button"></button><button class="btn btn-ghost" type="button">Send Me an Invoice</button>';
+      if (t.popular || t.vip) d.querySelector('.badge').textContent = t.vip ? 'All in' : 'Most Popular';
       d.querySelector('.tg2').textContent = t.tag; d.querySelector('h3').textContent = t.name;
       d.querySelector('.price').innerHTML = priced ? money(t.setup) + ' <small>setup</small>' : 'Pricing <small>coming soon</small>';
       d.querySelector('.mo').textContent = priced ? T('+ {x}/mo', { x: money(t.monthly) }) : '';
@@ -309,7 +309,7 @@
       d.querySelector('.dep').textContent = priced ? T('Deposit today: {x}', { x: money(dep) }) : 'No payment today';
       var payB = d.querySelectorAll('button')[0], invB = d.querySelectorAll('button')[1];
       var link = priced ? (CFG.stripeLinks || {})[t.id] : '';
-      if (t.vip) { payB.textContent = link ? 'Pay deposit by card' : 'Book my Shabang call'; } else payB.textContent = link ? 'Pay deposit by card' : (priced ? T('Start with {x}', { x: T(t.name) }) : 'Ask about ' + T(t.name));
+      if (t.vip) { payB.textContent = link ? 'Pay Deposit by Card' : 'Book My Shabang Call'; } else payB.textContent = link ? 'Pay Deposit by Card' : (priced ? T('Start with {x}', { x: T(t.name) }) : 'Ask about ' + T(t.name));
       payB.addEventListener('click', function () { choose(t, link ? 'card' : 'invoice'); });
       invB.addEventListener('click', function () { choose(t, 'invoice'); });
       if (!priced) invB.style.display = 'none';
@@ -407,7 +407,7 @@
     document.addEventListener('piets-ui-lang', function (e) {
       if (sw) sw.value = e.detail;
       var fl = $('#f_lang'); if (fl && !langTouched) { fl.value = e.detail; loadLang(e.detail); save(); }
-      renderTiers(); $('#nextBtn').textContent = state.step === 5 ? T('Build my demo') + ' \u26A1' : T('Next') + ' \u2192';
+      renderTiers(); $('#nextBtn').textContent = state.step === 5 ? T('Build My Demo') + ' \u26A1' : T('Next') + ' \u2192';
       if (state.html && !$('#preview').hidden) { $('#pvTitle em') && ($('#pvTitle em').textContent = T('is looking good.')); }
     });
     U.start(E.LANGS);

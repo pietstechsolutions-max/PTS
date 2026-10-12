@@ -122,8 +122,8 @@
     tech: { cam: 'Crew cam', steps: ['Request in · auto-text sent', 'Site survey · price approved', 'Install underway', 'Done · tested & documented'], sub: ['Customer got a text back in 9 sec', 'Approved with one tap, no phone tag', 'Live updates going to the customer', 'Network map + photos sent'], scenes: [
       ['serverrack', 'Networks', 'server', 'Network rack clean-up', 'Labeled, tested and documented.', 'Network setup', 50, 50],
       ['cabling', 'Cabling', 'wifi', 'Cabling & Wi-Fi', 'Cat6 runs and Wi-Fi that reaches every room.', 'Wi-Fi', 50, 50],
-      ['cameras', 'Cameras', 'camera', 'Security cameras', 'HD cameras you can watch from your phone.', 'Security cameras', 50, 40],
-      ['smarthome', 'Smart home', 'home', 'Doorbells & smart home', 'Doorbell cams, locks and alarms tied together.', 'Smart home', 50, 50]] },
+      ['cameras', 'Cameras', 'camera', 'Security Cameras', 'HD cameras you can watch from your phone.', 'Security Cameras', 50, 40],
+      ['smarthome', 'Smart Home', 'home', 'Doorbells & smart home', 'Doorbell cams, locks and alarms tied together.', 'Smart Home', 50, 50]] },
     other: { idl: 'Order', cam: 'Shop', g1: 'Open', steps: ['Request in · auto-text sent', 'Confirmed', 'Getting it ready', 'Done · thank-you sent'], sub: ['Customer got a text back in 9 sec', 'Confirmed by text', 'Ready-for-pickup alert queued', 'Thank-you text sent'], scenes: [
       ['openshop', "We're open", 'store', 'Open today', 'Stop in, or order ahead and skip the wait.', 'Visit', 50, 40],
       ['shopfloor', 'Our shop', 'tag', 'Our shop', 'Local, owner-run and glad to see you.', 'Visit', 50, 50],

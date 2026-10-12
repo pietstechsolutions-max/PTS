@@ -475,3 +475,11 @@ html:not(.js) .hm-reveal{opacity:1;transform:none}
 .hm-famc__go{font-family:var(--hm-body);font-weight:600;font-size:.93rem;color:var(--hm-blue)}
 .hm-famc--hub{background:linear-gradient(140deg,var(--hm-navy),var(--hm-np));border:0;color:#fff}
 .hm-famc--hub h3{color:#fff}.hm-famc--hub p{color:#C3D0EA}.hm-famc--hub .hm-k{color:var(--hm-cyan)}.hm-famc--hub .hm-famc__go{color:#8FE9FB}
+
+/* "One Partner" in the hero headline washed out at phone width (owner, Oct 12 2026):
+   the blue end of the gradient sat on the bright blue of the phone hero. On small screens
+   the words run cyan to the light purple wash instead (#00E5FF -> #E9DDFF, palette B). */
+@media (max-width:760px){
+  .hm-h1 .hm-grad{background:linear-gradient(100deg,#00E5FF 0%,#9FEFFF 45%,#E9DDFF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+}

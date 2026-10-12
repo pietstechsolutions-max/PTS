@@ -461,14 +461,14 @@
       '<p><b>Cameras over the register.</b> Because Piets installs the cameras too, a void or a no-sale ' +
       'can be pulled up next to the footage of the drawer at that second. One system, one phone call.</p></div>';
     h += '<div class="macts"><button type="button" class="mbtn g" data-tab="reg">Back to the register</button>' +
-      '<a class="mbtn" href="plan.html">Book a walkthrough</a></div>';
+      '<a class="mbtn" href="plan.html">Book a Walkthrough</a></div>';
     return h;
   }
 
   /* ---------------- render ---------------- */
 
   function render() {
-    var tabs = [["reg", "Register"], ["office", "Back office"], ["kit", "What gets installed"]];
+    var tabs = [["reg", "Register"], ["office", "Back Office"], ["kit", "What Gets Installed"]];
     var h = '<div class="mcon">';
     h += '<div class="mcon__bar"><span class="mcon__lg"><i></i></span>' +
       '<b>Piets POS &middot; ' + esc(venue().name) + '</b><span class="mcon__demo">Demo</span>' +

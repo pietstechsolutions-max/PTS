@@ -149,22 +149,21 @@ export function nav(current = '') {
       <ul id="primary-menu" class="site-nav__links">
         ${item('/services.html', 'Services', 'services')}
         ${item('/commercial.html', 'Commercial', 'commercial')}
-        ${item('/coverage.html', 'Coverage Planner', 'coverage')}
         ${item('/plans.html', 'Plans', 'plans')}
         ${item('/locations/', 'Locations', 'locations')}
         ${item('/blog/', 'Blog', 'blog')}
         ${item('/piet-box', 'Piet Box', 'piet-box')}
         ${item('/websites', 'Websites', 'websites')}
         ${item('/apps.html', 'Apps', 'apps')}
-        ${SITE.portalLive ? `<li class="site-nav__mobile-only"><a href="/portal"${current === 'portal' ? ' aria-current="page"' : ''}>Client login</a></li>` : ''}
+        ${SITE.portalLive ? `<li class="site-nav__mobile-only"><a href="/portal"${current === 'portal' ? ' aria-current="page"' : ''}>Client Login</a></li>` : ''}
         <li class="site-nav__mobile-only"><a href="tel:${SITE.phoneE164}">Call ${SITE.phone}</a></li>
-        <li class="site-nav__mobile-only"><a href="/plan.html">Get a quote</a></li>
+        <li class="site-nav__mobile-only"><a href="/plan.html">Get a Quote</a></li>
       </ul>
     </nav>
     <div class="site-header__actions">
-      <a class="header-phone" href="tel:${SITE.phoneE164}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>${SITE.phone}</a>
-      ${SITE.portalLive ? '<a class="btn btn-ghost btn-sm header-login" href="/portal">Client login</a>' : '<a class="btn btn-ghost btn-sm" href="#assistant" data-open-assistant>Talk to Piets</a>'}
-      <a class="btn btn-primary btn-sm" href="/plan.html">Get a quote</a>
+      <a class="header-phone" href="tel:${SITE.phoneE164}" title="Call ${SITE.phone}" aria-label="Call ${SITE.phone}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>${SITE.phone}</a>
+      ${SITE.portalLive ? '<a class="btn btn-ghost btn-sm header-login" href="/portal">Client Login</a>' : '<a class="btn btn-ghost btn-sm" href="#assistant" data-open-assistant>Talk to Piets</a>'}
+      <a class="btn btn-primary btn-sm" href="/plan.html">Get a Quote</a>
     </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
@@ -187,7 +186,7 @@ export function quoteForm({ source, title = 'Get a Free Quote', intro }) {
       <p><strong>${esc(SITE.clientLine)}</strong></p>
     </div>
     <form class="form" data-lead-form action="/api/leads" method="post" novalidate>
-      <h3>Request a quote</h3>
+      <h3>Request a Quote</h3>
       <input type="hidden" name="source" value="${esc(source)}">
       <p class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></p>
       <div class="two">
@@ -205,7 +204,7 @@ export function quoteForm({ source, title = 'Get a Free Quote', intro }) {
           <option value="other">Something else</option>
         </select></div>
       <div class="field"><label for="f-msg-${slugify(source)}">Tell us a little more</label><textarea id="f-msg-${slugify(source)}" name="message" placeholder="How many cameras, doors, rooms, registers… anything helps."></textarea></div>
-      <button class="btn btn-navy" type="submit">Send my request</button>
+      <button class="btn btn-navy" type="submit">Send My Request</button>
       <p class="fine">No spam, no pressure. We don’t share your info.</p>
       <div class="form-msg" role="status" aria-live="polite"></div>
     </form>
@@ -257,7 +256,7 @@ export function footer() {
       <div class="site-footer__brand">
         <a class="brand" href="/" aria-label="${esc(SITE.name)} home"><img src="/assets/brand/logo-mark.svg" width="40" height="40" alt=""><span class="brand__text"><strong>PIETS</strong><small>Technology Solutions</small></span></a>
         <p>${esc(SITE.tagline)}</p>
-        <a class="btn btn-primary btn-sm" href="/plan.html">Get a free quote</a>
+        <a class="btn btn-primary btn-sm" href="/plan.html">Get a Free Quote</a>
         <p class="site-footer__247">${esc(SITE.clientLine)}</p>
       </div>
       <div class="site-footer__cols">
@@ -265,19 +264,19 @@ export function footer() {
           ${SERVICES.map(s => `<li><a href="/services.html#${s.id}">${esc(s.short || s.name)}</a></li>`).join('\n          ')}
         </ul></div>
         <div><h4>Company</h4><ul>
-          <li><a href="/about.html">About us</a></li>
+          <li><a href="/about.html">About Us</a></li>
           <li><a href="/commercial.html">Commercial</a></li>
-          <li><a href="/plans.html">Managed plans</a></li>
-          <li><a href="/coverage.html">Coverage Planner</a></li>
-          <li><a href="/remote-support.html">Remote support</a></li>
+          <li><a href="/plans.html">Managed Plans</a></li>
+          <li><a href="/design-studio.html?mode=coverage#studio">Coverage Planner</a></li>
+          <li><a href="/remote-support.html">Remote Support</a></li>
           <li><a href="/piet-box">The Piet Box (new)</a></li>
-          <li><a href="/websites">Website demo (free)</a></li>
+          <li><a href="/websites">Website Demo (Free)</a></li>
           <li><a href="/apps.html">Apps we built (MarinaVue, StableVue, PuppyVue, Field HQ)</a></li>
           <li><a href="/partners.html">Partners &amp; resellers (VAR program)</a></li>
           <li><a href="/blog/">Blog</a></li>
-          ${SITE.portalLive ? '<li><a href="/portal">Client login (Field HQ)</a></li>' : ''}
+          ${SITE.portalLive ? '<li><a href="/portal">Client Login (Field HQ)</a></li>' : ''}
         </ul>
-        <h4>Service areas</h4><ul>
+        <h4>Service Areas</h4><ul>
           ${LOCATIONS.map(l => `<li><a href="/locations/${l.slug}.html">${esc(l.name)}</a></li>`).join('\n          ')}
         </ul></div>
         <div><h4>Contact</h4><ul>
@@ -296,7 +295,7 @@ export function footer() {
 <nav class="mobile-bar" aria-label="Quick contact">
   <a href="tel:${SITE.phoneE164}">Call</a>
   <a href="sms:${SITE.phoneE164}">Text</a>
-  <a class="mobile-bar__quote" href="/plan.html">Get a quote</a>
+  <a class="mobile-bar__quote" href="/plan.html">Get a Quote</a>
 </nav>
 </body>
 </html>
@@ -494,7 +493,7 @@ export function planner({ source, heading, id }) {
     <div class="planner-nav">
       <button type="button" class="btn btn-outline planner-prev" style="display: none;">Back</button>
       <button type="button" class="btn btn-navy planner-next">Next</button>
-      <button type="submit" class="btn btn-navy planner-submit" style="display: none;">Send my request</button>
+      <button type="submit" class="btn btn-navy planner-submit" style="display: none;">Send My Request</button>
     </div>
   </form>
   
@@ -503,8 +502,8 @@ export function planner({ source, heading, id }) {
     <h3>You're in. We'll reach out shortly.</h3>
     <p>Thank you for sharing your project details. We'll review your information and get back to you soon.</p>
     <div class="btn-row">
-      <a class="btn btn-primary" href="tel:${SITE.phoneE164}">Call us now</a>
-      <a class="btn btn-light" href="sms:${SITE.phoneE164}">Text us now</a>
+      <a class="btn btn-primary" href="tel:${SITE.phoneE164}">Call Us Now</a>
+      <a class="btn btn-light" href="sms:${SITE.phoneE164}">Text Us Now</a>
     </div>
   </div>
 </div>

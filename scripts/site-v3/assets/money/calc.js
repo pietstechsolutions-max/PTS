@@ -70,7 +70,7 @@
         '<div class="calcf">' +
           '<div class="f"><label for="fcAmt">Amount you want to finance</label>' +
             '<div class="inp"><span>$</span><input type="number" id="fcAmt" value="" placeholder="0" min="0" step="100" inputmode="decimal"></div>' +
-            '<span class="hint">The quoted job total &mdash; equipment, wire and labour together.</span></div>' +
+            '<span class="hint">The quoted job total &mdash; equipment, wire and labor together.</span></div>' +
           '<div class="f"><label id="fcTermLbl">Term</label>' +
             '<div class="mseg" role="group" aria-labelledby="fcTermLbl">' +
               terms.map(function (t) {

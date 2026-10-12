@@ -55,7 +55,7 @@ Good guest Wi-Fi is a quiet win. People share photos of the food and stay a litt
 A lot of restaurants and event spaces up here have outdoor seating, a converted barn, or a second building. A few tips from the field:
 
 - **Patios** need an outdoor-rated AP under the eave, not a signal squeezed through a window.
-- **Barns and stone buildings** almost always need a cable run to a second AP. Wireless "extenders" cut your speed in half and drop constantly.
+- **Barns and stone buildings** almost always need a cable run to a second AP. Wireless "extenders" can cut your speed roughly in half and tend to drop.
 - **Detached buildings** can be linked with a point-to-point wireless bridge when trenching a cable isn't practical.
 
 Every property is a little different, which is why we walk the space before quoting.

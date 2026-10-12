@@ -78,7 +78,7 @@
   /* ---------------- board ---------------- */
   function boardView() {
     /* defensive: an out-of-range selection falls back to the first vehicle rather
-       than producing a panel labelled by an id that is not on the page */
+       than producing a panel labeled by an id that is not on the page */
     var cur = (S.v >= 0 && S.v < VEH.length) ? S.v : 0;
     var v = VEH[cur];
     var toSvc = Math.max(0, v.svcAt - v.odo);
@@ -124,7 +124,7 @@
         'sending the truck to the fuel.</p>';
       if (!S.fuelReq) {
         h += '<div class="macts" style="margin-top:0"><button type="button" class="mbtn" data-fuel>' +
-          'Request fuel delivery to this address</button></div>';
+          'Request Fuel Delivery to This Address</button></div>';
       } else {
         h += '<div class="flash">Sent to the nearest partner in the network. They get the GPS pin, the ' +
           'tank size and the fuel grade, and they bill through the app — tap to pay, tip included, ' +
@@ -134,8 +134,8 @@
     }
 
     h += '<div class="macts">';
-    if (!S.notified) h += '<button type="button" class="mbtn g" data-notify>Notify the client &mdash; 30 minutes out</button>';
-    h += '<button type="button" class="mbtn g" data-crash>Simulate an incident</button></div>';
+    if (!S.notified) h += '<button type="button" class="mbtn g" data-notify>Notify the Client &mdash; 30 Minutes Out</button>';
+    h += '<button type="button" class="mbtn g" data-crash>Simulate an Incident</button></div>';
     if (S.notified) {
       h += '<div class="flash">Text sent: &ldquo;Your Piets technician is about 30 minutes out.&rdquo; ' +
         'No phone call, no guessing.</div>';
@@ -235,12 +235,12 @@
 
   /* ---------------- paint ---------------- */
   function paint() {
-    var tabs = [["board", "Fleet board"], ["partners", "Fuel, service &amp; partners"], ["back", "Backhaul matching"]];
+    var tabs = [["board", "Fleet Board"], ["partners", "Fuel, Service &amp; Partners"], ["back", "Backhaul Matching"]];
     var h = '<div class="mcon"><div class="mcon__bar"><span class="mcon__lg"><i></i></span>' +
       '<b>Piets Fleet</b><span class="mcon__demo">Concept demo</span>' +
       '<span class="mcon__live">Live in your browser</span></div>';
     /* defensive: an unknown S.tab falls back to the first tab rather than
-       producing a panel labelled by a missing id */
+       producing a panel labeled by a missing id */
     var keys = tabs.map(function (t) { return t[0]; });
     var curTab = keys.indexOf(S.tab) < 0 ? keys[0] : S.tab;
     h += '<div class="mcon__tabs" role="tablist" aria-label="Fleet sections">';
