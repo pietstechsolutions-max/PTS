@@ -250,7 +250,9 @@ body.home-page .hero__studio-note::before{content:"";display:inline-block;width:
    in near-white, a clear purple hover, and the current page also gets a cyan underline.
    Every rule sets the <a> items AND the <summary> dropdowns together (lesson 8).
    Room for it: the phone becomes a round icon button (it was hidden under 1441px), and the PIETS wordmark steps aside under 1180px (the logo mark stays).
-   Swept 1px by 1px, 1021-1600px: one row, nothing touching. Under 1021px = phone menu. */
+   Swept 1px by 1px, 1021-1600px: one row, nothing touching. Under 1021px = phone menu.
+   1021-1180px items carry 5px side padding: in real Chrome on Windows (17px scrollbar) 6px
+   left only 4-7px between the bar and the logo at 1021-1028px (Oct 12 2026 sweep). */
 @media (min-width:1021px){
   .site-nav__links{gap:2px}
   .site-nav__links>li>a,
@@ -283,7 +285,7 @@ body.home-page .hero__studio-note::before{content:"";display:inline-block;width:
 @media (max-width:1180px) and (min-width:1021px){
   .site-header .brand__text{display:none}
   .site-nav__links>li>a,
-  .site-nav__links>li>.nav-more>summary{font-size:.94rem;padding:8px 6px;gap:4px}
+  .site-nav__links>li>.nav-more>summary{font-size:.94rem;padding:8px 5px;gap:4px}
   .site-header__inner{gap:12px}
   .site-header__actions{gap:8px}
 }
