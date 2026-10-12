@@ -110,8 +110,8 @@
 
   var STEPS = [
     ["Order lands", "Straight off your own ordering page — your customer, your data."],
-    ["Driver quoted", "Piets asks DoorDash Drive for a quote on that address."],
-    ["Driver assigned", "A Dasher takes it. The customer gets a tracking link automatically."],
+    ["Driver quoted", "A delivery service such as DoorDash Drive quotes that address."],
+    ["Driver assigned", "A driver takes it. The customer gets a tracking link."],
     ["Picked up", "Kitchen hands it over. The camera over the door records the handoff."],
     ["Delivered", "Drop confirmed, GPS pin and timestamp filed against the order."]
   ];
@@ -119,8 +119,8 @@
   function driveView() {
     var eta = S.stage < 2 ? "—" : S.stage >= 4 ? "0" : String(Math.max(1, Math.ceil(18 - (S.t / 100) * 16)));
     var h = '<h4>Your own delivery, somebody else&rsquo;s driver</h4>' +
-      '<p class="sub">Take the order on your own page and keep the customer. Hand only the driving to ' +
-      'DoorDash Drive. Sample order, running here in your browser.</p>';
+      '<p class="sub">Take the order on your own page and keep the customer. Hand only the driving to an ' +
+      'on-demand delivery service such as DoorDash Drive. A sample of how it can work, running here in your browser.</p>';
 
     h += '<div class="drive"><div>';
     h += '<div class="dmap">' +
@@ -143,7 +143,7 @@
         '<span><b>' + s[0] + '</b><em>' + s[1] + '</em></span></div>';
     });
     h += '<p class="note">Sample timings. Real quotes, fees and driver availability come from the ' +
-      'platform at the moment you dispatch — Piets wires the integration, it does not set their prices.</p>';
+      'platform at the moment you dispatch. Piets does not set their prices. Ask us what can be set up for your kitchen today.</p>';
     h += '</div></div>';
     return h;
   }

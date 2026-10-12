@@ -279,7 +279,7 @@
     });
     h += '</div>';
     if (state.channel === "Delivery") {
-      h += '<p class="note">Delivery tickets hand off to your own driver or to DoorDash Drive &mdash; ' +
+      h += '<p class="note">Delivery tickets can go to your own driver or to a delivery service such as DoorDash Drive &mdash; ' +
         '<a href="ghost-kitchen.html#drive" style="color:#8FE9FB">see the dispatch demo</a>.</p>';
     }
     h += '</div>';

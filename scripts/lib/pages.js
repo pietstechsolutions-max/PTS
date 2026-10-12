@@ -884,7 +884,7 @@ ${nav('plans')}
             <ul class="plan-features">
               <li>Remote monitoring of networks & cameras</li>
               <li>Monthly camera health checks</li>
-              <li>Remote support during business hours</li>
+              <li>24/7 phone &amp; remote support</li>
               <li>Discounted on-site rates</li>
             </ul>
             <div class="plan-cta">
@@ -902,7 +902,7 @@ ${nav('plans')}
           <div class="plan-body">
             <ul class="plan-features">
               <li>Everything in Basic</li>
-              <li>Priority response 7 days a week</li>
+              <li>Priority response, 24/7</li>
               <li>Quarterly on-site checkups</li>
               <li>Patching, backups & security updates</li>
               <li>Vendor coordination (ISP, POS, phones)</li>
@@ -938,11 +938,11 @@ ${nav('plans')}
   
   <!-- Plan FAQ -->
   ${faqBlock([
-        { q: 'What is the difference between the plan tiers?', a: 'The Basic plan includes essential monitoring and remote support during business hours. The Pro plan adds priority response, quarterly checkups, and system maintenance. The Business plan includes 24/7 priority support, monthly on-site visits, and comprehensive system management.' },
+        { q: 'What is the difference between the plan tiers?', a: 'Every plan gets 24/7 support. The Basic plan includes essential monitoring and 24/7 phone and remote support. The Pro plan adds priority response, quarterly checkups, and system maintenance. The Business plan adds a 24/7 priority line, monthly on-site visits, and comprehensive system management.' },
         { q: 'Are there long-term contracts required?', a: 'No. Plans are optional, and no contract is required to get service. Every plan is quoted to your site — ask us for the details.' },
         { q: 'Can I customize a plan for my specific needs?', a: 'Absolutely. While we offer three standard tiers, we can tailor a managed services plan to fit your specific technology environment and business requirements.' },
         { q: 'How do I know which plan is right for my business?', a: 'During your free consultation, we\'ll assess your current technology systems, business needs, and budget to recommend the most appropriate plan tier for your situation.' },
-        { q: 'What happens if I need support outside of covered hours?', a: "Questions? We're here 24/7 by phone or text. Pro adds priority response 7 days a week; Business adds a 24/7 priority line." }
+        { q: 'Can I get help at night or on a weekend?', a: 'Yes. Support is 24/7 on every plan — by phone, text, a remote session or an emergency service call. Pro moves you up the line; Business adds a 24/7 priority line.' }
       ], { heading: 'Managed services FAQ', eyebrow: 'Plan questions' })}
 
   

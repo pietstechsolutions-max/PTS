@@ -340,8 +340,8 @@ export function coverageTeaser() {
 
 export function plansBlock() {
   const plans = [
-    { name: 'Basic', features: ['Remote monitoring of network & cameras', 'Monthly camera health check', 'Remote support during business hours', 'Discounted on-site rates'] },
-    { name: 'Pro', popular: true, features: ['Everything in Basic', 'Priority response 7 days a week', 'Quarterly on-site checkup', 'Patching, backups & security updates', 'Vendor coordination (ISP, POS, phones)'] },
+    { name: 'Basic', features: ['Remote monitoring of network & cameras', 'Monthly camera health check', '24/7 phone & remote support', 'Discounted on-site rates'] },
+    { name: 'Pro', popular: true, features: ['Everything in Basic', 'Priority response, 24/7', 'Quarterly on-site checkup', 'Patching, backups & security updates', 'Vendor coordination (ISP, POS, phones)'] },
     { name: 'Business', features: ['Everything in Pro', '24/7 priority line', 'Monthly on-site visit', 'Camera, access control & phone system management', 'Custom SLA and reporting'] },
   ];
   return `
