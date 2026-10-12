@@ -1,12 +1,48 @@
 /* Piets Apps page — Navy · Cyan · Purple. Piets Technology Solutions Inc · 631-871-5957 */
 :root{--pg:linear-gradient(100deg,#02D7F5 0%,#016FD6 55%,#7A3DFF 100%)}
 
+/* ---------- FONT_STANDARD.md rule 1 ----------
+   Every rule in this file that sets font-family now also sets font-weight. A family with
+   no weight inherits whatever the element defaults to — 400 on a div or span, and the
+   keyword `bolder` on a <b>, whose computed value is decided by its PARENT: 700 under a
+   400 parent, 900 under a 700 one, and no family here has a 900. That is rule 2 of
+   FONT_STANDARD.md waiting to happen. Seven rules in this file carried a family and no
+   weight; all seven are now pinned, and every weight below is the value the page ALREADY
+   computed, measured on the live DOM of apps.html at 1440 and 360, before and after all
+   six apps and all three roles were driven — four passes, identical in every one — so
+   nothing moves:
+
+     .pillars b      700  Bricolage Grotesque. 5 elements. The UA's `bolder` resolving
+                          against a 400 parent (.pillars a computes 400), not a rule —
+                          which is exactly why it had to be pinned: a later rule that set
+                          the parent to 700 would have sent these to 900 silently.
+     .appbar b       700  Bricolage Grotesque. 1 element, same `bolder`-from-400 story.
+     .appbar .live   400  JetBrains Mono. The LIVE DEMO label.
+     .appbody h4     700  Bricolage Grotesque. The h4's own UA bold; main.css styles
+                          h1,h2,h3,h4 without a weight, so the UA value is what paints.
+     .kpi b          700  Bricolage Grotesque. 4 elements, `bolder` from a 400 parent.
+     .kpi span       400  JetBrains Mono. The KPI captions.
+     .chip           400  JetBrains Mono. 9 elements on this page, and the same class is
+                          the assistant widget's quick-reply chips, which inherit 400 too.
+
+   Checked while pinning: no <b> or <strong> sits inside any of the seven
+   (.appbody h4 b and .kpi b b are both empty on every pass), so no element picks up a
+   900 from a newly explicit 700 parent. No bolder/lighter anywhere in this file, and the
+   `font:inherit` on .applist button, .approles button and .appbtn is correct and
+   deliberate — it carries the family AND the weight.
+
+   DELIBERATELY NOT CHANGED: nothing is raised to the house values (800 for display
+   numbers, 500 for mono labels). That is a visible change to the apps page's hero strip,
+   the demo console and every chip, and it is the owner's call — the same question the
+   theme-ncp.css, money.css, studio.css and crm-demo.css runs each left open. Say the
+   word and they move. */
+
 /* pillar strip */
 .pillars{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:34px}
 .pillars a{display:flex;flex-direction:column;gap:6px;padding:14px 15px;border-radius:16px;
   background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);color:#fff;transition:.2s}
 .pillars a:hover{background:rgba(122,61,255,.18);border-color:rgba(167,139,250,.7);transform:translateY(-2px)}
-.pillars b{font-family:var(--font-display);font-size:1rem}
+.pillars b{font-family:var(--font-display);font-weight:700;font-size:1rem}
 .pillars span{font-size:.8rem;color:#A9B8D4}
 .pillars a[aria-current]{background:rgba(122,61,255,.26);border-color:rgba(167,139,250,.85)}
 @media(max-width:900px){.pillars{grid-template-columns:repeat(2,1fr)}}
@@ -34,21 +70,21 @@
   background:rgba(255,255,255,.03)}
 .appbar .lg{width:26px;height:26px;border-radius:8px;background:#011F5D;display:grid;place-items:center}
 .appbar .lg i{display:block;width:12px;height:3px;border-radius:2px;background:var(--pg);box-shadow:0 5px 0 0 #02D7F5,0 10px 0 0 #7A3DFF}
-.appbar b{font-family:var(--font-display);font-size:.98rem}
-.appbar .live{margin-left:auto;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#2EE59D}
+.appbar b{font-family:var(--font-display);font-weight:700;font-size:.98rem}
+.appbar .live{margin-left:auto;font-family:var(--font-mono);font-weight:400;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#2EE59D}
 .appbar .live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#2EE59D;margin-right:6px}
 .approles{display:flex;gap:6px;padding:12px 16px 0;flex-wrap:wrap}
 .approles button{cursor:pointer;font:inherit;font-size:.84rem;padding:7px 14px;border-radius:999px;
   background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#B9C8E2}
 .approles button[aria-selected="true"]{background:var(--pg);color:#061024;font-weight:700;border-color:transparent}
 .appbody{padding:16px 16px 22px}
-.appbody h4{font-family:var(--font-display);font-size:1.3rem;margin:4px 0 2px;color:#fff}
+.appbody h4{font-family:var(--font-display);font-weight:700;font-size:1.3rem;margin:4px 0 2px;color:#fff}
 .appbody .sub{color:#93A6C6;font-size:.88rem;margin-bottom:14px}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 @media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
 .kpi{padding:13px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1)}
-.kpi b{display:block;font-family:var(--font-display);font-size:1.6rem;line-height:1.05;color:#fff}
-.kpi span{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#8EA3C9}
+.kpi b{display:block;font-family:var(--font-display);font-weight:700;font-size:1.6rem;line-height:1.05;color:#fff}
+.kpi span{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#8EA3C9}
 .kpi.warn b{color:#FFB020}.kpi.bad b{color:#FF5D5D}.kpi.good b{color:#2EE59D}
 .rows{margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
 .rows .r{display:flex;gap:12px;align-items:center;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.07);font-size:.9rem}
@@ -57,7 +93,7 @@
 .rows .r b{color:#fff;font-weight:600}
 .rows .r .m{color:#8EA3C9;font-size:.82rem}
 .rows .r .tail{margin-left:auto;display:flex;gap:8px;align-items:center}
-.chip{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+.chip{font-family:var(--font-mono);font-weight:400;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
   padding:4px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.18);color:#C8D6EE;white-space:nowrap}
 .chip.ok{color:#2EE59D;border-color:rgba(46,229,157,.45)}
 .chip.warn{color:#FFB020;border-color:rgba(255,176,32,.45)}

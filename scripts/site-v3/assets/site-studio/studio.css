@@ -4,13 +4,22 @@
 --disp:"Bricolage Grotesque",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
-body{margin:0;background:var(--ink);color:var(--txt);font:17px/1.6 var(--body);overflow-x:hidden}
+/* FONT_STANDARD.md rule 1, the shorthand shape: a `font:` shorthand that names a family
+   and omits the weight does NOT leave the weight alone -- it resets it to `normal`, so the
+   one rule that governs every piece of body text on this page was relying on a reset
+   nobody had written down. Pinned to 400, which is exactly what the page already computed
+   (measured on the live driven DOM at 1440 and 360), so nothing on the page moves. */
+body{margin:0;background:var(--ink);color:var(--txt);font:400 17px/1.6 var(--body);overflow-x:hidden}
 img{max-width:100%;display:block}a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}
 [hidden]{display:none!important}
 :focus-visible{outline:2px solid var(--cy2);outline-offset:3px}
 .skip{position:absolute;left:-9999px}.skip:focus{left:10px;top:10px;z-index:200;background:#fff;color:#000;padding:8px 12px}
 .wrap{max-width:1180px;margin:0 auto;padding:0 18px}
-h1,h2,h3{font-family:var(--disp);line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
+/* FONT_STANDARD rule 1: every rule that sets font-family sets font-weight too. h3 was the
+   one heading here with no weight and inherited the UA bold (measured: 700), so it is pinned
+   to the 700 it already computed and nothing moves. h1 and h2 keep their 800 on the next
+   line, which wins at equal specificity. */
+h1,h2,h3{font-family:var(--disp);font-weight:700;line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
 h1{font-size:clamp(2.4rem,6.6vw,4.4rem);font-weight:800}h2{font-size:clamp(1.9rem,4.8vw,3rem);font-weight:800}h3{font-size:1.2rem}p{margin:0}
 h1 em,h2 em{font-style:normal;background:linear-gradient(100deg,var(--cy),var(--bl) 55%,var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sec--light h2 em{background:linear-gradient(100deg,#0178b8,#016FD6);-webkit-background-clip:text;background-clip:text}
@@ -100,7 +109,7 @@ h1 em,h2 em{font-style:normal;background:linear-gradient(100deg,var(--cy),var(--
 .ws legend{font:800 1.5rem var(--disp);margin-bottom:16px;padding:0}
 .fld{display:grid;gap:7px;margin:0 0 16px;min-width:0}
 .fld label,.lbl{font:600 .66rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#33445e}
-.lbl small{text-transform:none;letter-spacing:0;font-family:var(--body);color:var(--dkm);margin-left:6px}
+.lbl small{text-transform:none;letter-spacing:0;font-family:var(--body);font-weight:600;color:var(--dkm);margin-left:6px}
 .fld input,.fld select,.fld textarea,.addrow input{width:100%;border:1.5px solid #c3cfdd;border-radius:14px;padding:12px 14px;min-height:50px;background:#fff;color:var(--dk)}
 .fld textarea{min-height:96px;resize:vertical}
 .fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--bl);outline:2px solid rgba(1,162,232,.22)}
@@ -199,3 +208,102 @@ h1 em,h2 em{font-style:normal;background:linear-gradient(100deg,var(--cy),var(--
 
 /* Rollout fixes 2026-10-07: long words + 320px header */
 #pvTitle{overflow-wrap:anywhere}@media(max-width:360px){.hdr__in{gap:6px}.uisw{padding:0 4px}.uisw select{max-width:62px}.hdr .btn-sm{padding:0 10px}.brand small{letter-spacing:.18em}}
+
+/* ---------- header: the row fits inside the 1180 grid at every width ----------
+   websites.html wears its own standalone-site shell, so the shared-footer fix
+   (roadmap 29) never reached it. Measured 1px by 1px on a pristine build, its own
+   header was wider than the window in TWO bands, not one:
+     1040px -> 1167px   128px over at worst
+     1200px -> 1325px    64px over at worst   (nobody had found this second one)
+   and from 1326px up it stopped overflowing the WINDOW but still overhung the
+   1180px .wrap by 93px, so the "Free demo" button never lined up with the rest of
+   the page. Because body sets overflow-x:hidden, the right-hand end of the row was
+   clipped rather than scrolled to -- the primary CTA was cut off on a laptop.
+
+   Nothing in the row could give way: .brand takes margin-right:auto, .hnav holds
+   eight white-space:nowrap links, and .btn is nowrap too, so the row's min-content
+   width (1237px against a 1144px content box) pushed past the edge. The brand was
+   the only shrinkable item, and it was being squashed from 181px to 82px to absorb
+   it. This block brings the row's NATURAL width under the box at every width rather
+   than letting flex compress anything -- deliberately no min-width:0 anywhere, so
+   no label can be truncated to make the numbers work.
+
+   No font-family is set in this block, so no font-weight is owed. No colour, no new
+   class, no new file. Piets Technology Solutions Inc - 631-871-5957 */
+
+/* 1 - the duplicate "Piets home" link comes off the desktop bar. The rule further
+   up this file was written to do exactly that, but it matches a[href="/"] and this
+   page links index.html, so it has never once fired. The Piets logo immediately to
+   its left, the "Piets home" link in the strip directly above and the footer all go
+   to the same place, so the bar loses nothing. */
+@media(min-width:1040px){
+  .hnav a[href="index.html"],.hnav a[href="/index.html"]{display:none}
+}
+/* 2 - the shrink step stopped at 1199px, which is exactly where the second band
+   began. It now runs to 1325px, the width at which the full-size row finally fit. */
+@media(min-width:1040px) and (max-width:1325px){
+  .hnav a{padding-inline:8px;font-size:.88rem}
+}
+/* 3 - the tightest desktop band. The language switcher keeps its globe and the
+   current language readable; only its reserved width comes down. */
+@media(min-width:1040px) and (max-width:1139px){
+  .hdr__in{gap:10px}
+  .hnav{gap:0}
+  .hnav a{padding-inline:6px;font-size:.86rem}
+  .uisw{padding-left:8px}
+  .uisw select{max-width:76px}
+}
+
+/* ---------- the header row, and the plan cards, fit the window in all SEVEN
+   languages, not just English (Oct 11 2026) ----------
+   Roadmap 32 brought this page's own header under the window, measured in English.
+   Measured again 1px by 1px from 1000 to 1600 in every language the picker offers,
+   six of the seven still ran off the right-hand edge on a pristine build:
+     es  319 widths  1040-1261 and 1326-1422  105px over at worst
+     de   55 widths  1040-1079 and 1140-1154   40px
+     fr   45 widths  1040-1074 and 1140-1149   35px
+     pt   43 widths  1040-1073 and 1140-1148   34px  (the one the roadmap knew of)
+     pl   22 widths  1040-1061                 22px
+     it    7 widths  1180-1186                  4px  (the plan cards, see 3 below)
+   Same mechanism as roadmap 32 and the same blind spot: the row's natural width is
+   set by text whose length depends on the language, and both shrink steps were
+   measured against the shortest of the seven. The item that fell off the edge is the
+   "Free demo" button -- the page's primary CTA -- and because this file sets
+   body{overflow-x:hidden} it was clipped rather than scrolled to: at 1040px a
+   Spanish visitor could not see it at all, and the brand was squeezed to 82px so the
+   logo mark was not drawn either.
+   Nothing is hidden and no label is truncated: the two desktop bands bring the row's
+   natural width under the box by tightening type, padding and gaps until the longest
+   language fits. No font-family is set here, so no font-weight is owed and there is
+   no route back for the font bug. No colour, no new class, no new file.
+   Piets Technology Solutions Inc - 631-871-5957 */
+
+/* 1 - 1040 to 1199, the tight desktop band. Spanish needs 105px back here. */
+@media(min-width:1040px) and (max-width:1199px){
+  .hdr__in{gap:7px}
+  .hnav{gap:0}
+  .hnav a{padding-inline:3px;font-size:.81rem}
+  .hdr .btn-sm{padding-inline:9px;font-size:.8rem}
+  .uisw{padding:0 4px 0 7px}
+  .uisw select{max-width:72px;font-size:.78rem}
+}
+/* 2 - 1200 to 1439. Roadmap 32's shrink step stopped at 1325 because English fits
+   from 1326 up; Spanish overflowed again from 1326 to 1422, and carrying the old
+   step across unchanged was measured and still left Spanish 19px over from 1200 to
+   1237, so this band is one notch tighter than that step. Above 1440 the full-size
+   row is untouched in every language. */
+@media(min-width:1200px) and (max-width:1439px){
+  .hdr__in{gap:10px}
+  .hnav{gap:0}
+  .hnav a{padding-inline:6px;font-size:.85rem}
+  .hdr .btn-sm{padding-inline:11px}
+  .uisw select{max-width:86px}
+}
+/* 3 - the plan cards. The unpriced placeholder roadmap 30 put on every tier is one
+   long word in Italian ("Prossimamente"), drawn at 2.2rem/800: 273px of text inside
+   a 228px card, so it hung outside all four cards from 1180px up and pushed past the
+   window from 1180 to 1186. At the four-column width the display size steps down,
+   which puts the placeholder on one line in every language; overflow-wrap is the
+   guarantee for whatever the next translation turns out to be. */
+.tier .price{overflow-wrap:anywhere}
+@media(min-width:1180px){.tier .price{font-size:1.8rem}}

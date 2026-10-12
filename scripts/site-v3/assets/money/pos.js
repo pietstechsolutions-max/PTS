@@ -325,7 +325,7 @@
       h += '<div class="pos__sw" style="margin-top:8px">Card rate ' +
         '<input type="number" data-rate value="' + state.rate + '" min="0" max="10" step="0.25" ' +
         'style="width:74px;height:32px;padding:0 9px;border-radius:9px;background:rgba(255,255,255,.08);' +
-        'border:1px solid rgba(255,255,255,.18);color:#fff;font-family:var(--font-mono);text-align:right" ' +
+        'border:1px solid rgba(255,255,255,.18);color:#fff;font-family:var(--font-mono);font-weight:500;text-align:right" ' +
         'aria-label="Card surcharge percent"> %</div>';
     }
 

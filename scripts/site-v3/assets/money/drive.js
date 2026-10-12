@@ -95,11 +95,11 @@
       '<g transform="translate(86,268)"><circle r="13" fill="#011F5D" stroke="#02D7F5" stroke-width="2.5"/>' +
       '<path d="M-5 -2v6a2 2 0 0 0 4 0v-6M-3 4v-8M3 -5c-1 0-2 1.5-2 3.5S2 1 3 1v5" stroke="#02D7F5" ' +
       'stroke-width="1.6" fill="none" stroke-linecap="round"/></g>' +
-      '<text x="86" y="300" fill="#8FE9FB" font-family="monospace" font-size="11" text-anchor="middle">KITCHEN</text>' +
+      '<text x="86" y="300" fill="#8FE9FB" font-family="JetBrains Mono,Consolas,monospace" font-weight="500" font-size="11" text-anchor="middle">KITCHEN</text>' +
       /* customer pin */
       '<g transform="translate(618,74)"><circle r="13" fill="#2A1352" stroke="#B08CFF" stroke-width="2.5"/>' +
       '<path d="M-5 2l5-5 5 5v5h-10z" stroke="#B08CFF" stroke-width="1.6" fill="none" stroke-linejoin="round"/></g>' +
-      '<text x="618" y="106" fill="#CDB4FF" font-family="monospace" font-size="11" text-anchor="middle">CUSTOMER</text>' +
+      '<text x="618" y="106" fill="#CDB4FF" font-family="JetBrains Mono,Consolas,monospace" font-weight="500" font-size="11" text-anchor="middle">CUSTOMER</text>' +
       /* driver */
       (S.stage >= 2 ?
         '<g transform="translate(' + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ')">' +

@@ -3,6 +3,29 @@
    Piets Technology Solutions Inc · 631-871-5957 · pietstechsolutions.com
    Much of this was prepared with AI. Tell the owner about any mistake so it gets fixed. */
 
+/* ---------- FONT_STANDARD.md rule 1 ----------
+   Every rule in this file that sets font-family now also sets font-weight. A family
+   with no weight inherits whatever the element defaults to (400 on a div/span, 700 on
+   an h3, and the keyword `bolder` on a <b>, which computes to 900 from a 700 parent —
+   a weight no family here has). Each weight below is PINNED TO THE VALUE THE PAGE
+   ALREADY COMPUTED, measured on the live DOM before it was written in, so nothing on
+   any page moves:
+     .famcard .dom / .go / .soon  400  (index.html, JetBrains Mono)
+     .sitebar                     400  (piet-box.html, websites.html — see below)
+     .kicker                      400  (coverage.html, design-studio.html)
+     .bigq                        700  (payments.html, products.html — h3's UA bold)
+     .statline b / span      800 / 500  house values: no element in the artifact carries
+                                        class="statline", so these two rules match
+                                        nothing today and the house value is what a
+                                        future .statline should get.
+   KNOWN, NOT FIXED HERE: .sitebar's own family cannot resolve. piet-box.html and
+   websites.html wear their own shells and do not load main.css, which is the only file
+   that defines --font-mono / --font-display / --font-body, so on both of those pages
+   var(--font-mono) is invalid at computed-value time and the "part of Piets" rail
+   inherits Inter 400 instead of painting a mono label. Giving the var a fallback would
+   change how that rail looks on two pages, so it is logged for a run of its own rather
+   than slipped in here. Do not "fix" it by changing the weight alone. */
+
 /* ---------- nav: five groups, products carry the gradient dot ---------- */
 .site-nav__links .nav-more[data-navdot]>summary::before{
   content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:2px;
@@ -33,16 +56,16 @@
   background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);transition:.2s}
 a.famcard:hover{text-decoration:none;transform:translateY(-3px);
   background:rgba(122,61,255,.17);border-color:rgba(167,139,250,.7)}
-.famcard .dom{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;color:#8FE9FB;
+.famcard .dom{font-family:var(--font-mono);font-weight:400;font-size:.68rem;letter-spacing:.06em;color:#8FE9FB;
   display:flex;align-items:center;gap:7px}
 .famcard .dom::before{content:"";width:6px;height:6px;border-radius:50%;
   background:linear-gradient(100deg,#02D7F5,#7A3DFF)}
 .famcard h3{font-size:1.14rem;margin:0}
 .famcard p{font-size:.89rem;color:#A9B8D4;margin:0;flex:1}
-.famcard .go{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#CDB4FF}
+.famcard .go{font-family:var(--font-mono);font-weight:400;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#CDB4FF}
 .famcard.hub{background:linear-gradient(140deg,rgba(2,215,245,.14),rgba(122,61,255,.2));
   border-color:rgba(167,139,250,.55)}
-.famcard .soon{font-family:var(--font-mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;
+.famcard .soon{font-family:var(--font-mono);font-weight:400;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;
   padding:3px 8px;border-radius:999px;align-self:flex-start;background:rgba(255,176,32,.14);
   border:1px solid rgba(255,176,32,.4);color:#FFD88A}
 
@@ -50,7 +73,7 @@ a.famcard:hover{text-decoration:none;transform:translateY(-3px);
 /* Any product page that will later move to its own domain wears this. It keeps the Piets
    identity but reads as its own site, with a thin "part of Piets" rail back to the hub. */
 .sitebar{background:#010E30;border-bottom:1px solid rgba(255,255,255,.08);
-  font-family:var(--font-mono);font-size:.68rem;letter-spacing:.05em;color:#8EA3C9}
+  font-family:var(--font-mono);font-weight:400;font-size:.68rem;letter-spacing:.05em;color:#8EA3C9}
 .sitebar .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:7px;padding-bottom:7px}
 .sitebar a{color:#9FB1D0}
 .sitebar a:hover{color:#fff}
@@ -61,15 +84,15 @@ a.famcard:hover{text-decoration:none;transform:translateY(-3px);
 @media(max-width:620px){.sitebar .sep{margin-left:0;width:100%}}
 
 /* ---------- small shared bits used by the new pages ---------- */
-.kicker{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+.kicker{font-family:var(--font-mono);font-weight:400;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
   color:#02D7F5;margin-bottom:10px;display:block}
 .twocol{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
 @media(max-width:860px){.twocol{grid-template-columns:1fr}}
-.bigq{font-family:var(--font-display);font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.2;color:#fff;
+.bigq{font-family:var(--font-display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.2;color:#fff;
   margin:0 0 14px;letter-spacing:-.02em}
 .statline{display:flex;flex-wrap:wrap;gap:26px;margin-top:26px}
-.statline b{display:block;font-family:var(--font-display);font-size:1.75rem;line-height:1;color:#fff}
-.statline span{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#9FB1D0}
+.statline b{display:block;font-family:var(--font-display);font-weight:800;font-size:1.75rem;line-height:1;color:#fff}
+.statline span{font-family:var(--font-mono);font-weight:500;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#9FB1D0}
 .check-list{list-style:none;margin:0;padding:0;display:grid;gap:9px}
 .check-list li{position:relative;padding-left:26px;font-size:.95rem}
 .check-list li::before{content:"";position:absolute;left:0;top:.42em;width:15px;height:8px;
@@ -207,3 +230,16 @@ body.home-page .hero__studio-note::before{content:"";display:inline-block;width:
 .site-nav__links>li>.nav-more>summary>svg{opacity:.6;transition:transform .2s,opacity .2s}
 .site-nav__links>li>.nav-more>summary:hover>svg,
 .site-nav__links>li>.nav-more[open]>summary>svg{opacity:1}
+
+/* ---------- the top bar (announcement ticker), every page ----------
+   the owner, Oct 11 2026: the top bar looked broken — the scrolling text was cut in
+   half at the left edge and ran under the close button on the right. Both ends
+   now fade, and the close button sits on its own solid backing. Moved here from
+   the home page so all 34 pages match. */
+.announcement{position:relative}
+.announcement::before,.announcement::after{content:"";position:absolute;top:0;bottom:0;width:110px;z-index:2;pointer-events:none}
+.announcement::before{left:0;background:linear-gradient(90deg,var(--ink,#050A1F) 30%,rgba(5,10,31,0))}
+.announcement::after{right:0;background:linear-gradient(270deg,var(--ink,#050A1F) 48%,rgba(5,10,31,0))}
+.announcement__close{z-index:3;background:var(--ink,#050A1F);border:1px solid rgba(122,61,255,.55);box-shadow:none}
+.announcement__run i{background:#7A3DFF;opacity:.9}
+@media(max-width:620px){.announcement::before,.announcement::after{width:56px}}

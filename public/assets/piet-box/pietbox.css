@@ -12,14 +12,40 @@
   color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
-body{margin:0;background:var(--ink);color:var(--txt);font:17px/1.6 var(--body);overflow-x:hidden}
+body{margin:0;background:var(--ink);color:var(--txt);font:400 17px/1.6 var(--body);overflow-x:hidden}
 img,svg{max-width:100%}a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}
 [hidden]{display:none!important}
 :focus-visible{outline:2px solid var(--cy2);outline-offset:3px}
 .skip{position:absolute;left:-9999px}.skip:focus{left:10px;top:10px;z-index:300;background:#fff;color:#000;padding:8px 12px}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:18px}
-h1,h2,h3{font-family:var(--disp);line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
-h1{font-size:clamp(2.4rem,6.4vw,4.3rem);font-weight:800}h2{font-size:clamp(1.9rem,4.6vw,2.9rem);font-weight:800}h3{font-size:1.18rem}p{margin:0}
+h1,h2,h3{font-family:var(--disp);font-weight:800;line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:clamp(2.4rem,6.4vw,4.3rem);font-weight:800}h2{font-size:clamp(1.9rem,4.6vw,2.9rem);font-weight:800}h3{font-size:1.18rem;font-weight:700}p{margin:0}
+/* h3's weight is pinned to 700 — the value this page already computed from the UA's
+   bold — so line 21's font-family carries a font-weight too (FONT_STANDARD rule 1).
+   Stating it removes the latent `bolder` route: an unstated weight is inherited, and
+   a weight nobody wrote is a weight nobody checked. */
+/* ---------- FONT_STANDARD.md rule 1 — closed in this file ----------
+   Two rules above named a family and left the weight to be inherited. Both are now
+   explicit, and both weights were MEASURED on the live driven page before they were
+   written in, so nothing on this page moves:
+
+     body{font:400 17px/1.6 var(--body)}   The `font:` SHORTHAND is the same bug in a
+       second shape: a shorthand that names a family and omits the weight RESETS the
+       weight to `normal`, silently, so the page was relying on a reset nobody wrote.
+       Measured: Inter 400, 17px/27.2px — identical before and after.
+     h1,h2,h3{font-weight:800}             The house value for the display face, and
+       the value h1 and all eight h2s already computed. The h3 rule on the line below
+       still pins 700 (same specificity, later in the file), which is what all ten h3s
+       computed before this comment existed — checked, not assumed.
+
+   Why it matters even though nothing visibly moves: an unstated weight is inherited,
+   and on a <b> the UA keyword is `bolder`, which computes to 900 under a 700 parent —
+   a face no <link> on this page requests. Bricolage Grotesque stops at 800.
+   `button,input,select,textarea{font:inherit}` above is correct and deliberate: it
+   takes the weight of whatever it sits in rather than resetting it.
+   Still open elsewhere: assets/site-studio/studio.css carries the same weightless
+   body shorthand on websites.html, and assets/css/main.css has 8 rule-1 rules across
+   all 34 shared-header pages. Measure before pinning, the way these two were. */
 h1 em,h2 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .light h2 em{background:linear-gradient(100deg,#0178b8,#016FD6);-webkit-background-clip:text;background-clip:text}
 .eye{font:600 .72rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cy2)}
@@ -259,5 +285,41 @@ h1 em,h2 em{font-style:normal;background:var(--grad);-webkit-background-clip:tex
 .final{background:radial-gradient(700px 360px at 50% 0,rgba(122,61,255,.32),transparent 70%),linear-gradient(180deg,var(--ink),#1B0B55)}
 .strip{background:linear-gradient(90deg,#06132e,#140c3a)}
 body::before{content:"";position:fixed;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#02D7F5,#016FD6 55%,#7A3DFF);z-index:2147483000;pointer-events:none}
-.ts.show .ph{width:46cqw;aspect-ratio:16/10;border-color:rgba(167,139,250,.7);box-shadow:0 2cqw 5cqw rgba(0,0,0,.6),0 0 4cqw rgba(122,61,255,.35)}
-.ts.show .badge{background:rgba(122,61,255,.18);color:#E9DDFF;border-color:rgba(167,139,250,.6)}
+
+/* ---------- header: the row fits the window at every width ----------
+   Roadmap 47 (Oct 11 2026). Measured 1px by 1px from 1000 to 1600 on the published
+   build: this page's own header row was wider than the window across 144 of the 601
+   widths, one band, 1040-1183px, 142px over at worst — and because the file sets
+   body{overflow-x:hidden} (line 15) the right-hand end was CLIPPED rather than
+   scrolled to, so on a 1040px laptop "Build my screen", the page's primary CTA, was
+   not on the screen at all. Same mechanism and same fix shape as roadmap 32 and 44 on
+   websites.html, on the one page those runs did not cover: piet-box.html wears its own
+   shell, so neither the shared-footer fix nor the Site Studio header fix reached it.
+
+   The row's NATURAL width is brought under the box so nothing is compressed and no
+   label is truncated. Measured: brand 82 + nav 739 + phone 161 + CTA 146 + 3x12 gap
+   = 1182px, against a content box of 1004px at 1040 and 1144px at 1184 and above —
+   so it never fitted at any width, it merely stopped reaching the window edge at 1184.
+   No font-family is set in this block, so no font-weight is owed (FONT_STANDARD rule 1)
+   and there is no route back for the font bug. Palette B untouched. */
+@media(min-width:1040px){
+  /* 1 · the duplicate "Piets home" link comes off the bar. index.html is already
+     reached three other ways on this page at every width: the brand mark, the
+     "part of Piets" rail above the header, and the footer. Nothing is lost. */
+  .hnav a[href="index.html"],.hnav a[href="/index.html"],.hnav a[href="/"]{display:none}
+}
+@media(min-width:1040px) and (max-width:1183px){
+  /* 2 · one shrink step, only across the band that did not fit. Above 1183px the
+     bar keeps its full size and only the duplicate above is gone. */
+  .hdr__in{gap:10px}
+  .hnav{gap:0}
+  .hnav a{padding:8px 8px;font-size:.88rem}
+  .hdr__in .btn-sm{padding:0 12px;gap:6px}
+}
+/* 3 · the official logo mark is never squeezed. The brand was the only shrinkable
+   item in the row, so an over-full bar took the 28px mark down to 0 and the mark was
+   not drawn at ANY desktop width — measured 0px wide from 1040 to 1600 on the build
+   before this one. The row now fits at every width, so pinning the mark costs nothing
+   and it can never be compressed again. the owner's rule: only the official mark, never
+   redrawn or restyled — and squeezing it is restyling it. */
+.brand svg{flex:0 0 auto}
