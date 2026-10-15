@@ -295,3 +295,10 @@ html.fx-brain body.home-page .hm-brain__core b{font-size:.6rem;text-shadow:0 0 6
 html.fx-brain body.home-page .hm-hub--wifi .hm-hub__core{background:rgba(7,19,68,.6);box-shadow:0 0 0 1px rgba(2,215,245,.4),0 0 30px rgba(2,215,245,.35)}
 html.fx-theme body.home-page .hm-node{color:#02D7F5}
 html.fx-theme body.home-page .hm-stop{background:rgba(8,14,34,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+/* a device lights up the moment its cable plugs in */
+html.fx-brain body.home-page :is(.hm-node,.hm-stop__icon,.hm-hub--wifi .hm-hub__core){transition:box-shadow .5s ease,border-color .5s ease}
+html.fx-brain body.home-page :is(.hm-node,.hm-stop__icon).is-live{border-color:rgba(2,215,245,.85);animation:fxPlug 1.1s ease-out 1;
+  box-shadow:0 0 0 1px rgba(2,215,245,.4),0 0 26px rgba(2,215,245,.45),0 0 60px rgba(122,61,255,.25)}
+html.fx-brain body.home-page .hm-hub--wifi.is-live .hm-hub__core{box-shadow:0 0 0 1px rgba(2,215,245,.8),0 0 36px rgba(2,215,245,.55),0 0 80px rgba(122,61,255,.3)}
+@keyframes fxPlug{0%{transform:scale(1)}35%{transform:scale(1.14)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){html.fx-brain body.home-page :is(.hm-node,.hm-stop__icon).is-live{animation:none}}

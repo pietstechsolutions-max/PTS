@@ -835,7 +835,7 @@ void main(){
       const len = curve.getLength();
       const segs = Math.max(30, Math.min(1400, Math.round(len / 7)));
       [true, false].forEach((halo) => {
-        if (halo && (type === 'coax' || T.twin)) return;
+        if (halo && (type === 'coax' || T.twin || opt.halo === false)) return;
         const m = new THREE.ShaderMaterial({
           uniforms: { uColor: { value: new THREE.Vector3(...T.c) }, uKind: { value: T.k }, uProg: { value: 1 }, uTime: { value: 0 }, uLen: { value: len }, uPh: { value: ph }, uHalo: { value: halo ? 1 : 0 }, uDir: { value: opt.dir || 1 }, uHead: { value: 1e9 }, uFadeEnd: { value: opt.fadeEnd ? 1 : 0 } },
           vertexShader: tubeVS, fragmentShader: tubeFS, transparent: true, depthWrite: false,
@@ -843,7 +843,7 @@ void main(){
         });
         const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, segs, T.r * (halo ? 3.4 : 1), 8, false), m);
         mesh.frustumCulled = false; mesh.renderOrder = halo ? 1 : 2; scene.add(mesh);
-        cables.push({ mesh, m, gate: opt.gate || 'scroll', at: opt.at || 0, len });
+        cables.push({ mesh, m, gate: opt.gate || 'scroll', at: opt.at || 0, len, node: opt.node });
       });
     });
   }
@@ -902,20 +902,21 @@ void main(){
     const X = wl >= 70 ? Math.round(wl / 2) : Math.max(8, Math.round(wl * 0.42));
     const hero = docRect(D.querySelector('.hm-hero') || brainEl);
     // every device the bundle feeds, top to bottom
-    const nodes = [...D.querySelectorAll('[data-hm-node]')].map((el) => ({ el, r: docRect(el), type: (el.getAttribute('data-cable') || 'cat6').split(',')[0] }))
+    const nodes = [...D.querySelectorAll('[data-hm-node]')].map((el) => { const r = docRect(el), card = el.closest('.hm-stop'); if (card) { const c = docRect(card); r.l = c.l - 4; } return { el, r, type: (el.getAttribute('data-cable') || 'cat6').split(',')[0] }; })
       .filter((n) => n.r.w > 0).sort((a, b) => a.r.cy - b.r.cy);
     spineEnd = nodes.length ? nodes[nodes.length - 1].r.cy + 140 : hero.b + 400;
     // 1 · the trunk: out of the brain, along the bottom of the hero, then down the gutter to the last device
     const types = ['fiber', 'cat6', 'hdmi', 'coax', 'cat6a'];
-    const sweepY = hero.b - (cw < 900 ? 34 : 56);
+    const ticks = D.querySelector('.hm-hero .hm-ticks');
+    const sweepY = Math.min(hero.b - 18, Math.max(hero.b - (cw < 900 ? 34 : 56), ticks ? docRect(ticks).b + 40 : 0));
     types.forEach((type, j) => {
-      const o = (j - 2) * 7.5;
+      const o = (j - 2) * 8.5;
       const sx = B.cx + o * 1.4, sy = B.cy + R * 0.5;
       const pts = [[sx, sy], [sx + o, sy + Math.max(40, (sweepY - sy) * 0.55)], [Math.max(X + 60, sx - 120) + o, sweepY + o * 0.6], [X + 60 + o, sweepY + o * 0.6 + 2], [X + o, sweepY + 70]];
       const end = spineEnd - 20 * j;                       // straight down the gutter: a point every 240px keeps it straight
       for (let yy = sweepY + 70 + 240; yy < end; yy += 240) pts.push([X + o + Math.sin(yy * 0.004 + j) * 1.5, yy]);
       pts.push([X + o, end]);
-      addCable(pts, type, { gate: 'scroll', fadeEnd: true, z: -10 });
+      addCable(pts, type, { gate: 'scroll', fadeEnd: true, z: -10, halo: j === 0 });
     });
     // 2 · one cable peels off the bundle into each device
     nodes.forEach((n, i) => {
@@ -923,7 +924,7 @@ void main(){
       const startY = ey - Math.min(120, Math.max(50, (ex - X) * 0.35));
       const pts = ex - X < 30 ? [[X + o, startY], [X + o, ey - 10], [ex, ey]]
         : [[X + o, startY], [X + o + 4, startY + (ey - startY) * 0.55], [X + Math.min(60, (ex - X) * 0.4), ey], [ex - Math.min(50, (ex - X) * 0.3), ey], [ex, ey]];
-      addCable(pts, n.type, { gate: 'grow', at: startY, z: 6 });
+      addCable(pts, n.type, { gate: 'grow', at: startY, z: 6, node: n.el });
       if (n.el.matches('.hm-hub--wifi')) F = { r, i };
     });
     // 3 · Wi-Fi feeds the four screens around it
@@ -977,7 +978,7 @@ void main(){
     cables.forEach((c) => {
       const u = c.m.uniforms; u.uTime.value = t;
       if (c.gate === 'scroll') { u.uHead.value = head; u.uProg.value = 1; }
-      else { u.uHead.value = 1e9; u.uProg.value = RM ? 1 : Math.min(1, Math.max(0, (head - c.at) / 260)); }
+      else { u.uHead.value = 1e9; u.uProg.value = RM ? 1 : Math.min(1, Math.max(0, (head - c.at) / 260)); if (c.node && u.uProg.value >= 1 && !c.node.classList.contains('is-live')) c.node.classList.add('is-live'); }
     });
     // screen positions for the wireless shader (px, y up)
     airMat.uniforms.uB.value.x = B.cx - W.scrollX; airMat.uniforms.uB.value.y = ch - (B.cy - y);
