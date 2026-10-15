@@ -301,7 +301,7 @@ html.fx-tags-on .fx-tag{opacity:1;transform:translate(-50%,-50%)} html.fx-tags-o
 .fx-tag--in{border-color:rgba(122,61,255,.6);box-shadow:0 0 14px rgba(122,61,255,.3)} .fx-tag--in i{background:#9B6BFF}
 @media (max-width:699px){.fx-tag{font-size:.58rem;padding:3px 7px;letter-spacing:.08em}.fx-tag--in{display:none}}
 @media (prefers-reduced-motion:reduce){.fx-tag{transition:none}}
-html:not(.fx-brain) .fx-tags{display:none}
+html:not(.fx-brain) .fx-tags{visibility:hidden}
 html.fx-brain body.home-page :is(.hm-brain__glow,.hm-brain__ring,.hm-run__spine,.hm-wires,.hm-hub--wifi .hm-hub__glow,.hm-hub--wifi .hm-hub__ring){display:none}
 html.fx-brain body.home-page .hm-brain__core{width:24%;gap:4px;
   background:radial-gradient(circle at 50% 40%,rgba(22,48,126,.5),rgba(7,19,68,.2) 70%,rgba(7,19,68,0));

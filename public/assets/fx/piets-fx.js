@@ -866,6 +866,39 @@ void main(){
   const lanes = new THREE.LineSegments(gg, laneMat); lanes.frustumCulled = false; lanes.renderOrder = 3; scene.add(lanes);
   const inflow = new THREE.Points(ig, inMat); inflow.frustumCulled = false; inflow.renderOrder = 4; scene.add(inflow);
 
+  /* --- the atom: three classic electron orbits round Piet's brain (0°, 60°, 120°), each with a
+     glowing electron and a short tail. The rings are drawn as fiber in layout(); this is the electrons.
+     Sits on top of the two wrap cables, which stay. --- */
+  const ATOM = { rx: 1.5, ry: 0.46, tilts: [0, Math.PI / 3, -Math.PI / 3] }, ETAIL = 14;
+  const ePos = [], eA = [];
+  ATOM.tilts.forEach((tl, i) => { for (let k = 0; k < ETAIL; k++) { ePos.push(0, 0, 0); eA.push(tl, i / 3 + i * 0.11, k, i % 2 ? -1 : 1); } });
+  const eg = new THREE.BufferGeometry();
+  eg.setAttribute('position', new THREE.Float32BufferAttribute(ePos, 3));
+  eg.setAttribute('aE', new THREE.Float32BufferAttribute(eA, 4));
+  const eMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uIn: { value: RM ? 1 : 0 }, uCtr: { value: new THREE.Vector2() }, uR: { value: 100 }, uPix: { value: pix }, uRx: { value: ATOM.rx }, uRy: { value: ATOM.ry } },
+    vertexShader: `uniform float uTime, uIn, uR, uPix, uRx, uRy; uniform vec2 uCtr;
+attribute vec4 aE; varying float vA; varying float vHead;
+void main(){
+  float a = aE.w * (uTime * 1.15 + aE.y * 6.2831) - aE.w * aE.z * 0.045;   // one lap about every 5.5 s
+  vec2 e = vec2(cos(a) * uRx, sin(a) * uRy) * uR;
+  float c = cos(aE.x), s = sin(aE.x);
+  vec2 xy = uCtr + vec2(e.x * c - e.y * s, e.x * s + e.y * c);
+  float front = 0.75 + 0.25 * sin(a);                // a little dimmer on the far side of the ring
+  vHead = step(aE.z, 0.5);
+  vA = (1.0 - aE.z / ${ETAIL}.0) * front * uIn;
+  gl_PointSize = uPix * (vHead > 0.5 ? 44.0 : 14.0 - aE.z * 0.75) * clamp(uR / 150.0, 0.7, 1.25);
+  gl_Position = projectionMatrix * viewMatrix * vec4(xy, 60.0, 1.0);
+}`,
+    fragmentShader: `varying float vA; varying float vHead;
+void main(){ float d = length(gl_PointCoord - 0.5); if (d > 0.5) discard;
+  float core = smoothstep(0.13, 0.03, d), glow = pow(smoothstep(0.5, 0.0, d), 2.2);
+  vec3 col = mix(vec3(0.05, 0.85, 1.0), vec3(1.0), core) * (1.4 + vHead) + vec3(0.48, 0.24, 1.0) * glow * 0.5;
+  gl_FragColor = vec4(col, clamp(glow * 0.9 + core * vHead, 0.0, 1.0) * vA); }`,
+    transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending
+  });
+  const electrons = new THREE.Points(eg, eMat); electrons.frustumCulled = false; electrons.renderOrder = 6; scene.add(electrons);
+
   /* --- cables: tubes in page pixels; x = page x - width/2, y = -page y --- */
   const tubeVS = `varying vec2 vUv; varying vec3 vN; varying float vDocY;
 void main(){ vUv = uv; vN = normalize(normalMatrix * normal); vec4 wp = modelMatrix * vec4(position, 1.0); vDocY = -wp.y; gl_Position = projectionMatrix * viewMatrix * wp; }`;
@@ -967,6 +1000,10 @@ void main(){
     tags.forEach((t) => {
       const el = D.createElement('span'); el.className = 'fx-tag fx-tag--' + t.type + ' fx-tag--' + t.side;
       el.innerHTML = '<i></i>' + t.name; el.style.left = t.x + 'px'; el.style.top = t.y + 'px'; tagBox.appendChild(el);
+      // never past the window edge (phones): nudge back inside with an 8px margin
+      const w = el.offsetWidth, vw = ROOT.clientWidth, left = t.side === 'l' ? t.x - w : t.side === 'r' ? t.x : t.x - w / 2;
+      if (left + w > vw - 8) el.style.left = (t.x - (left + w - (vw - 8))) + 'px';
+      else if (left < 8) el.style.left = (t.x + (8 - left)) + 'px';
     });
   }
   let cw = 0, ch = 0, R = 120, born = RM ? 1e9 : -1, B = null, F = null, phoneTo = null, spineEnd = 0;
@@ -979,7 +1016,7 @@ void main(){
     B = docRect(brainEl);
     R = Math.max(80, Math.min(190, B.w * 0.37));
     brain.position.set(B.cx - cw / 2, -B.cy, 0); brain.scale.setScalar(R);
-    brainMat.uniforms.uScale.value = R; brainMat.uniforms.uCtr.value.set(brain.position.x, brain.position.y); inMat.uniforms.uCtr.value.set(brain.position.x, brain.position.y); inMat.uniforms.uR.value = R; airMat.uniforms.uB.value.z = R;
+    brainMat.uniforms.uScale.value = R; brainMat.uniforms.uCtr.value.set(brain.position.x, brain.position.y); inMat.uniforms.uCtr.value.set(brain.position.x, brain.position.y); inMat.uniforms.uR.value = R; eMat.uniforms.uCtr.value.set(brain.position.x, brain.position.y); eMat.uniforms.uR.value = R; airMat.uniforms.uB.value.z = R;
     // where the bundle runs: the middle of the left gutter, or just inside the edge on narrow screens
     const wrap = D.querySelector('.hm-hero .hm-wrap') || D.body;
     const wl = docRect(wrap).l + parseFloat(getComputedStyle(wrap).paddingLeft || 0);
@@ -1005,10 +1042,10 @@ void main(){
       for (let yy = sweepY + 70 + 240; yy < end; yy += 240) pts.push([X + o + Math.sin(yy * 0.004 + j) * 1.5, yy]);
       pts.push([X + o, end]);
       addCable(pts, type, { gate: 'scroll', fadeEnd: true, z: -10, halo: j === 0 });
-      tags.push({ name, type, x: B.cx + ca * R * 1.22, y: B.cy + sa * R * 1.12 + (j % 2 ? 14 : 0), side: ca < -0.05 ? 'l' : ca > 0.05 ? 'r' : 'c' });
+      tags.push({ name, type, x: B.cx + ca * R * 1.32, y: B.cy + sa * R * 1.3 + (j % 2 ? 16 : 0), side: ca < -0.05 ? 'l' : ca > 0.05 ? 'r' : 'c' });
     });
-    tags.push({ name: 'Wi-Fi', type: 'wifi', x: B.cx + R * 0.98, y: B.cy - R * 0.92, side: 'r' });
-    tags.push({ name: 'Everything flows in', type: 'in', x: B.cx - R * 0.95, y: B.cy - R * 0.95, side: 'l' });
+    tags.push({ name: 'Wi-Fi', type: 'wifi', x: B.cx + R * 1.12, y: B.cy - R * 1.32, side: 'r' });
+    tags.push({ name: 'Everything flows in', type: 'in', x: B.cx - R * 1.05, y: B.cy - R * 1.32, side: 'l' });
     placeTags();
     // 1b · two network cables wrapped all the way around the brain (drawn in as the page opens)
     [['cat6a', -0.30, 1.05, 0.72, 1], ['fiber', 0.32, 1.11, 0.78, -1]].forEach(([type, tilt, rx, ry, dir], j) => {
@@ -1018,6 +1055,15 @@ void main(){
         pts.push([B.cx + ex * ct - ey * st, B.cy + ex * st + ey * ct]);
       }
       addCable(pts, type, { gate: 'grow', at: B.cy - R * 1.4, z: 40 + j * 4, halo: false });
+    });
+    // 1c · the atom rings (on top of the wrap cables): three thin fiber ellipses at 0°, 60° and 120°
+    ATOM.tilts.forEach((tl, i) => {
+      const pts = [], N = 72, ct = Math.cos(tl), st = Math.sin(tl);
+      for (let k = 0; k <= N; k++) {
+        const a = (k / N) * Math.PI * 2 + 0.6 * i, ex = Math.cos(a) * ATOM.rx * R, ey = Math.sin(a) * ATOM.ry * R;
+        pts.push([B.cx + ex * ct - ey * st, B.cy - (ex * st + ey * ct)]);   // page y runs down
+      }
+      addCable(pts, 'fiber', { gate: 'grow', at: B.cy - R * 1.6, z: 55 + i * 3, halo: true });
     });
     // 2 · one cable peels off the bundle into each device
     nodes.forEach((n, i) => {
@@ -1068,7 +1114,7 @@ void main(){
     const grow = Math.min(1, age / 1.2);
     brainMat.uniforms.uIn.value = grow; linkMat.uniforms.uIn.value = grow;
     brainMat.uniforms.uTime.value = t; linkMat.uniforms.uTime.value = t; airMat.uniforms.uTime.value = t;
-    inMat.uniforms.uTime.value = t; inMat.uniforms.uIn.value = Math.min(1, Math.max(0, (age - 0.6) / 1.4));
+    inMat.uniforms.uTime.value = t; eMat.uniforms.uTime.value = t; eMat.uniforms.uIn.value = Math.min(1, Math.max(0, (age - 0.9) / 1.0)); inMat.uniforms.uIn.value = Math.min(1, Math.max(0, (age - 0.6) / 1.4));
     airMat.uniforms.uIn.value = Math.min(1, Math.max(0, (age - 1.2) / 1.0));
     mouse.lerp(mTarget, 0.08); brainMat.uniforms.uMouse.value.copy(mouse);
     spin.rotation.y = -0.7 + Math.sin(t * 0.12) * 0.55;
@@ -1114,6 +1160,7 @@ void main(){
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); ROOT.classList.remove('fx-brain', 'fx-tags-on'); canvas.remove(); tagBox.remove(); });
   layout();
   ROOT.classList.add('fx-brain');
+  setTimeout(() => ROOT.classList.add('fx-tags-on'), RM ? 0 : 1800);   // labels on a real clock too, so a slow GPU never hides them
   W.__pietsBrain = { inflow: () => LANES * PER, cables: () => cables.length, R: () => R, frame: () => t, seek: (sec) => { if (born < 0) born = t; t = born + sec; draw(); } }; // QA hook
   if (RM) draw(); else kick();
 }
