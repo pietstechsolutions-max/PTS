@@ -234,6 +234,8 @@
     if (document.querySelector('.hp').value) return; // bot
     if (building) return; building = true; setTimeout(function () { building = false; }, 8000);
     var it = intake(false);
+    // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own submit below.
+    if (window.sendToFieldHQ) window.sendToFieldHQ({ form: 'Site Studio demo builder', name: it.cname || it.owner, phone: it.cmobile || it.phone, email: it.cemail || it.bizEmail, answers: it });
     $('#wiz').hidden = true; $('#building').hidden = false; stepAnim(0);
     $('#building').scrollIntoView({ behavior: 'smooth', block: 'center' });
     var base;

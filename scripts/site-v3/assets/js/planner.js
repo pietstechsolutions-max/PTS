@@ -248,6 +248,8 @@
         website: formData.get('website') || ''  // honeypot field
       };
       
+      // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own submit below.
+      if (window.sendToFieldHQ) window.sendToFieldHQ({ form: 'Planner', name: data.name, phone: data.phone, email: data.email, answers: form });
       fetch('/api/leads', {
         method: 'POST',
         headers: {

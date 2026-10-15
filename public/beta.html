@@ -295,6 +295,8 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff7a66}
     L.push('---', 'FROM: ' + val('r_name') + (val('r_biz') ? ' (' + val('r_biz') + ')' : ''), 'REPLY TO: ' + val('r_phone'), 'DEVICE: ' + (val('r_device') || '-'), 'OK TO CONTACT: ' + (document.getElementById('r_contact').checked ? 'yes' : 'no'), 'SENT: ' + stamp, 'VIA: Piets Beta Crew page');
     remember();
     var body = L.join('\n');
+    // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own text/email builder.
+    if (window.sendToFieldHQ) window.sendToFieldHQ({ form: subject.indexOf('REFERRAL') >= 0 ? 'Beta Crew referral' : 'Beta Crew report', name: val('r_name'), phone: val('r_phone'), answers: { type: kind, subject: subject, report: body } });
     $('#msg').textContent = 'Subject: ' + subject + '\n\n' + body;
     $('#mailBtn').href = 'mailto:pietstechsolutions@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     $('#smsBtn').href = 'sms:+16318715957?&body=' + encodeURIComponent(subject + '\n' + body).slice(0, 1800);

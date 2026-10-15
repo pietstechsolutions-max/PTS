@@ -21,6 +21,8 @@
       data.referrer = document.referrer || '';
       if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Sending…'; }
       if (msg) { msg.className = 'form-msg'; msg.textContent = ''; }
+      // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own submit below.
+      if (window.sendToFieldHQ) window.sendToFieldHQ({ form: data.source, answers: data });
       fetch(form.getAttribute('action') || '/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },

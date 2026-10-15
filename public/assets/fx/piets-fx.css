@@ -1,0 +1,284 @@
+/* Piets FX — the obsidian look (Oct 15 2026)
+   Loaded LAST on every page by the build (scripts/build-blog.js · injectFx).
+   Deep obsidian background with a live WebGL field behind every page (assets/fx/piets-fx.js),
+   frosted glass cards with a 1px glowing edge, film grain, terminal-style form fields,
+   magnetic buttons. Palette B only: navy #011F5D, cyan #02D7F5, blue #016FD6, purple #7A3DFF.
+   Every rule here that sets font-family also sets font-weight (FONT_STANDARD.md).
+   No WebGL or reduced motion: the static gradient on <html> below is the whole background.
+   Piets Technology Solutions Inc · 631-871-5957 · pietstechsolutions.com
+   Much of this was prepared with AI. Tell Piets about any mistake so it gets fixed. */
+
+:root{
+  --fx-obsidian:#030408;
+  --fx-glass:rgba(9,15,34,.58);
+  --fx-glass-hi:rgba(13,22,50,.66);
+  --fx-edge:linear-gradient(140deg,rgba(127,243,255,.55),rgba(127,243,255,.07) 34%,rgba(122,61,255,.14) 66%,rgba(2,215,245,.38));
+  --fx-edge-pur:linear-gradient(140deg,rgba(155,107,255,.7),rgba(122,61,255,.08) 38%,rgba(2,215,245,.12) 64%,rgba(155,107,255,.45));
+  --fx-ink:#E8F0FC; --fx-body:#C4D1E7; --fx-dim:#93A4C4;
+  --fx-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+/* ---------- 1 · the background ---------- */
+html.fx{background:
+  radial-gradient(70% 55% at 78% 8%,rgba(1,111,214,.20),transparent 60%),
+  radial-gradient(60% 50% at 6% 92%,rgba(122,61,255,.14),transparent 62%),
+  radial-gradient(90% 70% at 50% 50%,#050B1E,var(--fx-obsidian) 70%) fixed,
+  var(--fx-obsidian);
+  color-scheme:dark}
+html.fx body{background:transparent!important}
+#fx-bg{position:fixed;inset:0;width:100vw;height:100vh;height:100lvh;z-index:-1;pointer-events:none;display:block;opacity:0;transition:opacity 1.2s ease}
+html.fx-gl #fx-bg{opacity:1}
+
+/* film grain — sits over everything, never catches a click */
+html.fx::after{content:"";position:fixed;inset:-50%;z-index:2147480000;pointer-events:none;opacity:.065;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:fxGrain 1.2s steps(6,end) infinite}
+@keyframes fxGrain{0%{transform:translate(0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}to{transform:translate(0)}}
+
+/* Lenis */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+.lenis.lenis-smooth iframe{pointer-events:none}
+
+@media (prefers-reduced-motion:reduce){
+  html.fx::after{animation:none}
+  #fx-bg{transition:none}
+}
+
+/* ---------- 2 · colour flip for the shared shell (main.css pages) ----------
+   main.css paints airy white sections. On the obsidian look the same variables
+   carry light text on dark glass instead. Only colour variables are flipped:
+   --paper stays white because it is mostly used as TEXT on dark buttons. */
+html.fx-theme{
+  --text:#C9D5EA; --muted:#98A8C6; --line:rgba(150,182,236,.16); --mist:rgba(255,255,255,.035);
+  --hm-text:#E6EEFB; --hm-muted:#A4B4D2; --hm-line:rgba(150,182,236,.16); --hm-mist:rgba(255,255,255,.025);
+  --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 18px 50px -24px rgba(0,0,0,.8);
+  --shadow-lg:0 30px 80px -30px rgba(0,0,0,.85);
+}
+html.fx-theme body{color:var(--fx-body)}
+/* product demo screens (.fhq portal, .crm console) keep their own light UI — they are pictures of the apps */
+html.fx-theme :is(h1,h2,h3,h4):not(:is(.fhq,.crm,.fx-keep) *){color:var(--fx-ink)}
+html.fx-theme main :is(p,li,td,dd,figcaption,small,.fine,.article) a:not([class*="btn"]):not([class*="hm-"]){color:#5EE7FF}
+html.fx-theme main :is(p,li,td,dd,figcaption,small,.fine,.article) a:not([class*="btn"]):not([class*="hm-"]):hover{color:#B9F4FF}
+html.fx-theme :is(strong,b):not(:is(.fhq,.crm,.fx-keep,.btn,[class*="btn"]) *){color:var(--fx-ink)}
+
+/* light bands become see-through so the field shows; a faint veil keeps text contrast */
+html.fx-theme .section,html.fx-theme .section-soft,html.fx-theme .section--mist,
+html.fx-theme .hm-sec,html.fx-theme .hm-mist,html.fx-theme .hm-nums,html.fx-theme .quote-section,
+html.fx-theme .page-head:not(.page-head--dark){background:transparent!important;color:var(--fx-body)}
+html.fx-theme .section-soft,html.fx-theme .section--mist,html.fx-theme .hm-mist{background:linear-gradient(180deg,rgba(255,255,255,.012),rgba(122,61,255,.025))!important}
+html.fx-theme .hm-dark{background:linear-gradient(180deg,rgba(1,31,93,.55) 0%,rgba(27,11,85,.55) 100%)!important}
+html.fx-theme .hm-h2,html.fx-theme .section-head h2{color:var(--fx-ink)}
+html.fx-theme .hm-lead,html.fx-theme .section-head p,html.fx-theme .lead{color:var(--fx-dim)}
+html.fx-theme .eyebrow{color:#5EE7FF}
+html.fx-theme .hm-k{color:#B79BFF}
+html.fx-theme .hm-dark .hm-k{color:#5EE7FF}
+html.fx-theme .crumbs a{color:#8FE9FB}
+html.fx-theme .crumbs strong,html.fx-theme .crumbs span{color:var(--fx-dim)}
+
+/* ---------- 3 · frosted glass cards with a 1px glowing edge ---------- */
+html.fx-theme :is(.card,.post-card,.faq-item,.service,.service-option,.step,.flow-step,.tier,.plan-card,.reco-card,
+  .area-card,.hm-svc,.hm-plan,.hm-ind,.hm-area,.hm-famc,.hm-vs__col,.hm-qr,.fcard,.famcard,.scard,.serve-card,
+  .support-card,.planner-container,.coverage-form-container,.form,.partner-form,.partner-who,.gate__form,.quote-side,
+  .cta-box,.author,.callout,.refs,.tab-panel,.article,.scope-item,.quick,.lead-card,.mini-plan,.contact-card,.area,.rail>div,.tcard,
+  .faq-list>details,.ws,.rcpt,.gate,.hm-faq details,.hm-steps li){
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 42%),var(--fx-glass)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
+  border-color:transparent!important;
+  box-shadow:0 30px 80px -34px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.06)!important;
+  color:var(--fx-body);position:relative}
+html.fx-theme :is(.card,.post-card,.faq-item,.service,.service-option,.step,.flow-step,.tier,.plan-card,.reco-card,
+  .area-card,.hm-svc,.hm-plan,.hm-ind,.hm-area,.hm-famc,.hm-vs__col,.hm-qr,.fcard,.famcard,.scard,.serve-card,
+  .support-card,.planner-container,.coverage-form-container,.form,.partner-form,.partner-who,.gate__form,.quote-side,
+  .cta-box,.author,.callout,.refs,.tab-panel,.article,.scope-item,.quick,.lead-card,.mini-plan,.contact-card,.area,.rail>div,.tcard,
+  .faq-list>details,.ws,.rcpt,.gate,.hm-faq details,.hm-steps li)::after{
+  content:"";position:absolute;inset:0!important;width:auto!important;height:auto!important;border-radius:inherit!important;padding:1px;pointer-events:none;z-index:0;
+  background:var(--fx-edge);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+html.fx-theme :is(.hm-svc,.card,.post-card,.service,.plan-card,.tier,.famcard,.scard,.serve-card,.support-card):hover::after{background:var(--fx-edge-pur)}
+html.fx-theme :is(.hm-svc,.card,.post-card,.plan-card,.tier,.service-option) :is(h3,h4){color:var(--fx-ink)}
+html.fx-theme :is(.hm-svc,.card,.post-card,.service,.faq-item,.step,.tier,.plan-card) p{color:var(--fx-dim)}
+/* glass must not paint over interactive children */
+html.fx-theme :is(.card,.service,.form,.planner-container,.faq-item,.hm-svc)>:not(.fx-orb):not(.fx-sheen){position:relative;z-index:1}
+
+/* the service rows on /services are long — no glass slab, a hairline glass rail instead */
+html.fx-theme .service{border-radius:24px}
+
+/* ---------- 4 · tilt + glow orb ---------- */
+.fx-tilt{transform-style:preserve-3d;will-change:transform;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.fx-tilt.fx-tilting{transition:transform .08s linear}
+.fx-orb{position:absolute!important;inset:0;width:100%;height:100%;pointer-events:none;border-radius:inherit;z-index:0!important;mix-blend-mode:screen}
+.fx-orb--css{opacity:0;transition:opacity .3s}
+.fx-tilt.fx-hover .fx-orb--css{opacity:1}
+.fx-sheen{position:absolute!important;inset:0;border-radius:inherit;pointer-events:none;z-index:0!important;
+  background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(2,215,245,.10),transparent 45%)}
+
+/* ---------- 5 · terminal-style form fields ---------- */
+html.fx :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]),select,textarea){
+  background:rgba(3,6,16,.62)!important;color:var(--fx-ink)!important;border:1px solid rgba(255,255,255,.10)!important;
+  border-radius:10px;caret-color:#02D7F5;font-family:var(--fx-mono);font-weight:400;letter-spacing:.01em}
+html.fx :is(input,textarea)::placeholder{color:rgba(196,209,231,.38)}
+html.fx select option{background:#0A1430;color:#E8F0FC}
+html.fx :is(input,select,textarea):focus{outline:none!important;border-color:rgba(2,215,245,.0)!important;box-shadow:0 0 0 1px rgba(2,215,245,.12),0 0 26px -6px rgba(2,215,245,.45)!important}
+html.fx-theme label{color:var(--fx-dim)}
+html.fx-theme :is(.field,.fld)>label,html.fx-theme label.fx-prompted{font-family:var(--fx-mono);font-weight:500;font-size:.78rem;letter-spacing:.04em}
+.fx-prompt{color:#5EE7FF;margin-right:.45em;font-family:var(--fx-mono);font-weight:500}
+.fx-field-wrap{position:relative;display:block}
+.fx-draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:2}
+.fx-draw rect.fx-draw__line{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:1;opacity:0;
+  transition:stroke-dashoffset .7s cubic-bezier(.65,0,.35,1),opacity .2s}
+.fx-field-wrap.fx-on .fx-draw rect.fx-draw__line{stroke-dashoffset:0;opacity:1;filter:drop-shadow(0 0 6px rgba(2,215,245,.55))}
+.fx-field-wrap.fx-bad .fx-draw rect.fx-draw__line{stroke-dashoffset:0;opacity:1;stroke:#FFB020}
+@media (prefers-reduced-motion:reduce){.fx-draw rect.fx-draw__line{transition:none}}
+html.fx-theme :is(.error-message,.form-msg.err,[role=alert]){color:#FFC75A}
+html.fx-theme .form-msg{font-family:var(--fx-mono);font-weight:400}
+
+/* service choice tiles inside forms */
+html.fx-theme .service-option{color:var(--fx-body)}
+html.fx-theme .service-option:has(input:checked){box-shadow:0 0 0 1px rgba(2,215,245,.55),0 0 30px -8px rgba(2,215,245,.5)!important}
+html.fx-theme .service-label{color:var(--fx-ink)}
+
+/* ---------- 6 · buttons ---------- */
+.fx-mag{will-change:transform;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.fx-mag.fx-magging{transition:transform .12s linear}
+.fx-mag>.fx-mag__in{display:inline-flex;align-items:center;gap:inherit;transition:transform .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+html.fx-theme :is(.btn-primary,.hm-btn--primary,.btn-go){box-shadow:0 0 40px -6px rgba(2,215,245,.7),0 10px 30px -12px rgba(122,61,255,.6)}
+html.fx-theme :is(.btn-light,.hm-btn--light){background:rgba(255,255,255,.06)!important;color:var(--fx-ink)!important;border:1px solid rgba(255,255,255,.16)!important}
+html.fx-theme :is(.btn-light,.hm-btn--light):hover{border-color:rgba(2,215,245,.55)!important;background:rgba(2,215,245,.08)!important}
+html.fx-theme .btn-navy{background:linear-gradient(100deg,#011F5D,#1B0B55)!important;color:#fff!important;border:1px solid rgba(155,107,255,.45)!important}
+html.fx-theme .btn-navy:hover{border-color:#9B6BFF!important;box-shadow:0 0 30px -8px rgba(122,61,255,.8)}
+html.fx-theme .btn-outline{color:var(--fx-ink)!important;border-color:rgba(255,255,255,.22)!important;background:transparent!important}
+html.fx-theme .btn-outline:hover{border-color:rgba(2,215,245,.6)!important;background:rgba(2,215,245,.07)!important}
+html.fx-theme .btn-ghost{color:var(--fx-ink)!important}
+
+/* ---------- 7 · chips, pills, faq, tables ---------- */
+html.fx-theme :is(.chip,.chips li,.tags a,.tab-btn,.ptag){background:rgba(255,255,255,.05)!important;color:var(--fx-body)!important;border-color:rgba(255,255,255,.14)!important}
+html.fx-theme .tab-btn[aria-selected=true]{background:rgba(122,61,255,.28)!important;color:#fff!important;border-color:rgba(155,107,255,.7)!important}
+html.fx-theme .faq-item summary,html.fx-theme .faq-item h3{color:var(--fx-ink)}
+html.fx-theme table{color:var(--fx-body)}
+html.fx-theme :is(th,td){border-color:var(--line)!important}
+html.fx-theme hr{border-color:var(--line)}
+
+/* ---------- 8 · hero hand-off ----------
+   Home: the fiber bundle and field ARE the background now, so the hero's own navy
+   gradient steps back to a thin tint (purple stays visible in its glow). */
+html.fx-gl body.home-page .hm-hero{background:linear-gradient(180deg,rgba(1,31,93,.20) 0%,rgba(3,4,8,0) 60%,rgba(27,11,85,.35) 100%)}
+html.fx-gl body.home-page .hm-hero .hm-orb{opacity:.18}
+html.fx-gl body.home-page .hm-hero .hm-orb--p{opacity:.3}
+html.fx-gl body.home-page .hm-works{background:rgba(5,10,31,.6)}
+html.fx-theme .hm-nums{background:rgba(3,5,14,.62)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+
+/* ---------- 9 · liquid media panel (home) ---------- */
+.fx-liquid-band{padding:8px 0 40px}
+.fx-liquid{position:relative;overflow:hidden;border-radius:28px;aspect-ratio:21/8;min-height:240px;background:linear-gradient(135deg,#011442,#030408);
+  clip-path:inset(0 0 0 0 round 28px);isolation:isolate}
+@media (max-width:700px){.fx-liquid{aspect-ratio:4/3;border-radius:22px}}
+.fx-liquid canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fx-liquid::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(2,215,245,.25),inset 0 0 80px rgba(122,61,255,.18)}
+.fx-liquid__tag{position:absolute;left:16px;top:16px;z-index:2;display:flex;align-items:center;gap:8px;padding:5px 12px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  font-family:var(--fx-mono);font-weight:500;font-size:.7rem;letter-spacing:.06em;color:#9FF0FF}
+.fx-liquid__tag i{width:6px;height:6px;border-radius:50%;background:#02D7F5;box-shadow:0 0 10px #02D7F5;animation:fxPulse 1.6s ease-in-out infinite}
+.fx-liquid__hint{position:absolute;right:16px;bottom:14px;z-index:2;font-family:var(--fx-mono);font-weight:500;font-size:.7rem;color:rgba(255,255,255,.5)}
+@keyframes fxPulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.fx-liquid__tag i{animation:none}}
+@media (hover:none){.fx-liquid__hint{display:none}}
+
+/* ---------- 10 · light pages that wear their own shell (Site Studio, Piet Box) ----------
+   fx-lite: background + grain only; their own designs stay as built. */
+html.fx-lite body{background:transparent!important}
+
+/* ---------- 11 · audit fixes (Oct 15 run 1) ---------- */
+html.fx-theme .hm-link{color:#5EE7FF}
+html.fx-theme .hm-link:hover{color:#CDB4FF}
+html.fx-theme body .gate__form{background:rgba(3,6,16,.55)!important}
+html.fx-theme .hm-faq summary{color:var(--fx-ink)}
+html.fx-theme .hm-faq details[open]::after{background:var(--fx-edge-pur)}
+html.fx-theme .subnav{background:rgba(5,9,22,.78)!important;border-bottom-color:rgba(150,182,236,.14)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+html.fx-theme .subnav a{color:#C9D5EA}
+html.fx-theme .subnav a:hover,html.fx-theme .subnav a[aria-current]{color:#fff;background:rgba(122,61,255,.28)}
+html.fx-theme .skip{background:#011F5D;color:#fff}
+html.fx-theme .trust{background:transparent!important;border-color:var(--line)!important}
+html.fx-theme .trust li{background:rgba(255,255,255,.05)!important;color:var(--fx-ink)!important;border-color:rgba(150,182,236,.2)!important;box-shadow:none!important}
+html.fx-theme .area strong{color:var(--fx-ink)}
+html.fx-theme .area span{color:var(--fx-dim)}
+html.fx-theme .rail>div h3{color:var(--fx-ink)}
+html.fx-theme .rail>div p{color:var(--fx-dim)}
+html.fx-theme body .callout{background:linear-gradient(135deg,rgba(122,61,255,.18),rgba(2,215,245,.06))!important}
+html.fx-theme .callout p{color:#DCD0F7}
+html.fx-theme :is(.kicker,.card__go,.more,a.more):not(.fhq *){color:#5EE7FF!important}
+html.fx-theme .tier .nm,html.fx-theme legend,html.fx-theme th{color:var(--fx-ink)}
+html.fx-theme .quick__h{color:#B79BFF}
+html.fx-theme figure:not([class^="hm-"]) figcaption{color:var(--fx-dim)!important}
+html.fx-theme .section-head .eyebrow,html.fx-theme main .eyebrow{color:#5EE7FF!important}
+html.fx-theme .security-note{background:rgba(255,176,32,.10)!important;border-color:rgba(255,176,32,.4)!important;color:#FFD88A}
+html.fx-theme .security-note strong{color:#FFE7B8}
+html.fx-theme .pill.ok:not(.fhq *){color:#2EE59D}
+html.fx-theme .pill.warn:not(.fhq *){color:#FFC75A}
+html.fx-theme .tabs .tab{color:#011F5D}
+
+/* ---------- 12 · Site Studio + Piet Box shells: same obsidian look ----------
+   Their light "work surfaces" use --paper / --card / --dk / --dkm / --pline only. */
+html.fx-lite{--paper:rgba(255,255,255,.02);--card:rgba(9,15,34,.6);--dk:#E8F0FC;--dkm:#98A8C6;--pline:rgba(150,182,236,.18)}
+html.fx-lite :is(.sec--light,.light,.sec.light){background:transparent!important;color:#E8F0FC}
+html.fx-lite :is(.wiz,.trade,.tier,.faq details,.opt,.tcard,.req,.ws){
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 42%),rgba(9,15,34,.6)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
+  border-color:rgba(150,182,236,.18)!important;color:#C9D5EA;
+  box-shadow:0 30px 80px -34px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.06)!important}
+html.fx-lite :is(.wiz,.tier,.tcard,.faq details,.req){position:relative}
+html.fx-lite :is(.wiz,.tier,.tcard,.req)::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:var(--fx-edge);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+html.fx-lite :is(.opt,.trade)[aria-pressed=true],html.fx-lite :is(.opt,.trade).on,html.fx-lite :is(.opt,.trade).sel{
+  background:rgba(2,215,245,.12)!important;border-color:rgba(2,215,245,.7)!important;box-shadow:0 0 26px -8px rgba(2,215,245,.6)!important}
+html.fx-lite :is(.eye){color:#5EE7FF!important}
+html.fx-lite :is(.lbl,.fld>label,.hint,.dep,.price small,.copy){color:#98A8C6!important}
+html.fx-lite .copy{background:rgba(255,255,255,.05)!important}
+html.fx-lite .stepper li{color:#98A8C6}
+html.fx-lite .stepper li.on{color:#fff}
+html.fx-lite :is(.tier,.tcard,.faq details,.trade,.opt,.ws) :is(h3,b,summary,span,legend,li){color:inherit}
+html.fx-lite :is(.tier,.tcard,.trade,.opt) :is(h3,b,summary,legend){color:#E8F0FC}
+html.fx-lite .tier .badge{color:#011F5D!important}
+
+/* ---------- 13 · Ask Piets chat panel — dark glass to match ---------- */
+html.fx #assistant-panel{background:rgba(6,10,26,.94)!important;color:#C9D5EA;border:1px solid rgba(150,182,236,.18);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);backdrop-filter:blur(20px) saturate(140%);box-shadow:0 30px 80px -20px rgba(0,0,0,.9),0 0 0 1px rgba(122,61,255,.18)}
+html.fx #assistant-messages,html.fx #assistant-form,html.fx #assistant-chips{background:transparent!important}
+html.fx #assistant-panel :is(#assistant-greeting,.chip){background:rgba(255,255,255,.05)!important;color:#DCE5F5!important;border-color:rgba(150,182,236,.2)!important}
+html.fx #assistant-panel .chip:hover{border-color:rgba(2,215,245,.6)!important;background:rgba(2,215,245,.08)!important}
+html.fx #assistant-panel :is(p,li,span,label,.form-note){color:#C9D5EA}
+html.fx #assistant-panel h3{color:#fff}
+html.fx #assistant-panel input{font-family:var(--fx-mono);font-weight:400}
+
+/* phones/tablets: a soft dark scrim keeps the hero words crisp over the fiber */
+@media (max-width:1023px){
+  html.fx-gl body.home-page .hm-hero__in>div:first-child{position:relative;isolation:isolate}
+  html.fx-gl body.home-page .hm-hero__in>div:first-child::before{content:"";position:absolute;inset:-14% -12%;z-index:-1;pointer-events:none;
+    background:radial-gradient(closest-side,rgba(3,4,8,.78),rgba(3,4,8,.5) 55%,transparent)}
+}
+html.fx-theme body .hm-svc.hm-svc--big{background:radial-gradient(280px circle at 100% 0%,rgba(122,61,255,.42),transparent 70%),linear-gradient(140deg,rgba(1,31,93,.7),rgba(27,11,85,.7))!important}
+
+/* ---------- 14 · real-Chrome review fixes (Oct 15, run 2) ---------- */
+/* hero: the fiber + field replace the old grid and signal lines, so they step out */
+html.fx-gl body.home-page .hm-hero :is(.hm-grid,.hm-sig){display:none}
+/* device captions sit on their own dark pill so the fiber never runs through the words */
+html.fx-gl body.home-page .hm-cap{background:rgba(3,5,14,.78);border:1px solid rgba(150,182,236,.14);border-radius:999px;padding:4px 10px;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);width:max-content;max-width:100%}
+/* header and footer on obsidian */
+html.fx-theme .site-header::before{background:rgba(3,4,10,.74)!important}
+html.fx-theme .site-footer{background:linear-gradient(180deg,rgba(3,5,14,.92) 0%,rgba(11,8,40,.92) 100%)!important;border-top:1px solid rgba(122,61,255,.25)}
+/* headings get a soft dark halo so the cable or the field never cuts through them */
+html.fx-gl body.home-page :is(.hm-head,.section-head){position:relative;isolation:isolate}
+html.fx-gl body.home-page :is(.hm-head,.section-head)::before{content:"";position:absolute;inset:-18% -6%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(3,4,8,.72),rgba(3,4,8,.35) 60%,transparent)}
+html.fx-theme :is(.hm-svc__go,.hm-famc__go,.hm-area span,.hm-demo__go){color:#5EE7FF!important}
+html.fx-theme .hm-steps li::before{color:#B79BFF}
+/* a form inside a glass panel is not a second glass box */
+html.fx-theme body :is(.gate__form,.quote-side,.planner-container) .form{background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+html.fx-theme body :is(.gate__form,.quote-side,.planner-container) .form::after{display:none}
+html.fx-theme .service-option .service-icon{background:rgba(2,215,245,.10)!important;color:#5EE7FF!important;border:1px solid rgba(2,215,245,.25)}
+html.fx-theme .service-option:has(input:checked) .service-icon{background:linear-gradient(135deg,#02D7F5,#7A3DFF)!important;color:#fff!important}
