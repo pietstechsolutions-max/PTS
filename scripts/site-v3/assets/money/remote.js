@@ -2,7 +2,7 @@
    Piets Technology Solutions Inc · 631-871-5957 · pietstechsolutions.com
    Self-contained, page-scoped: mounts into #rs-app on remote-support.html only.
    Nothing here invents a figure, a rate, a speed or a spec. Every screen is drawn
-   in code with sample data. The RustDesk ID shown is a placeholder, not an ID.
+   in code with sample data. The remote support ID shown is a placeholder, not an ID.
    Much of this was prepared with AI. Tell the owner about any mistake so it gets fixed. */
 (function () {
   'use strict';
@@ -112,7 +112,7 @@
           '</div>' +
         '</div>';
       theirs = '<div class="rsw"><span class="rsw__k">Piets</span><p>ID entered. Waiting for you to accept &mdash; this is where it stops if you do nothing.</p>' +
-               '<div class="rsid"><span>ID read out to us</span><b>&bull;&bull;&bull; &bull;&bull;&bull; &bull;&bull;&bull;</b><em>sample &mdash; your real ID is shown in RustDesk</em></div></div>';
+               '<div class="rsid"><span>ID read out to us</span><b>&bull;&bull;&bull; &bull;&bull;&bull; &bull;&bull;&bull;</b><em>sample &mdash; your real ID is shown in the remote support tool</em></div></div>';
       actions = [];
     } else if (S.step === -1) {
       yours  = desktop({ queue: 3 });
@@ -195,16 +195,16 @@
     var never = [
       'Call you out of the blue to say your computer has a virus or a warranty is expiring.',
       'Ask for a password, a bank or card number, a gift card, or a code texted to you.',
-      'Ask you to install anything other than RustDesk from rustdesk.com.',
+      'Ask you to install anything other than the remote support tool from rustdesk.com.',
       'Connect without you accepting the request on your own screen.',
       'Ask you to stay on the line while you move money or buy anything.'
     ];
     var doo = [
       ['Hang up and call us back', 'Call 631-871-5957 yourself. Do not use a number someone on the phone gave you, and do not call back the number that rang you.'],
-      ['Check what you are being asked to install', 'A Piets remote session uses RustDesk, downloaded from rustdesk.com. Nothing else.'],
+      ['Check what you are being asked to install', 'A Piets remote session uses a free remote support tool, downloaded from rustdesk.com. Nothing else.'],
       ['You read the ID to us, not the other way around', 'We cannot start anything from our side. The ID comes from your screen, in your words.'],
       ['Read the prompt before you accept', 'The accept box names what is asking. If it is not what you expect, decline &mdash; nothing happens.'],
-      ['Watch the screen', 'Everything we do is on your monitor while it happens. If something looks wrong, close RustDesk and the session is over.']
+      ['Watch the screen', 'Everything we do is on your monitor while it happens. If something looks wrong, close the remote support tool and the session is over.']
     ];
     return '' +
       '<h4>Remote support is a favourite trick of scammers. Here is how to be sure.</h4>' +
@@ -248,7 +248,7 @@
     if (!a) return;
     var act = a.getAttribute('data-rs-act');
 
-    if (act === 'call')  { S.step = 1;  say('You called 631-871-5957 and read out the ID shown in RustDesk.'); say('Request sent. Your screen is asking you to accept or decline.'); render('[data-rs-act="allow"]'); announce('Your screen is asking you to accept or decline the connection.'); }
+    if (act === 'call')  { S.step = 1;  say('You called 631-871-5957 and read out the ID shown in the remote support tool.'); say('Request sent. Your screen is asking you to accept or decline.'); render('[data-rs-act="allow"]'); announce('Your screen is asking you to accept or decline the connection.'); }
     else if (act === 'allow') { S.step = 2; say('You accepted. The session is open and you can see everything.'); render('[data-rs-act="fix"]'); announce('Accepted. The session is open and you can end it at any time.'); }
     else if (act === 'deny')  { S.step = -1; say('You declined. No connection was made and nothing changed.'); render('[data-rs-act="reset"]'); announce('Declined. No connection was made and nothing on the computer changed.'); }
     else if (act === 'fix')   { S.step = 3; say('Stuck print queue cleared, on your screen, while you watched.'); render('[data-rs-act="end"]'); announce('The stuck print queue was cleared. The sample printer is printing.'); }

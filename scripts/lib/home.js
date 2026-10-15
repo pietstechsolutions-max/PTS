@@ -30,7 +30,7 @@ function hubDiagram() {
     { key: 'doors', label: 'Doors', icon: 'door', x: 328, y: 274, tip: 'Access control & intercoms' },
     { key: 'phones', label: 'Phones', icon: 'phone', x: 200, y: 348, tip: 'VoIP phone systems' },
     { key: 'pos', label: 'POS', icon: 'pos', x: 72, y: 274, tip: 'POS & payment terminals' },
-    { key: 'smart', label: 'Smart Home', icon: 'home', x: 72, y: 126, tip: 'Local Home Assistant automation' },
+    { key: 'smart', label: 'Smart Home', icon: 'home', x: 72, y: 126, tip: 'Local smart home automation' },
   ];
   const lines = nodes.map((n, i) => `<path id="hubpath-${n.key}" class="hub__line" d="M200 200 L${n.x} ${n.y}"/>
       <circle class="hub__pulse" r="4"><animateMotion dur="${2.6 + i * 0.35}s" begin="${i * 0.4}s" repeatCount="indefinite"><mpath href="#hubpath-${n.key}"/></animateMotion></circle>`).join('\n      ');
@@ -159,7 +159,7 @@ ${versionAssets('<script src="/assets/js/hero-fx.js" defer></script>')}`;
 }
 
 export function worksWith() {
-  const items = ['InVid Tech Paramont', 'Home Assistant', 'RustDesk', 'Cat6 / Cat6A & fiber', 'VoIP', 'POS & payment terminals', 'Access Control', 'Digital menu boards'];
+  const items = ['InVid Tech Paramont', 'Smart Home', 'Remote Support', 'Cat6 / Cat6A & fiber', 'VoIP', 'POS & payment terminals', 'Access Control', 'Digital menu boards'];
   const run = items.map(t => `<span>${esc(t)}</span><i></i>`).join('');
   return `
 <section class="works-with" aria-label="Systems we work with">
@@ -222,7 +222,7 @@ export function industryTabs() {
     { id: 'medical', name: 'Dental & medical', text: 'Secure, separated networks for front desk and equipment, door access for staff areas, phones and cameras.', chips: ['Separated networks', 'Door access', 'VoIP phones', 'Cameras'] },
     { id: 'auto', name: 'Auto shops', text: 'Cameras over bays, lots and the front counter, Wi-Fi for the office and waiting room, and phones that reach you in the shop.', chips: ['Bay & lot cameras', 'Office Wi-Fi', 'Business phones', 'View from your phone'] },
     { id: 'stores', name: 'Stores & bodegas', text: 'Convenience stores, bodegas and liquor stores: cameras over registers, doors and aisles, POS and card terminals, and remote viewing from your phone.', chips: ['Register cameras', 'POS & card terminals', 'Remote viewing', 'Reliable network'] },
-    { id: 'homes', name: 'Homes', text: 'Whole-home Wi-Fi, camera systems you view from your phone, and local, private Home Assistant automation with no required cloud fees.', chips: ['Whole-home Wi-Fi', 'Cameras', 'Home Assistant', 'Smart locks'] },
+    { id: 'homes', name: 'Homes', text: 'Whole-home Wi-Fi, camera systems you view from your phone, and local, private smart home automation with no required cloud fees.', chips: ['Whole-home Wi-Fi', 'Cameras', 'Smart Home', 'Smart locks'] },
   ];
   return `
 <section class="section section--mist" id="industries">
@@ -373,7 +373,7 @@ export function brochureGate() {
       <div class="gate__copy">
         <div class="icon-tile icon-tile--lg">${ico('home', 28)}</div>
         <div class="eyebrow">Smart home brochure</div>
-        <h2>Get the Home Assistant smart-home brochure.</h2>
+        <h2>Get the Smart Home brochure.</h2>
         <p>Local, private automation for lights, locks, thermostats, shades and cameras — with no required cloud fees.</p>
       </div>
       <div class="gate__form">
@@ -443,7 +443,7 @@ export const HOME_FAQ = [
   { q: 'How much does it cost?', a: 'Every job is quoted to your site — there are no one-size packages. Book a free demo and you get a tailored plan and quote.' },
   { q: 'What payment methods do you accept?', a: 'Zelle, Venmo, Cash App, cash or check at no extra charge; credit/debit card via a secure payment link (4% card processing fee).' },
   { q: 'What is the Piet Box?', a: 'A small box we plug into your router. It calls Piets, so we can watch your internet, Wi-Fi, cameras and registers 24/7, help remotely with your OK and add features without a visit. Try the free demo at /piet-box.' },
-  { q: 'How does remote support work?', a: 'We use RustDesk. You open RustDesk, read us your ID, and we connect with your permission.' },
+  { q: 'How does remote support work?', a: 'We use a free remote support tool. You open it, read us your ID, and we connect with your permission.' },
 ];
 
 export function finalCta() {

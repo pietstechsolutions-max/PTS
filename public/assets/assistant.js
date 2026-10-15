@@ -391,6 +391,8 @@
            website: ''   // Honeypot field
          };
          
+         // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own submit below.
+         if (window.sendToFieldHQ) window.sendToFieldHQ({ form: 'Ask Piets chat', answers: leadData });
          // Submit lead
          fetch(API_LEADS_ENDPOINT, {
            method: 'POST',

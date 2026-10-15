@@ -253,6 +253,8 @@
       var btn = $('rqBtn'); btn.disabled = true; btn.textContent = 'Sending…';
       var msg = 'Piet Box (screen) request. Business: ' + (S.name || '-') + ' (' + T().label + '). TVs: ' + $('rq_tvs').value + '. Wants: ' + S.shows.join(', ') + '.';
       var body = { name: n.value.trim(), phone: p.value.trim(), email: $('rq_email').value.trim(), town: '', service: 'menu-boards', message: msg, source: 'Piet Box Studio', page: location.pathname, website: '' };
+      // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own submit below.
+      if (window.sendToFieldHQ) window.sendToFieldHQ({ form: 'Piet Box walkthrough request', answers: body });
       var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
       var done = function (ok) { clearTimeout(to); btn.disabled = false; btn.textContent = 'Request My Piet Box Walkthrough';
         out.innerHTML = ok ? '<div class="ok"><b>Got it.</b> Piets will call or text you to set up your walkthrough.</div>' : '<div class="warnbox"><b>That didn’t go through.</b> Please call or text Piets at <span class="copy">631-871-5957</span> and mention the Piet Box.</div>'; };

@@ -178,13 +178,44 @@ function cleanUrls(s) {
     // trailingSlash:false on Vercel — /blog/ redirects to /blog, so drop trailing slashes (root "/" stays)
     .replace(new RegExp(`((?:${site})?/[A-Za-z0-9_\\-]+(?:/[A-Za-z0-9_\\-]+)*)/(?=["'#?\\s<])`, 'g'), '$1');
 }
+/* ---- Oct 15 2026: the obsidian look + FieldHQ intake on EVERY page, from one place. ----
+   piets-fx.css loads last, piets-fx.js (one ES module: WebGL background, liquid panel, tilt + glow orb,
+   terminal fields, magnetic buttons, Lenis) and fieldhq-intake.js (window.sendToFieldHQ) on every .html.
+   Pages on the shared shell (main.css) get the full dark theme (fx-theme); pages that wear their own
+   shell (Site Studio, Piet Box) get the background + grain only (fx-lite). Remove this block to go back. */
+/* Oct 15 2026 (Brain redesign): the site now wears the "Piet's Brain" look (v3.css skin + home-brain.css +
+   one brain module on the home page). Two WebGL layers on one page would fight each other and break the
+   performance rules, so the piets-fx visual layer is parked: FX_VISUAL = false. fieldhq-intake.js is still
+   added to every page. Set FX_VISUAL = true to bring the piets-fx look back (files kept in public/assets/fx). */
+const FX_VISUAL = false;
+const FX_TAGS = FX_VISUAL
+  ? '<link rel="stylesheet" href="/assets/fx/piets-fx.css">\n<script src="/assets/js/fieldhq-intake.js" defer></script>\n<script type="module" src="/assets/fx/piets-fx.js"></script>\n'
+  : '<script src="/assets/js/fieldhq-intake.js" defer></script>\n';
+function injectFx(html) {
+  if (html.includes('/assets/js/fieldhq-intake.js') || html.includes('/assets/fx/piets-fx.js') || !/<\/head>/i.test(html)) return html;
+  if (!FX_VISUAL) return html.replace(/<\/head>/i, FX_TAGS + '</head>');
+  const mode = /\/assets\/css\/main\.css/.test(html) ? 'fx fx-theme' : 'fx fx-lite';
+  html = html.replace(/<html([^>]*)>/i, (m, attrs) => /class="/.test(attrs)
+    ? `<html${attrs.replace(/class="([^"]*)"/, (c, v) => `class="${v} ${mode}"`)}>`
+    : `<html${attrs} class="${mode}">`);
+  return html.replace(/<\/head>/i, FX_TAGS + '</head>');
+}
+/* FIELDHQ_INTAKE_URL (Vercel env) is written into the one helper file. Empty = not connected yet. */
+{
+  const fhq = join(PUB, 'assets', 'js', 'fieldhq-intake.js');
+  const url = (process.env.FIELDHQ_INTAKE_URL || '').trim();
+  if (url && existsSync(fhq)) {
+    writeFileSync(fhq, readFileSync(fhq, 'utf8').replace("'__FIELDHQ_INTAKE_URL__'", JSON.stringify(url)));
+    console.log('FieldHQ intake URL set');
+  }
+}
 function walk(dir) {
   for (const f of readdirSync(dir)) {
     const fp = join(dir, f);
     if (statSync(fp).isDirectory()) walk(fp);
     // .html also gets ?v=<hash> on every /assets/*.css|js link (static pages like piet-box.html and
     // websites.html included) because Vercel caches /assets for a year — see versionAssets in lib/site.js.
-    else if (/\.html$/.test(f)) writeFileSync(fp, versionAssets(cleanUrls(readFileSync(fp, 'utf8'))));
+    else if (/\.html$/.test(f)) writeFileSync(fp, versionAssets(injectFx(cleanUrls(readFileSync(fp, 'utf8')))));
     else if (/\.xml$/.test(f)) writeFileSync(fp, cleanUrls(readFileSync(fp, 'utf8')));
   }
 }

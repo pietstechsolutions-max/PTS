@@ -1,6 +1,6 @@
 # Piets Technology Solutions
 
-> Owner-operated low-voltage technology company based in Suffolk County, Long Island, New York. Installs and supports security camera systems (InVid Tech Paramont authorized installer), Wi-Fi and networking, structured cabling, access control, smart home (Home Assistant), POS and merchant processing, business phones and 24/7 tech support for homes and small businesses. Phone and text: 631-871-5957 (answered 24/7). Email: pietstechsolutions@gmail.com. Website: https://pietstechsolutions.com
+> Owner-operated low-voltage technology company based in Suffolk County, Long Island, New York. Installs and supports security camera systems (InVid Tech Paramont authorized installer), Wi-Fi and networking, structured cabling, access control, smart home, POS and merchant processing, business phones and 24/7 tech support for homes and small businesses. Phone and text: 631-871-5957 (answered 24/7). Email: pietstechsolutions@gmail.com. Website: https://pietstechsolutions.com
 
 Key facts:
 - Legal name: Piets Technology Solutions Inc. Short name: Piets Tech Solutions.
@@ -8,7 +8,7 @@ Key facts:
 - Every job is quoted to the site; there are no published package prices. Free demos in person or by video call. References available on request.
 - Camera systems: InVid Tech Paramont IP cameras and recorders, 4K options, night vision, phone viewing, no required monthly cloud fees, wired cameras.
 - Managed support plans are optional; no contract is required to get service.
-- Remote support uses RustDesk, with the customer's permission.
+- Remote support uses a screen-share tool, only with the customer's permission.
 - Payment: Zelle, Venmo, Cash App, cash or check; card through a secure payment link.
 
 ## Services
@@ -17,7 +17,7 @@ Key facts:
 - [IT support and computer repair](https://pietstechsolutions.com/it-support): PCs, printers, email, malware, on site or remote
 - [Structured cabling](https://pietstechsolutions.com/structured-cabling): Cat6, Cat6A and fiber, labeled and tested
 - [Access control and intercoms](https://pietstechsolutions.com/access-control): keypads, fobs, mobile credentials, video intercoms
-- [Smart home (Home Assistant)](https://pietstechsolutions.com/smart-home): local, private automation with no required cloud fees
+- [Smart home](https://pietstechsolutions.com/smart-home): local, private automation with no required cloud fees
 - [Permanent and holiday lighting](https://pietstechsolutions.com/lighting)
 - [Merchant processing and custom POS](https://pietstechsolutions.com/payments)
 - [Ghost kitchen setup and chargeback disputes](https://pietstechsolutions.com/ghost-kitchen)
@@ -47,7 +47,7 @@ Key facts:
 - [Cat6 vs Cat6A: Which Network Cable Should You Run in 2026?](https://pietstechsolutions.com/blog/cat6-vs-cat6a-which-cable-to-run): Cat6 or Cat6A for your home, office or new build? Speed, distance and PoE trade-offs explained plainly, plus what to ask before the walls close.
 - [Key Fobs, Keypads or Your Phone? Access Control for Small Businesses](https://pietstechsolutions.com/blog/access-control-for-small-business): Fobs, keypads, phone credentials and video intercoms compared for Long Island businesses, plus the fire-code rules every locked door must meet.
 - [Is Remote Computer Support Safe? How to Tell Real Help From a Scam](https://pietstechsolutions.com/blog/is-remote-computer-support-safe): Remote support fixes most PC problems without a visit. Scammers use it too. How a real session works, the red flags and what to do if you were caught.
-- [A Smart Home Without Monthly Fees: Why We Build on Home Assistant](https://pietstechsolutions.com/blog/smart-home-without-monthly-fees-home-assistant): Lights, locks, thermostats and cameras in one local app that keeps working when the internet doesn't. What Home Assistant is and where to start.
+- [A Smart Home Without Monthly Fees: Why We Build It Local](https://pietstechsolutions.com/blog/smart-home-without-monthly-fees-home-assistant): Lights, locks, thermostats and cameras in one local app that keeps working when the internet doesn't. What a local smart home hub is and where to start.
 - [Digital Menu Boards for Small Restaurants: What You Actually Need](https://pietstechsolutions.com/blog/digital-menu-boards-for-small-restaurants): Turn a TV into a menu board you can change in minutes. What a small restaurant, deli or cafe needs, what to skip, design tips and calorie rules.
 
 ## Optional

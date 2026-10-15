@@ -254,6 +254,8 @@
       }
     }
 
+    // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own submit below.
+    if (window.sendToFieldHQ) window.sendToFieldHQ({ form: 'Fleet — ' + (data.source || 'interest'), answers: data });
     if (!window.fetch) { finish(false); return; }
     var killed = setTimeout(function () { finish(false); }, 8000);
     window.fetch('/api/leads', {

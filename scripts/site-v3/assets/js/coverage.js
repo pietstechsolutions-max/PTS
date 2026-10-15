@@ -677,6 +677,8 @@
       data.page = location.pathname;
       var btn = form.querySelector('[type="submit"]');
       if (btn) btn.disabled = true;
+      // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own submit below.
+      if (window.sendToFieldHQ) window.sendToFieldHQ({ form: "Design Studio / Coverage Planner", answers: data });
       fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

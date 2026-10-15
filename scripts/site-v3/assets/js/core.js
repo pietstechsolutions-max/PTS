@@ -88,6 +88,8 @@
         data.page = location.pathname;
         if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Sending…'; }
         if (msg) { msg.className = 'form-msg'; msg.textContent = ''; }
+        // FieldHQ not connected yet — sendToFieldHQ() does nothing until FIELDHQ_INTAKE_URL is set (assets/js/fieldhq-intake.js); this form keeps its own submit below.
+        if (window.sendToFieldHQ) window.sendToFieldHQ({ form: data.source || 'Quote form', answers: data });
         fetch(form.getAttribute('action') || '/api/leads', {
           method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data)
         }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); })
