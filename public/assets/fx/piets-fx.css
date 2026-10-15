@@ -282,3 +282,16 @@ html.fx-theme body :is(.gate__form,.quote-side,.planner-container) .form{backgro
 html.fx-theme body :is(.gate__form,.quote-side,.planner-container) .form::after{display:none}
 html.fx-theme .service-option .service-icon{background:rgba(2,215,245,.10)!important;color:#5EE7FF!important;border:1px solid rgba(2,215,245,.25)}
 html.fx-theme .service-option:has(input:checked) .service-icon{background:linear-gradient(135deg,#02D7F5,#7A3DFF)!important;color:#fff!important}
+
+/* 15 · Brain AI hero + the cable run (Oct 15 2026). One fixed canvas (piets-fx.js) draws the brain,
+   every cable down the page and the wireless rings. Decoration only: it never changes the layout. */
+#fx-brain{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:block}
+html.fx-brain body.home-page :is(.hm-brain__glow,.hm-brain__ring,.hm-run__spine,.hm-wires,.hm-hub--wifi .hm-hub__glow,.hm-hub--wifi .hm-hub__ring){display:none}
+html.fx-brain body.home-page .hm-brain__core{width:24%;gap:4px;
+  background:radial-gradient(circle at 50% 40%,rgba(22,48,126,.5),rgba(7,19,68,.2) 70%,rgba(7,19,68,0));
+  box-shadow:0 0 0 1px rgba(2,215,245,.35),0 0 30px rgba(2,215,245,.35);backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px)}
+html.fx-brain body.home-page .hm-brain__core img{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(2,215,245,.8))}
+html.fx-brain body.home-page .hm-brain__core b{font-size:.6rem;text-shadow:0 0 6px #030408,0 0 12px #030408}
+html.fx-brain body.home-page .hm-hub--wifi .hm-hub__core{background:rgba(7,19,68,.6);box-shadow:0 0 0 1px rgba(2,215,245,.4),0 0 30px rgba(2,215,245,.35)}
+html.fx-theme body.home-page .hm-node{color:#02D7F5}
+html.fx-theme body.home-page .hm-stop{background:rgba(8,14,34,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
