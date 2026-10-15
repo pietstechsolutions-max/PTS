@@ -23,13 +23,13 @@
       var w = head.clientWidth, h = head.clientHeight; if (!w || !h) return;
       svg.setAttribute("viewBox", "0 0 " + w + " " + h);
       var y1 = h - 26, x0 = Math.max(16, (w - 1200) / 2 + 16);
-      var p1 = "M-10 " + (h * .32) + " C" + (w * .18) + " " + (h * .32) + " " + (w * .22) + " " + y1 + " " + (w * .42) + " " + y1 + " H" + (w + 10);
-      var p2 = "M" + (w + 10) + " " + (h * .18) + " C" + (w * .8) + " " + (h * .18) + " " + (w * .74) + " " + (h * .62) + " " + (w * .58) + " " + (h * .62) + " H" + (w * .5);
+      var y0 = h - 70; var p1 = "M-10 " + y0 + " C" + (w * .15) + " " + y0 + " " + (w * .2) + " " + y1 + " " + (w * .4) + " " + y1 + " H" + (w + 10);
+      var py = h * .86; var p2 = "M" + (w + 10) + " " + (h * .12) + " C" + (w * .86) + " " + (h * .12) + " " + (w * .8) + " " + py + " " + (w * .68) + " " + py + " H" + (w * .64);
       var p3 = "M" + x0 + " " + (h + 10) + " V" + (h - 8);
       var html = "";
       [p1, p2, p3].forEach(function (p) { html += '<path class="bw-bg" d="' + p + '"/>'; });
       html += '<path class="bw-fg" pathLength="1" d="' + p1 + '"/><path class="bw-fg p" pathLength="1" d="' + p2 + '"/><path class="bw-fg o" pathLength="1" d="' + p3 + '"/>';
-      html += '<circle class="bw-port" cx="' + (w * .5) + '" cy="' + (h * .62) + '" r="6"/>';
+      html += '<circle class="bw-port" cx="' + (w * .64) + '" cy="' + py + '" r="6"/>';
       if (!reduced) html += '<circle class="bw-pk" r="2.6"><animateMotion dur="3.2s" repeatCount="indefinite" path="' + p1 + '"/></circle>';
       svg.innerHTML = html;
     }

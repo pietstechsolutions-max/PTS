@@ -476,7 +476,7 @@ function start(){
   /* ---------- sizing ---------- */
   let aspect=1, distMul=1, wide=true;
   function resize(){
-    const w=innerWidth,h=innerHeight; renderer.setPixelRatio(pix); renderer.setSize(w,h,false);
+    const w=innerWidth,h=innerHeight; renderer.setPixelRatio(typeof curPix==='number'?curPix:pix); renderer.setSize(w,h,false);
     aspect=w/h; camera.aspect=aspect; camera.updateProjectionMatrix();
     wide=aspect>1.15 && w>760;
     const halfW=Math.tan(THREE.MathUtils.degToRad(22.5))*aspect;      // visible half-width per unit distance
@@ -486,7 +486,7 @@ function start(){
   addEventListener("resize",resize);
 
   /* ---------- frame ---------- */
-  const clock=new THREE.Clock(); let t=0, mouseAmt=0, fpsAcc=0, fpsN=0, last=performance.now(), skip=0;
+  const clock=new THREE.Clock(); let curPix=pix, slowT=0; let t=0, mouseAmt=0, fpsAcc=0, fpsN=0, last=performance.now(), skip=0;
   function draw(dt){
     const p=PB.p, u=PB.u;
     const sm=THREE.MathUtils.smoothstep(p,0,0.32);
@@ -519,7 +519,10 @@ function start(){
     if(fade<0.3 && (skip=(skip+1)%2)) return;           // half rate while it is only background
     const dt=Math.min(0.05,(now-last)/1000); last=now; t+=dt;
     const t0=performance.now(); draw(dt);
-    fpsAcc+=dt; fpsN++; if(fpsAcc>0.5){PB.fps=fpsN/fpsAcc; PB.frameMs=1000*fpsAcc/fpsN; fpsAcc=0; fpsN=0;}
+    fpsAcc+=dt; fpsN++; if(fpsAcc>0.5){PB.fps=fpsN/fpsAcc; PB.frameMs=1000*fpsAcc/fpsN; fpsAcc=0; fpsN=0;
+      /* slow machine guard: if the brain runs under 40 fps for 2 s while it is the main picture, drop to pixel ratio 1 (once) */
+      if(fade>0.5 && PB.fps<40 && curPix>1){ slowT+=0.5; if(slowT>=2){ curPix=1; renderer.setPixelRatio(1); renderer.setSize(innerWidth,innerHeight,false); } } else slowT=0;
+    }
   }
   resize();
   if(reduced){ PB.p=0; PB.u=1; draw(0); PB.fps=0; }
