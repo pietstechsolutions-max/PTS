@@ -81,7 +81,7 @@ html.fx-theme .crumbs strong,html.fx-theme .crumbs span{color:var(--fx-dim)}
 /* ---------- 3 · frosted glass cards with a 1px glowing edge ---------- */
 html.fx-theme :is(.card,.post-card,.faq-item,.service,.service-option,.step,.flow-step,.tier,.plan-card,.reco-card,
   .area-card,.hm-svc,.hm-plan,.hm-ind,.hm-area,.hm-famc,.hm-vs__col,.hm-qr,.fcard,.famcard,.scard,.serve-card,
-  .support-card,.planner-container,.coverage-form-container,.form,.partner-form,.partner-who,.gate__form,.quote-side,
+  .support-card,.planner-container,.coverage-form-container,.form,.partner-form,.partner-who,.gate__form,
   .cta-box,.author,.callout,.refs,.tab-panel,.article,.scope-item,.quick,.lead-card,.mini-plan,.contact-card,.area,.rail>div,.tcard,
   .faq-list>details,.ws,.rcpt,.gate,.hm-faq details,.hm-steps li){
   background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 42%),var(--fx-glass)!important;
@@ -91,7 +91,7 @@ html.fx-theme :is(.card,.post-card,.faq-item,.service,.service-option,.step,.flo
   color:var(--fx-body);position:relative}
 html.fx-theme :is(.card,.post-card,.faq-item,.service,.service-option,.step,.flow-step,.tier,.plan-card,.reco-card,
   .area-card,.hm-svc,.hm-plan,.hm-ind,.hm-area,.hm-famc,.hm-vs__col,.hm-qr,.fcard,.famcard,.scard,.serve-card,
-  .support-card,.planner-container,.coverage-form-container,.form,.partner-form,.partner-who,.gate__form,.quote-side,
+  .support-card,.planner-container,.coverage-form-container,.form,.partner-form,.partner-who,.gate__form,
   .cta-box,.author,.callout,.refs,.tab-panel,.article,.scope-item,.quick,.lead-card,.mini-plan,.contact-card,.area,.rail>div,.tcard,
   .faq-list>details,.ws,.rcpt,.gate,.hm-faq details,.hm-steps li)::after{
   content:"";position:absolute;inset:0!important;width:auto!important;height:auto!important;border-radius:inherit!important;padding:1px;pointer-events:none;z-index:0;
