@@ -19,7 +19,7 @@ const FACTS = `
 - Grown by word of mouth; clients come back and refer friends (do NOT quantify).
 - Owner-operated: the person who quotes the job is the person who installs it (say "you deal directly with the installer", no names).
 - Payment: Zelle, Venmo, Cash App, cash or check at no extra charge; credit/debit card via a secure payment link (4% card processing fee).
-- Remote support uses RustDesk (download: https://rustdesk.com/). Client opens RustDesk, reads us their ID, we connect with permission.
+- Remote support uses the remote support tool (download: https://rustdesk.com/). Client opens the remote support tool, reads us their ID, we connect with permission.
 - Client Portal link must stay behind the existing SITE.portalLive flag (only shown when PORTAL_LIVE=1).
 - Smart-home brochure PDF for the download gate: /assets/docs/Piets_Home_Assistant_Brochure.pdf (already provided).
 
@@ -32,10 +32,10 @@ const FACTS = `
 - pos → POS & Merchant Solutions → Restaurant and retail POS, payment terminals, kitchen printers and the network behind them. Years of hands-on payment-processing experience.
 - menu-boards → Digital Menu Boards → TV menu boards updated from a phone.
 - ghost-kitchen → Ghost Kitchen Setup → Tablets, printers, network, cameras and phones for delivery-only kitchens.
-- smart-home → Smart Home (Home Assistant) → Local, private Home Assistant automation for lights, locks, thermostats, shades and cameras. No required cloud fees.
+- smart-home → Smart Home → Local, private smart home automation for lights, locks, thermostats, shades and cameras. No required cloud fees.
 - lighting → Holiday & Permanent Lighting → Permanent architectural lighting that stays up all year and changes colour from your phone, or a seasonal holiday install with takedown and storage. Design it on a photo of your house first in the Design Studio (/lighting, /design-studio).
 - it-support → IT Support & Repair → PCs, printers, email, malware cleanup; on site or remote.
-- remote-support → Remote Support (RustDesk) → Secure screen-share help in minutes.
+- remote-support → Remote Support → Secure screen-share help in minutes.
 - tech-support-247 → 24/7 Tech Support → Call or text any time.
 - managed-services → Managed Services Plans → Remote monitoring, camera health checks, priority support (Basic / Pro / Business tiers, see below).
 
@@ -45,7 +45,7 @@ const FACTS = `
 - Business: everything in Pro; 24/7 priority line; monthly on-site visit; camera, access control & phone system management; custom SLA and reporting.
 
 ## New products (Oct 2026)
-- The Piet Box (/piet-box): a small managed box that plugs into the client's router. It calls out to the Piets Hub (nothing opened on the router), so Piets can watch internet, Wi-Fi, cameras, recorder, POS and printers 24/7, help remotely with the client's OK, and push new features. Options: backup internet, camera link-up, smart home hub (Home Assistant), TV screen mode (welcome screens / menu boards). Business phones: coming soon. No prices — "ask us, every setup is tailored". Free demo builder on the page.
+- The Piet Box (/piet-box): a small managed box that plugs into the client's router. It calls out to the Piets Hub (nothing opened on the router), so Piets can watch internet, Wi-Fi, cameras, recorder, POS and printers 24/7, help remotely with the client's OK, and push new features. Options: backup internet, camera link-up, smart home hub, TV screen mode (welcome screens / menu boards). Business phones: coming soon. No prices — "ask us, every setup is tailored". Free demo builder on the page.
 - Website demo builder (/websites): answer a few questions, upload a logo and photos, see a demo of a new website before paying.
 - Partner & reseller program (/partners): resell the Piet Box, Piets websites, Field HQ and the Pietvue apps; Piets installs, supports and bills; partners track leads and payouts in their own Field HQ partner portal (demo on the page). Apply on the page. No prices.
 - Payments & POS (/payments): card processing, a custom POS built around how you ring, and the network behind it; try the live register demo. Statement review available.

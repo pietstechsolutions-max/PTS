@@ -170,7 +170,7 @@
         'pos': 'POS & merchant',
         'menu-boards': 'TV menu boards',
         'ghost-kitchen': 'Ghost kitchen setup',
-        'smart-home': 'Smart home (Home Assistant)',
+        'smart-home': 'Smart home',
         'lighting': 'Holiday & Permanent Lighting',
         'it-support': 'IT Support & Repair',
         'remote-support': 'Remote Support'

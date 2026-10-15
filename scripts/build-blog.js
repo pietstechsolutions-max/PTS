@@ -183,9 +183,17 @@ function cleanUrls(s) {
    terminal fields, magnetic buttons, Lenis) and fieldhq-intake.js (window.sendToFieldHQ) on every .html.
    Pages on the shared shell (main.css) get the full dark theme (fx-theme); pages that wear their own
    shell (Site Studio, Piet Box) get the background + grain only (fx-lite). Remove this block to go back. */
-const FX_TAGS = '<link rel="stylesheet" href="/assets/fx/piets-fx.css">\n<script src="/assets/js/fieldhq-intake.js" defer></script>\n<script type="module" src="/assets/fx/piets-fx.js"></script>\n';
+/* Oct 15 2026 (Brain redesign): the site now wears the "Piet's Brain" look (v3.css skin + home-brain.css +
+   one brain module on the home page). Two WebGL layers on one page would fight each other and break the
+   performance rules, so the piets-fx visual layer is parked: FX_VISUAL = false. fieldhq-intake.js is still
+   added to every page. Set FX_VISUAL = true to bring the piets-fx look back (files kept in public/assets/fx). */
+const FX_VISUAL = false;
+const FX_TAGS = FX_VISUAL
+  ? '<link rel="stylesheet" href="/assets/fx/piets-fx.css">\n<script src="/assets/js/fieldhq-intake.js" defer></script>\n<script type="module" src="/assets/fx/piets-fx.js"></script>\n'
+  : '<script src="/assets/js/fieldhq-intake.js" defer></script>\n';
 function injectFx(html) {
-  if (html.includes('/assets/fx/piets-fx.js') || !/<\/head>/i.test(html)) return html;
+  if (html.includes('/assets/js/fieldhq-intake.js') || html.includes('/assets/fx/piets-fx.js') || !/<\/head>/i.test(html)) return html;
+  if (!FX_VISUAL) return html.replace(/<\/head>/i, FX_TAGS + '</head>');
   const mode = /\/assets\/css\/main\.css/.test(html) ? 'fx fx-theme' : 'fx fx-lite';
   html = html.replace(/<html([^>]*)>/i, (m, attrs) => /class="/.test(attrs)
     ? `<html${attrs.replace(/class="([^"]*)"/, (c, v) => `class="${v} ${mode}"`)}>`

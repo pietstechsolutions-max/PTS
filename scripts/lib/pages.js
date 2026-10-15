@@ -71,13 +71,13 @@ const SERVICE_DETAIL = {
   'it-support': { bullets: ['Slow computer tune-ups, upgrades and data migration', 'Printer setup, wireless printing and repair', 'Virus & malware removal, security hardening', 'Email, Microsoft 365 and Google Workspace help', 'Backups that actually restore', 'On-site or remote — whichever is faster'], cta: 'Get it fixed today', ctaText: 'Most software issues are solved remotely within the hour. Hardware problems get an honest repair-or-replace answer.' },
   'networking-wifi': { bullets: ['Wi-Fi surveys that find the real dead zones', 'Business-grade access points with seamless roaming', 'Proper routers, switches, VLANs and guest networks', 'Mesh done right (wired backhaul, not band-aids)', 'Outdoor Wi-Fi for patios, pools and yards', 'ISP coordination and speed troubleshooting'], cta: 'Fix your Wi-Fi for good', ctaText: 'Tell us the square footage and where it drops out. We’ll design a network that covers every corner.' },
   'structured-cabling': { bullets: ['Cat6 / Cat6A data drops, tested and labeled', 'Fiber runs between buildings and floors', 'Patch panels, racks and clean cable management', 'Camera, access-point and TV wiring', 'New construction pre-wire and retrofits', 'Coax, speaker and low-voltage cleanup'], cta: 'Get a cabling quote', ctaText: 'Send a rough count of drops and a floor plan or photos — we’ll quote fast and walk the site for free.' },
-  'smart-home': { bullets: ['Home Assistant setup on local, private hardware', 'Lighting, shades, thermostats, locks and garage', 'Camera and doorbell integration with automations', 'Voice control, dashboards and scenes', 'Bring your existing devices together in one app', 'No required subscriptions'], cta: 'See a smart home demo', ctaText: 'We’ll show you a working Home Assistant dashboard and map out what’s possible with what you already own.' },
+  'smart-home': { bullets: ['Smart home setup on local, private hardware', 'Lighting, shades, thermostats, locks and garage', 'Camera and doorbell integration with automations', 'Voice control, dashboards and scenes', 'Bring your existing devices together in one app', 'No required subscriptions'], cta: 'See a smart home demo', ctaText: 'We’ll show you a working smart home dashboard and map out what’s possible with what you already own.' },
   'pos': { bullets: ['Restaurant, café, bar and retail POS installs', 'Payment terminals and merchant account setup', 'Kitchen printers, KDS screens and order tablets', 'Online ordering and delivery-app integrations', 'Reliable POS network with backup internet', 'Staff training and ongoing support'], cta: 'Talk POS with someone who installs it', ctaText: 'We’ll review your workflow and recommend a setup that fits — not the one with the biggest commission.' },
   'ip-phones': { bullets: ['Cloud VoIP with auto-attendant and call queues', 'Desk phones, cordless and mobile apps', 'Voicemail-to-email, call recording and texting', 'Keep your existing number', 'Fax, paging and door-intercom integration', 'Often cheaper than your current landline bill'], cta: 'Get a phone system quote', ctaText: 'Tell us how many users and lines you need. We’ll show you a demo and the monthly numbers.' },
   'menu-boards': { bullets: ['Commercial displays mounted and wired cleanly', 'Update menus and prices from your phone', 'Scheduled breakfast / lunch / dinner boards', 'Promo videos and specials rotation', 'Works with most POS systems', 'Single screen or full wall'], cta: 'Upgrade your menu boards', ctaText: 'Send a photo of your counter. We’ll design a board layout and quote the screens, mounts and wiring.' },
   'ghost-kitchen': { bullets: ['Order tablets for every delivery platform', 'Kitchen printers and KDS screens', 'Fast, reliable Wi-Fi and wired network', 'Cameras for security and food-safety review', 'Phones, intercom and door access', 'Open-day support so nothing slips'], cta: 'Open your ghost kitchen faster', ctaText: 'We’ll build the full tech list for your space and have you taking orders on day one.' },
   'access-control': { bullets: ['Keypads, fobs, cards and mobile credentials', 'Video intercoms for lobbies and gates', 'Door strikes, maglocks and request-to-exit', 'Schedules, audit logs and remote unlock', 'Integrates with Paramont cameras', 'Offices, multi-family, gyms, warehouses'], cta: 'Control who gets in', ctaText: 'One door or twenty — we’ll walk the site and design a system you can manage from your phone.' },
-  'remote-support': { bullets: ['Secure RustDesk screen-share sessions', 'No account needed — just a one-time code', 'Software fixes, printer setups, email, updates', 'Camera and network checks without a visit', 'Fast: most sessions under 30 minutes', 'Available to clients anywhere'], cta: 'Start a remote session', ctaText: 'Call or text and we’ll send you the RustDesk link. You watch everything we do on screen.' },
+  'remote-support': { bullets: ['Secure remote support screen-share sessions', 'No account needed — just a one-time code', 'Software fixes, printer setups, email, updates', 'Camera and network checks without a visit', 'Fast: most sessions under 30 minutes', 'Available to clients anywhere'], cta: 'Start a remote session', ctaText: 'Call or text and we’ll send you the remote support link. You watch everything we do on screen.' },
   'tech-support-247': { bullets: ['Call or text any hour, any day', 'Emergencies get immediate attention', 'Camera, network, POS and phone outages', 'Remote first, on-site when needed', 'Clear communication and follow-up', "Questions? We're here 24/7"], cta: 'Need help right now?', ctaText: 'Call 631-871-5957. If it’s down, we’re on it.' },
   'managed-services': { bullets: ['Remote monitoring of networks, cameras and PCs', 'Priority support with guaranteed response', 'Monthly camera health checks and cleanups', 'Patching, backups and security updates', 'Vendor coordination (ISP, POS, phones)', 'Flat monthly fee — Basic, Pro or Business'], cta: 'Compare monthly plans', ctaText: 'See the three plans on the home page, or ask us to tailor one for your business.' },
 };
@@ -156,7 +156,7 @@ function servicesPage() {
       'Phones, intercom and door access'
     ],
     'smart-home': [
-      'Local, private Home Assistant setup',
+      'Local, private smart home setup',
       'Lighting automation',
       'Shades',
       'Thermostats',
@@ -173,7 +173,7 @@ function servicesPage() {
       'Remote support available'
     ],
     'remote-support': [
-      'Secure RustDesk screen-share sessions',
+      'Secure remote support screen-share sessions',
       'No account needed',
       'Software fix help',
       'Printer setup help',
@@ -256,18 +256,18 @@ const LOC_COPY = {
         { q: 'Do you install cameras in NYC apartment buildings?', a: 'Yes. InVid Tech Paramont cameras and recorders for lobbies, hallways, entrances, roofs and basements, plus video intercoms and access control so residents and managers can see and control entry from a phone.' },
         { q: 'Can you work around building management requirements?', a: 'Yes. We provide certificates of insurance, coordinate with supers and management, and schedule around building rules and quiet hours.' },
         { q: 'Do you support NYC restaurants and ghost kitchens?', a: 'Yes. POS, kitchen printers, order tablets, menu boards, cameras and reliable Wi-Fi. We set up delivery-only kitchens to take orders from day one.' },
-        { q: 'Is remote support available in NYC?', a: 'Yes. Many software, email, printer and network issues can be handled remotely with RustDesk.' },
+        { q: 'Is remote support available in NYC?', a: 'Yes. Many software, email, printer and network issues can be handled remotely.' },
       ] },
     'hudson-valley': {
       title: 'Security Cameras & IT Support | Hudson Valley NY',
       description: 'Camera installation, Wi-Fi upgrades, cabling, smart home and IT support in Westchester, Putnam, Dutchess and Orange County. Free demos, 24/7 support.',
       h1: 'Security Cameras, Wi-Fi &amp; IT Support in the Hudson Valley',
-      intro: 'From White Plains to Poughkeepsie and Newburgh, Piets Technology Solutions brings InVid Tech Paramont security cameras, whole-home Wi-Fi, structured cabling, Home Assistant smart home automation and small business IT to the Hudson Valley.',
+      intro: 'From White Plains to Poughkeepsie and Newburgh, Piets Technology Solutions brings InVid Tech Paramont security cameras, whole-home Wi-Fi, structured cabling, smart home automation and small business IT to the Hudson Valley.',
       para: 'Hudson Valley properties are bigger, older and more spread out: stone walls that kill Wi-Fi, long driveways that need cameras with real range, barns and detached garages that need fiber or point-to-point links. We plan for all of it. For businesses in Westchester, Putnam, Dutchess and Orange County, we deliver the same POS, phones, cabling and managed support we provide on Long Island, with free demos on a video call so planning is easy.',
       faq: [
         { q: 'Do you cover Westchester and Putnam County?', a: 'Yes. Westchester, Putnam, Dutchess and Orange County are all in our on-site service area.' },
         { q: 'Can you get Wi-Fi to a detached garage or barn?', a: 'Yes. Depending on distance we run fiber, direct-burial Cat6 or a wireless point-to-point bridge, then add an access point in the outbuilding.' },
-        { q: 'Do you do smart home installs in the Hudson Valley?', a: 'Yes. Home Assistant automation for lighting, shades, thermostats, locks, cameras and gates, running locally on your own hardware with no required subscriptions.' },
+        { q: 'Do you do smart home installs in the Hudson Valley?', a: 'Yes. Smart home automation for lighting, shades, thermostats, locks, cameras and gates, running locally on your own hardware with no required subscriptions.' },
         { q: 'What about long driveways and gates?', a: 'InVid Tech Paramont cameras with night vision, plus gate intercoms and access control you manage from your phone.' },
       ] },
     'johnstown-capital-region': {
@@ -636,7 +636,7 @@ ${footer()}`;
 /* ---------------- PLANS ---------------- */
 function remotePage() {
   const title = 'Remote Support | Piets Technology Solutions';
-  const description = 'Secure RustDesk screen-share sessions for fast IT help anywhere. We never connect without your permission.';
+  const description = 'Secure remote support screen-share sessions for fast IT help anywhere. We never connect without your permission.';
   const ld = [breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Remote Support', path: '/remote-support.html' }])];
 
   const body = `${banner()}
@@ -648,7 +648,7 @@ ${nav('remote-support')}
       <a href="/">Home</a><span>/</span><strong>Remote Support</strong>
     </nav>
     <h1>Remote Support</h1>
-    <p>Get fast IT help anywhere with secure RustDesk screen-share sessions. We never connect without your explicit permission.</p>
+    <p>Get fast IT help anywhere with secure remote support screen-share sessions. We never connect without your explicit permission.</p>
   </div>
 </div>
 
@@ -664,11 +664,11 @@ ${nav('remote-support')}
         <p>Reach out at 631-871-5957 and let us know you need remote support.</p>
       </li>
       <li>
-        <h3>Download RustDesk</h3>
+        <h3>Download Remote Support</h3>
         <p>Get it free at <a href="https://rustdesk.com/" target="_blank" rel="noopener">rustdesk.com</a>, then open it.</p>
       </li>
       <li>
-        <h3>Read Us Your RustDesk ID</h3>
+        <h3>Read Us Your Remote Support ID</h3>
         <p>We connect only with your permission.</p>
       </li>
       <li>
@@ -677,7 +677,7 @@ ${nav('remote-support')}
       </li>
       <li>
         <h3>Session Ends When You Say</h3>
-        <p>You're in control — close RustDesk anytime to end the session.</p>
+        <p>You're in control — close the remote support tool anytime to end the session.</p>
       </li>
     </ol>
   </div>
@@ -696,7 +696,7 @@ ${nav('remote-support')}
           <li>You read us your ID; we cannot connect on our own</li>
           <li>We never connect without your explicit permission</li>
           <li>You see everything we do on your screen</li>
-          <li>End-to-end encrypted RustDesk connection</li>
+          <li>End-to-end encrypted remote support connection</li>
           <li>Session ends when you close the application</li>
         </ul>
       </div>
