@@ -4,8 +4,8 @@
 
    What it does
    1. Background (every page): a slow domain-warped fbm field on obsidian + drifting dust.
-      Home adds the fiber bundle: five strands coiled behind the Piets Hub, breathing,
-      that unwind as you scroll while the camera follows the cable down the page.
+      Home: Piet AI (section 1b) — a living brain in the hero with every cable type running
+      out of it, down the page, into the device that belongs to each section.
    2. Liquid media panel (home, .fx-liquid): pointer ripples, swirl, chromatic split, scanlines.
       Shows the server-aisle scene drawn in code. To use a video later, put its URL in the
       panel's data-video attribute — it is graded into the brand automatically.
@@ -24,6 +24,7 @@ const RM = W.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FINE = W.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const HERE = new URL('.', import.meta.url).href;
 const IS_HOME = D.body.classList.contains('home-page');
+const BRAIN_HERO = IS_HOME && !!D.querySelector('[data-hm-brain]');
 
 /* ---------------- shared scroll / pointer state ---------------- */
 const S = { y: 0, progress: 0, velocity: 0, pointer: { x: 0, y: 0 } };
@@ -177,7 +178,7 @@ void main(){
     }
   }
   const fiberMats = [];
-  if (IS_HOME) {
+  if (IS_HOME && !BRAIN_HERO) {   // the old fiber coil; Piet AI's cable run replaces it on the home page
     const vs = `${SIMPLEX}
 uniform float uTime; uniform float uUncoil; uniform float uExpand; uniform float uSeed;
 attribute vec3 aCoil; attribute vec3 aCoilNormal;
@@ -199,7 +200,7 @@ void main(){
   gl_Position = projectionMatrix * mv;
 }`;
     const fs = `${BRAND}
-uniform float uTime; uniform float uSeed; uniform float uHalo; uniform float uVelocity; uniform float uBright; uniform float uCoilLevel;
+uniform float uTime; uniform float uSeed; uniform float uHalo; uniform float uVelocity; uniform float uBright; uniform float uCoilLevel; uniform float uType;
 varying vec2 vUv; varying vec3 vNormalV; varying vec3 vViewDir; varying float vMorph;
 void main(){
   float facing = abs(dot(normalize(vNormalV), normalize(vViewDir)));
@@ -211,6 +212,10 @@ void main(){
   vec3 base = mix(BLUE_DP, CYAN, smoothstep(0.0, 1.0, facing));
   base = mix(base, BLUE, 0.35 * sin(vUv.x * 40.0 + uSeed));
   base = mix(base, PURPLE, 0.28 * smoothstep(0.55, 1.0, sin(vUv.x * 13.0 + uSeed * 2.0)));
+  if (uType > 0.5 && uType < 1.5) base = mix(BLUE_DP, BLUE, facing);                     // Cat6
+  else if (uType > 1.5 && uType < 2.5) base = mix(NAVY_PUR, PURPLE, 0.4 + 0.6 * facing); // HDMI
+  else if (uType > 2.5 && uType < 3.5) base = vec3(0.55, 0.62, 0.74) * (0.5 + 0.5 * facing); // coax
+  else if (uType > 3.5) base = mix(BLUE, CYAN, facing * 0.6);                          // Cat6A
   vec3 col = base * (0.55 + facing * 0.9) + vec3(0.75, 1.0, 1.0) * (pulse + spark);
   col *= mix(uCoilLevel, 1.0, vMorph) * uBright;
   float ends = smoothstep(0.0, 0.015, vUv.x) * smoothstep(1.0, 0.97, vUv.x);
@@ -222,7 +227,7 @@ void main(){
     const mk = (seed, halo) => new THREE.ShaderMaterial({
       vertexShader: vs, fragmentShader: fs, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
       side: halo ? THREE.BackSide : THREE.FrontSide,
-      uniforms: { uTime: { value: 0 }, uUncoil: { value: 0 }, uExpand: { value: halo ? 0.07 : 0 }, uSeed: { value: seed }, uHalo: { value: halo ? 1 : 0 }, uVelocity: { value: 0 }, uBright: { value: 1 }, uCoilLevel: { value: 0.42 } }
+      uniforms: { uTime: { value: 0 }, uUncoil: { value: 0 }, uExpand: { value: halo ? 0.07 : 0 }, uSeed: { value: seed }, uHalo: { value: halo ? 1 : 0 }, uVelocity: { value: 0 }, uBright: { value: 1 }, uCoilLevel: { value: 0.42 }, uType: { value: 0 } }
     });
     const segs = W.innerWidth < 700 ? 420 : 720;
     for (let i = 0; i < 5; i++) {
@@ -232,6 +237,7 @@ void main(){
       g.setAttribute('aCoilNormal', c.getAttribute('normal').clone());
       c.dispose();
       const core = mk(1.618 * i, false), halo = mk(1.618 * i, true);
+      if (BRAIN_HERO) { core.uniforms.uType.value = i; halo.uniforms.uType.value = i; }
       fiberMats.push(core, halo);
       const mh = new THREE.Mesh(g, halo); mh.frustumCulled = false; mh.renderOrder = 1; scene.add(mh);
       const mc = new THREE.Mesh(g, core); mc.frustumCulled = false; mc.renderOrder = 2; scene.add(mc);
@@ -325,7 +331,7 @@ void main(){
       uncoil = THREE.MathUtils.lerp(uncoil, target, 0.08);
       vel = THREE.MathUtils.lerp(vel, Math.min(Math.abs(S.velocity), 40), 0.1);
       for (const m of fiberMats) {
-        const u = m.uniforms; u.uTime.value = clockT; u.uUncoil.value = uncoil; u.uVelocity.value = vel;
+        const u = m.uniforms; u.uTime.value = clockT; u.uUncoil.value = BRAIN_HERO ? 2 : uncoil; u.uVelocity.value = vel;
         // once it leaves the hero the cable runs down the page gutter; where there is no gutter it dims behind the content
         const gutter = (w - 1240) / 2, roomy = gutter >= 90;
         const follow = THREE.MathUtils.smoothstep(S.y / (1.1 * h), 0.15, 0.9);
@@ -668,6 +674,450 @@ async function startLenis() {
   }).observe(D.body, { attributes: true, attributeFilter: ['class', 'style'] });
 }
 
+/* ---------------- 1b · Piet AI + the cable run (home) ----------------
+   A living point-cloud brain is the hero (shape from the Piet's Brain project, re-coloured to palette B).
+   Out of it runs a bundle of real cable types — fiber, Cat6, Cat6A, HDMI, coax, speaker wire — that
+   sweeps to the left edge of the page and follows you all the way down. At every section a cable
+   peels off and plugs into the device that belongs there (Wi-Fi in the middle of the four screens,
+   cameras, audio, access control, smart home, a switch for services, a TV for the demos …).
+   Wireless shows as radio rings and Wi-Fi arcs. Cables draw themselves in as you scroll.
+   One fixed canvas, drawn in page pixels from the real element positions, so it lands right at
+   every width. Palette B only — no orange, no pink. */
+const CABLE = {            // colour, radius in px, look (0 fiber · 1 twisted pair · 2 coax · 3 flat lead)
+  fiber: { c: [0.008, 0.843, 0.961], r: 1.8, k: 0 },
+  cat6:  { c: [0.02, 0.48, 0.98],    r: 2.8, k: 1 },
+  cat6a: { c: [0.12, 0.66, 1.0],     r: 2.6, k: 1 },
+  coax:  { c: [0.80, 0.86, 0.95],    r: 3.4, k: 2 },
+  hdmi:  { c: [0.478, 0.239, 1.0],   r: 2.3, k: 3, twin: 4.5 },
+  audio: { c: [0.70, 0.62, 1.0],     r: 1.6, k: 3, twin: 3.6 },
+  phone: { c: [0.62, 0.55, 0.98],    r: 1.7, k: 1 }    // telephone pair: thin, lavender jacket
+};
+function startBrainRun(THREE) {
+  const brainEl = D.querySelector('[data-hm-brain]');
+  if (!brainEl) return;
+  const canvas = D.createElement('canvas');
+  canvas.id = 'fx-brain'; canvas.setAttribute('aria-hidden', 'true');
+  const bgc = D.getElementById('fx-bg');
+  if (bgc) bgc.after(canvas); else D.body.insertBefore(canvas, D.body.firstChild);
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
+  catch (e) { canvas.remove(); return; }
+  renderer.setClearColor(0x000000, 0);
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -4000, 4000);
+  const small = W.innerWidth < 700;
+
+  /* --- brain points (shape from the Piet's Brain project, re-coloured to palette B) --- */
+  let seed = 20261015; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const P = new Uint8Array(512); { const p = [...Array(256).keys()]; for (let i = 255; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [p[i], p[j]] = [p[j], p[i]]; } for (let i = 0; i < 512; i++) P[i] = p[i & 255]; }
+  const fade = (t) => t * t * t * (t * (t * 6 - 15) + 10), lerp = (a, b, t) => a + (b - a) * t;
+  const grad = (h, x, y, z) => { const u = h < 8 ? x : y, v = h < 4 ? y : (h === 12 || h === 14 ? x : z); return ((h & 1) ? -u : u) + ((h & 2) ? -v : v); };
+  function perlin(x, y, z) {
+    const X = Math.floor(x) & 255, Y = Math.floor(y) & 255, Z = Math.floor(z) & 255; x -= Math.floor(x); y -= Math.floor(y); z -= Math.floor(z);
+    const u = fade(x), v = fade(y), w = fade(z), A = P[X] + Y, AA = P[A] + Z, AB = P[A + 1] + Z, B = P[X + 1] + Y, BA = P[B] + Z, BB = P[B + 1] + Z;
+    return lerp(lerp(lerp(grad(P[AA] & 15, x, y, z), grad(P[BA] & 15, x - 1, y, z), u), lerp(grad(P[AB] & 15, x, y - 1, z), grad(P[BB] & 15, x - 1, y - 1, z), u), v),
+      lerp(lerp(grad(P[AA + 1] & 15, x, y, z - 1), grad(P[BA + 1] & 15, x - 1, y, z - 1), u), lerp(grad(P[AB + 1] & 15, x, y - 1, z - 1), grad(P[BB + 1] & 15, x - 1, y - 1, z - 1), u), v), w);
+  }
+  function unit() { let x, y, z, d; do { x = rnd() * 2 - 1; y = rnd() * 2 - 1; z = rnd() * 2 - 1; d = x * x + y * y + z * z; } while (d > 1 || d < 1e-4); d = Math.sqrt(d); return [x / d, y / d, z / d]; }
+  function cortex() {
+    for (let tries = 0; tries < 40; tries++) {
+      const u = unit(), s = u[0] >= 0 ? 1 : -1;
+      let x = u[0] * 0.9 + s * 0.075, y = u[1] * 0.8, z = u[2] * 1.16;
+      if (y < -0.22) y = -0.22 + (y + 0.22) * 0.5;
+      const tl = Math.exp(-((y + 0.22) ** 2) / 0.05) * Math.exp(-((z - 0.2) ** 2) / 0.22);
+      x += s * 0.12 * tl * Math.abs(u[0]); y -= 0.1 * tl * Math.abs(u[0]);
+      if (z > 0 && y > 0) y += 0.07 * z;
+      const n = perlin(x * 3.3 + 7, y * 3.3, z * 3.3), ridge = 1 - Math.abs(n);
+      if (rnd() > 0.28 + 0.72 * ridge * ridge) continue;
+      const sc = 1 + 0.09 * (ridge * ridge - 0.5), fiss = Math.exp(-(x * x) / 0.006) * Math.max(0, y) * 0.18;
+      return [x * sc, y * sc - fiss, z * sc, ridge];
+    }
+    return [0, 0, 0, 0];
+  }
+  const NS = small ? 0.45 : 0.8;
+  const cyan = new THREE.Color('#02D7F5'), blue = new THREE.Color('#016FD6'), purple = new THREE.Color('#7A3DFF'), white = new THREE.Color('#CFF8FF');
+  const pos = [], col = [], sd = [], surf = [];
+  const add = (x, y, z, c) => { pos.push(x, y, z); col.push(c.r, c.g, c.b); sd.push(rnd()); };
+  for (let i = 0; i < 9000 * NS; i++) { const [x, y, z, r] = cortex(); surf.push([x, y, z]); const c = blue.clone().lerp(cyan, Math.min(1, r * 1.1)).lerp(purple, Math.max(0, -y - 0.05) * 0.9); if (rnd() < 0.04) c.copy(white); add(x, y, z, c); }
+  for (let i = 0; i < 1800 * NS; i++) { const [x, y, z] = cortex(); const k = 0.2 + 0.72 * Math.pow(rnd(), 0.7); add(x * k, y * k, z * k, blue.clone().lerp(purple, rnd() * 0.6)); }
+  for (let i = 0; i < 900 * NS; i++) { const u = unit(); const x = u[0] * 0.52, y = u[1] * 0.26 - 0.42, z = u[2] * 0.34 - 0.78; if (rnd() > 0.35 + 0.65 * Math.abs(Math.sin(y * 58))) continue; add(x, y, z, purple.clone().lerp(cyan, 0.35 * rnd())); }
+  for (let i = 0; i < 360 * NS; i++) { const t = rnd(), a = rnd() * Math.PI * 2, r = (0.14 - 0.05 * t) * Math.sqrt(rnd()); add(Math.cos(a) * r, -0.38 - t * 0.62, -0.22 - t * 0.12 + Math.sin(a) * r, cyan.clone().lerp(blue, t)); }
+  const linkPos = [], linkPh = [], linkT = [];
+  for (let i = 0; i < 1700 * NS; i++) {
+    const a = surf[Math.floor(rnd() * surf.length)]; let best = null, bd = 1e9;
+    for (let k = 0; k < 30; k++) { const b = surf[Math.floor(rnd() * surf.length)]; const d = (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2; if (d > 0.004 && d < bd) { bd = d; best = b; } }
+    if (!best || bd > 0.16) continue; const ph = rnd(); linkPos.push(...a, ...best); linkT.push(0, 1); linkPh.push(ph, ph);
+  }
+  const pix = Math.min(W.devicePixelRatio || 1, 1.75);
+  const brainMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uPix: { value: pix }, uScale: { value: 100 }, uMouse: { value: new THREE.Vector2(9, 9) }, uCtr: { value: new THREE.Vector2() }, uIn: { value: RM ? 1 : 0 } },
+    vertexShader: `${SIMPLEX}
+uniform float uTime, uPix, uScale, uIn; uniform vec2 uMouse, uCtr;
+attribute vec3 color; attribute float aSeed; varying vec3 vCol; varying float vGlow;
+void main(){
+  vec3 p = position * (1.0 + 0.022 * sin(uTime * 1.25 + position.y * 2.2 + position.z * 1.3));
+  p = mix(p * (0.2 + 2.4 * aSeed), p, smoothstep(0.0, 1.0, clamp(uIn * 1.4 - aSeed * 0.4, 0.0, 1.0)));
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  vec2 q = ((modelMatrix * vec4(p, 1.0)).xy - uCtr) / uScale - uMouse;
+  float f = exp(-dot(q, q) * 5.0);
+  mv.xy += normalize(q + 1e-4) * f * 0.12 * uScale;
+  float wave = 0.5 + 0.5 * sin(uTime * 2.1 - length(position) * 5.5 + aSeed * 6.2831);
+  float fire = smoothstep(0.965, 1.0, sin(uTime * 0.75 + aSeed * 61.0));
+  vGlow = (0.45 + 0.5 * wave + fire * 1.6 + f * 1.8) * uIn;
+  vCol = color;
+  gl_PointSize = uPix * (1.6 + 1.5 * fract(aSeed * 7.13) + fire * 2.0) * clamp(uScale / 110.0, 0.7, 1.4);
+  gl_Position = projectionMatrix * mv;
+}`,
+    fragmentShader: `varying vec3 vCol; varying float vGlow;
+void main(){ float d = length(gl_PointCoord - 0.5); if (d > 0.5) discard; float a = smoothstep(0.5, 0.0, d); gl_FragColor = vec4(vCol * vGlow, a * a * 0.9); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+  });
+  const bg = new THREE.BufferGeometry();
+  bg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  bg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  bg.setAttribute('aSeed', new THREE.Float32BufferAttribute(sd, 1));
+  const brain = new THREE.Group(); scene.add(brain);
+  const spin = new THREE.Group(); brain.add(spin); spin.rotation.set(0.12, -0.7, 0);
+  const pts = new THREE.Points(bg, brainMat); pts.frustumCulled = false; spin.add(pts);
+  const lg = new THREE.BufferGeometry();
+  lg.setAttribute('position', new THREE.Float32BufferAttribute(linkPos, 3));
+  lg.setAttribute('aLT', new THREE.Float32BufferAttribute(linkT, 1));
+  lg.setAttribute('aPh', new THREE.Float32BufferAttribute(linkPh, 1));
+  const linkMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uIn: { value: RM ? 1 : 0 } },
+    vertexShader: `attribute float aLT; attribute float aPh; varying float vLT; varying float vPh; void main(){ vLT = aLT; vPh = aPh; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform float uTime, uIn; varying float vLT; varying float vPh;
+void main(){ float tr = fract(uTime * 0.45 + vPh * 7.0); float b = smoothstep(0.18, 0.0, abs(vLT - tr)); gl_FragColor = vec4(mix(vec3(0.05, 0.45, 0.95), vec3(0.75, 0.98, 1.0), b), (0.05 + b * 0.5) * uIn); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+  });
+  const links = new THREE.LineSegments(lg, linkMat); links.frustumCulled = false; spin.add(links);
+
+  /* --- inflow: energy and data pour INTO the brain from everywhere (cameras, phones, sensors, the internet) and the
+     cables carry it back OUT. Each stream is a faint glowing lane that curves in from around the brain;
+     packets with short tails race along it and flash as they land. Lanes come in from the top and the
+     right, so they never cross the cable exit (bottom-left). Palette B only. --- */
+  const LANES = small ? 9 : 16, PER = small ? 12 : 18, TAIL = 6, GSEG = 64;
+  const lane = [];
+  // energy comes in from every direction except straight below, where the cables leave.
+  // Shorter lanes on the left so they stop before the headline.
+  for (let l = 0; l < LANES; l++) {
+    const deg = -55 + (290 * (l + 0.5 + (rnd() - 0.5) * 0.45)) / LANES;   // -55° … 235° (y-up), gap at the bottom
+    const cx = Math.cos(deg * Math.PI / 180);
+    const r0 = cx < -0.25 ? 1.45 + rnd() * 0.3 : cx > 0.25 ? 2.0 + rnd() * 0.6 : 1.85 + rnd() * 0.4;
+    lane.push([deg * Math.PI / 180, r0, (l % 2 ? -1 : 1) * (0.4 + rnd() * 0.4)]);
+  }
+  const PATH = `
+float ease(float p){ p = clamp(p, 0.0, 1.0); return p * p * (3.0 - 2.0 * p); }
+vec2 lanePt(vec3 L, float p, float j){            // L = (start angle, start radius x R, swirl)
+  float e = ease(p); float rr = mix(L.y, 0.2, e) * uR; float ang = L.x + L.z * 0.9 * e + j * (1.0 - e);
+  return uCtr + vec2(cos(ang), sin(ang) * 0.82) * rr;
+}`;
+  // packets
+  const iPos = [], iL = [], iP = [], iCol = [];
+  lane.forEach((L) => {
+    for (let i = 0; i < PER; i++) {
+      const sp = 0.2 + rnd() * 0.12, ph = rnd(), j = (rnd() - 0.5) * 0.09, c = rnd() < 0.55 ? cyan : rnd() < 0.55 ? purple : white;
+      for (let k = 0; k < TAIL; k++) { iPos.push(0, 0, 0); iL.push(...L); iP.push(sp, ph, j, k); iCol.push(c.r, c.g, c.b); }
+    }
+  });
+  const ig = new THREE.BufferGeometry();
+  ig.setAttribute('position', new THREE.Float32BufferAttribute(iPos, 3));
+  ig.setAttribute('aL', new THREE.Float32BufferAttribute(iL, 3));
+  ig.setAttribute('aP', new THREE.Float32BufferAttribute(iP, 4));
+  ig.setAttribute('aCol', new THREE.Float32BufferAttribute(iCol, 3));
+  const inU = { uTime: { value: 0 }, uIn: { value: RM ? 1 : 0 }, uCtr: { value: new THREE.Vector2() }, uR: { value: 100 }, uPix: { value: pix } };
+  const inMat = new THREE.ShaderMaterial({
+    uniforms: inU,
+    vertexShader: `uniform float uTime, uIn, uR, uPix; uniform vec2 uCtr;${PATH}
+attribute vec3 aL; attribute vec4 aP; attribute vec3 aCol; varying vec3 vCol; varying float vA;
+void main(){
+  float p = fract(uTime * aP.x + aP.y) - aP.w * 0.011;
+  vec2 xy = lanePt(aL, p, aP.z);
+  float land = smoothstep(0.88, 1.0, p);
+  vA = step(0.0, p) * smoothstep(0.0, 0.12, p) * (1.0 - smoothstep(0.975, 1.0, p)) * (1.0 - aP.w / 6.5) * uIn;
+  vCol = mix(aCol, vec3(0.85, 1.0, 1.0), land * 0.7) * (1.2 + land * 1.6);
+  gl_PointSize = uPix * (3.6 - aP.w * 0.42 + land * 2.6) * clamp(uR / 120.0, 0.8, 1.3);
+  gl_Position = projectionMatrix * viewMatrix * vec4(xy, 30.0, 1.0);
+}`,
+    fragmentShader: `varying vec3 vCol; varying float vA;
+void main(){ float d = length(gl_PointCoord - 0.5); if (d > 0.5 || vA <= 0.0) discard; float a = smoothstep(0.5, 0.05, d); gl_FragColor = vec4(vCol, a * vA); }`,
+    transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending
+  });
+  // the lanes themselves: a faint line with a soft glow running inward
+  const gPos = [], gL = [], gU = [];
+  lane.forEach((L) => { for (let k = 0; k < GSEG; k++) { gPos.push(0, 0, 0, 0, 0, 0); gL.push(...L, ...L); gU.push(k / GSEG, (k + 1) / GSEG); } });
+  const gg = new THREE.BufferGeometry();
+  gg.setAttribute('position', new THREE.Float32BufferAttribute(gPos, 3));
+  gg.setAttribute('aL', new THREE.Float32BufferAttribute(gL, 3));
+  gg.setAttribute('aU', new THREE.Float32BufferAttribute(gU, 1));
+  const laneMat = new THREE.ShaderMaterial({
+    uniforms: inU,
+    vertexShader: `uniform float uTime, uIn, uR, uPix; uniform vec2 uCtr;${PATH}
+attribute vec3 aL; attribute float aU; varying float vU; varying float vPh;
+void main(){ vU = aU; vPh = aL.x; gl_Position = projectionMatrix * viewMatrix * vec4(lanePt(aL, aU, 0.0), 25.0, 1.0); }`,
+    fragmentShader: `uniform float uTime, uIn; varying float vU; varying float vPh;
+void main(){
+  float pulse = exp(-pow((fract(vU * 1.4 - uTime * 0.55 + vPh) - 0.5) * 6.0, 2.0));
+  float a = (0.10 + 0.32 * pulse) * smoothstep(0.0, 0.25, vU) * (1.0 - smoothstep(0.9, 1.0, vU)) * uIn;
+  gl_FragColor = vec4(mix(vec3(0.05, 0.45, 0.95), vec3(0.6, 0.95, 1.0), pulse), a);
+}`,
+    transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending
+  });
+  const lanes = new THREE.LineSegments(gg, laneMat); lanes.frustumCulled = false; lanes.renderOrder = 3; scene.add(lanes);
+  const inflow = new THREE.Points(ig, inMat); inflow.frustumCulled = false; inflow.renderOrder = 4; scene.add(inflow);
+
+  /* --- cables: tubes in page pixels; x = page x - width/2, y = -page y --- */
+  const tubeVS = `varying vec2 vUv; varying vec3 vN; varying float vDocY;
+void main(){ vUv = uv; vN = normalize(normalMatrix * normal); vec4 wp = modelMatrix * vec4(position, 1.0); vDocY = -wp.y; gl_Position = projectionMatrix * viewMatrix * wp; }`;
+  const tubeFS = `${BRAND}
+uniform vec3 uColor; uniform float uKind, uProg, uTime, uLen, uPh, uHalo, uDir, uHead, uFadeEnd;
+varying vec2 vUv; varying vec3 vN; varying float vDocY;
+void main(){
+  if (vUv.x > uProg || vDocY > uHead) discard;
+  float facing = clamp(abs(vN.z), 0.0, 1.0);
+  float s = vUv.x * uLen;                              // px along the cable, so patterns keep their size
+  float head = max(smoothstep(22.0, 0.0, (uProg - vUv.x) * uLen) * step(uProg, 0.999), smoothstep(26.0, 0.0, uHead - vDocY) * step(uHead, 1e8));
+  float flow = uDir > 0.0 ? s - uTime * 140.0 : s + uTime * 140.0;
+  vec3 col; float a;
+  if (uKind < 0.5) {                                   // fiber: glass line, fast light pulses
+    float p = exp(-pow((fract((s - uTime * 300.0) / 120.0 + uPh) - 0.5) * 9.0, 2.0));
+    col = mix(uColor * 0.85, vec3(0.9, 1.0, 1.0), p + facing * 0.2); a = 0.85 + p * 0.15;
+  } else if (uKind < 1.5) {                            // Cat6: jacket, twisted-pair stripe, data packets
+    float tw = smoothstep(0.35, 0.5, abs(fract(s / 9.0 + vUv.y * 2.0) - 0.5));
+    float pk = step(0.86, fract(flow / 34.0 + uPh)) * step(fract(flow / 260.0 + uPh), 0.5);
+    col = uColor * (0.55 + facing * 0.8) * (0.85 + 0.25 * tw) + CYAN * pk * 1.3; a = 0.95;
+  } else if (uKind < 2.5) {                            // coax: silver sheath, slow cyan band
+    float band = exp(-pow((fract(flow / 300.0 + uPh) - 0.5) * 7.0, 2.0));
+    col = uColor * (0.3 + facing * 0.6) + CYAN * band; a = 0.95;
+  } else {                                             // HDMI / speaker wire: flat twin lead, wide pulses
+    float p = exp(-pow((fract(flow / 180.0 + uPh) - 0.5) * 5.0, 2.0));
+    col = uColor * (0.55 + facing * 0.75) + vec3(0.85, 0.8, 1.0) * p * 0.9; a = 0.95;
+  }
+  col += vec3(0.8, 1.0, 1.0) * head * 1.6;
+  float ends = smoothstep(0.0, 0.02, vUv.x) * mix(1.0, smoothstep(1.0, 0.6, vUv.x), uFadeEnd);
+  if (uHalo > 0.5) { a = pow(facing, 3.0) * (0.13 + head * 0.5); col = mix(uColor, CYAN, 0.4) * 1.3; }
+  gl_FragColor = vec4(col, a * ends);
+}`;
+  const cables = [];
+  const clearCables = () => { cables.forEach((c) => { scene.remove(c.mesh); c.mesh.geometry.dispose(); c.mesh.material.dispose(); }); cables.length = 0; };
+  // pts: [[x,y],…] in page px. opt: { gate:'scroll'|'grow', at: page y where a 'grow' cable starts, fadeEnd, dir }
+  function addCable(pts, type, opt) {
+    const T = CABLE[type] || CABLE.cat6;
+    const make = (dx, dy) => new THREE.CatmullRomCurve3(pts.map(([x, y], k) => new THREE.Vector3(x + dx - cw / 2, -(y + dy), (opt.z || 0) + (k % 2) * 6)), false, 'centripetal');
+    const curves = T.twin ? [make(-T.twin / 2, -T.twin / 2), make(T.twin / 2, T.twin / 2)] : [make(0, 0)];
+    const ph = (cables.length * 0.137) % 1;
+    curves.forEach((curve) => {
+      const len = curve.getLength();
+      const segs = Math.max(30, Math.min(1400, Math.round(len / 7)));
+      [true, false].forEach((halo) => {
+        if (halo && (type === 'coax' || T.twin || opt.halo === false)) return;
+        const m = new THREE.ShaderMaterial({
+          uniforms: { uColor: { value: new THREE.Vector3(...T.c) }, uKind: { value: T.k }, uProg: { value: 1 }, uTime: { value: 0 }, uLen: { value: len }, uPh: { value: ph }, uHalo: { value: halo ? 1 : 0 }, uDir: { value: opt.dir || 1 }, uHead: { value: 1e9 }, uFadeEnd: { value: opt.fadeEnd ? 1 : 0 } },
+          vertexShader: tubeVS, fragmentShader: tubeFS, transparent: true, depthWrite: false,
+          blending: halo ? THREE.AdditiveBlending : THREE.NormalBlending, side: halo ? THREE.BackSide : THREE.FrontSide
+        });
+        const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, segs, T.r * (halo ? 3.4 : 1), 8, false), m);
+        mesh.frustumCulled = false; mesh.renderOrder = halo ? 1 : 2; scene.add(mesh);
+        cables.push({ mesh, m, gate: opt.gate || 'scroll', at: opt.at || 0, len, node: opt.node });
+      });
+    });
+  }
+
+  /* --- wireless: radio rings (brain, Wi-Fi) + Wi-Fi arcs that travel to the phone --- */
+  const airMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uB: { value: new THREE.Vector3(-999, -999, 1) }, uF: { value: new THREE.Vector3(-999, -999, 1) }, uTo: { value: new THREE.Vector2(1, 0) }, uDist: { value: 0 }, uIn: { value: RM ? 1 : 0 }, uWifiOn: { value: RM ? 1 : 0 }, uPix: { value: pix } },
+    vertexShader: `void main(){ gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+    fragmentShader: `${BRAND}
+uniform float uTime, uDist, uIn, uWifiOn, uPix; uniform vec3 uB, uF; uniform vec2 uTo;
+float rings(vec2 d, float R, float speed){
+  float re = length(d * vec2(1.0, 1.55)), a = 0.0;
+  for (int k = 0; k < 3; k++) { float ph = fract(uTime * speed + float(k) / 3.0); float rr = R * 0.95 + ph * R * 2.4;
+    a += exp(-pow((re - rr) / 1.7, 2.0)) * (1.0 - ph) * (1.0 - ph); }
+  return a;
+}
+void main(){
+  vec2 p = gl_FragCoord.xy / uPix;                     // screen px, y up
+  float rb = rings(p - uB.xy, uB.z, 0.14) * uIn;
+  float rf = rings(p - uF.xy, uF.z, 0.2) * uWifiOn;
+  vec3 col = mix(CYAN, PURPLE, 0.35) * rb * 0.6 + CYAN * rf * 0.6; float a = (rb + rf) * 0.6;
+  vec2 d = p - uF.xy; float r = length(d);
+  float cone = smoothstep(0.80, 0.93, dot(normalize(d + 1e-4), uTo));
+  for (int k = 0; k < 4; k++) {
+    float ph = fract(uTime * 0.42 + float(k) / 4.0);
+    float rr = uF.z + ph * (uDist - uF.z);
+    float arc = exp(-pow((r - rr) / 2.6, 2.0)) * cone * smoothstep(0.0, 0.12, ph) * smoothstep(1.0, 0.85, ph) * uWifiOn;
+    a += arc * 1.1; col += mix(CYAN, vec3(0.85, 1.0, 1.0), 0.4) * arc * 1.3;
+  }
+  gl_FragColor = vec4(col, clamp(a, 0.0, 1.0));
+}`,
+    transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending
+  });
+  const air = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), airMat); air.frustumCulled = false; air.renderOrder = 0; scene.add(air);
+
+  /* --- layout from the real page (offset positions: never fooled by reveal transforms) --- */
+  function docRect(el) {
+    let x = 0, y = 0, e = el;
+    while (e) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+    return { l: x, t: y, r: x + el.offsetWidth, b: y + el.offsetHeight, cx: x + el.offsetWidth / 2, cy: y + el.offsetHeight / 2, w: el.offsetWidth, h: el.offsetHeight };
+  }
+  const tags = [], tagBox = D.createElement('div');
+  tagBox.className = 'fx-tags'; tagBox.setAttribute('aria-hidden', 'true'); D.body.appendChild(tagBox);
+  function placeTags() {
+    tagBox.textContent = '';
+    tags.forEach((t) => {
+      const el = D.createElement('span'); el.className = 'fx-tag fx-tag--' + t.type + ' fx-tag--' + t.side;
+      el.innerHTML = '<i></i>' + t.name; el.style.left = t.x + 'px'; el.style.top = t.y + 'px'; tagBox.appendChild(el);
+    });
+  }
+  let cw = 0, ch = 0, R = 120, born = RM ? 1e9 : -1, B = null, F = null, phoneTo = null, spineEnd = 0;
+  function layout() {
+    cw = ROOT.clientWidth; ch = W.innerHeight;
+    renderer.setPixelRatio(pix); renderer.setSize(W.innerWidth, ch, false);
+    camera.left = -W.innerWidth / 2; camera.right = W.innerWidth / 2; camera.top = ch / 2; camera.bottom = -ch / 2; camera.updateProjectionMatrix();
+    clearCables();
+    // the brain
+    B = docRect(brainEl);
+    R = Math.max(80, Math.min(190, B.w * 0.37));
+    brain.position.set(B.cx - cw / 2, -B.cy, 0); brain.scale.setScalar(R);
+    brainMat.uniforms.uScale.value = R; brainMat.uniforms.uCtr.value.set(brain.position.x, brain.position.y); inMat.uniforms.uCtr.value.set(brain.position.x, brain.position.y); inMat.uniforms.uR.value = R; airMat.uniforms.uB.value.z = R;
+    // where the bundle runs: the middle of the left gutter, or just inside the edge on narrow screens
+    const wrap = D.querySelector('.hm-hero .hm-wrap') || D.body;
+    const wl = docRect(wrap).l + parseFloat(getComputedStyle(wrap).paddingLeft || 0);
+    const X = wl >= 70 ? Math.round(wl / 2) : Math.max(8, Math.round(wl * 0.42));
+    const hero = docRect(D.querySelector('.hm-hero') || brainEl);
+    // every device the bundle feeds, top to bottom
+    const nodes = [...D.querySelectorAll('[data-hm-node]')].map((el) => { const r = docRect(el), card = el.closest('.hm-stop'); if (card) { const c = docRect(card); r.l = c.l - 4; } return { el, r, type: (el.getAttribute('data-cable') || 'cat6').split(',')[0] }; })
+      .filter((n) => n.r.w > 0).sort((a, b) => a.r.cy - b.r.cy);
+    spineEnd = nodes.length ? nodes[nodes.length - 1].r.cy + 140 : hero.b + 400;
+    // 1 · the trunk: out of the brain, along the bottom of the hero, then down the gutter to the last device
+    // Piet AI in the centre shoots the cables out: fiber, ethernet, telephone, coax. They fan apart
+    // under the brain (each one labelled), then gather and run down the page. Wi-Fi is the radio rings.
+    const types = [['fiber', 140, 'Fiber'], ['cat6', 111, 'Ethernet'], ['phone', 76, 'Telephone'], ['coax', 44, 'Coax']];
+    const ticks = D.querySelector('.hm-hero .hm-ticks');
+    const sweepY = Math.min(hero.b - 18, Math.max(hero.b - (cw < 900 ? 34 : 56), ticks ? docRect(ticks).b + 40 : 0));
+    tags.length = 0;
+    types.forEach(([type, deg, name], j) => {
+      const o = (j - 1.5) * 9, a = deg * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a);
+      const fx = B.cx + ca * R * 1.06, fy = B.cy + sa * R * 0.98;                 // where it leaves the brain
+      const gy = Math.max(fy + 40, Math.min(sweepY - 40, fy + (sweepY - fy) * 0.55));
+      const pts = [[B.cx + ca * 6, B.cy + sa * 6], [B.cx + ca * R * 0.5, B.cy + sa * R * 0.48], [fx, fy], [fx + (B.cx + o * 1.6 - fx) * 0.3, gy], [Math.max(X + 60, B.cx - 140) + o, sweepY + o * 0.6], [X + 60 + o, sweepY + o * 0.6 + 2], [X + o, sweepY + 70]];
+      const end = spineEnd - 20 * j;
+      for (let yy = sweepY + 70 + 240; yy < end; yy += 240) pts.push([X + o + Math.sin(yy * 0.004 + j) * 1.5, yy]);
+      pts.push([X + o, end]);
+      addCable(pts, type, { gate: 'scroll', fadeEnd: true, z: -10, halo: j === 0 });
+      tags.push({ name, type, x: B.cx + ca * R * 1.22, y: B.cy + sa * R * 1.12 + (j % 2 ? 14 : 0), side: ca < -0.05 ? 'l' : ca > 0.05 ? 'r' : 'c' });
+    });
+    tags.push({ name: 'Wi-Fi', type: 'wifi', x: B.cx + R * 0.98, y: B.cy - R * 0.92, side: 'r' });
+    tags.push({ name: 'Everything flows in', type: 'in', x: B.cx - R * 0.95, y: B.cy - R * 0.95, side: 'l' });
+    placeTags();
+    // 1b · two network cables wrapped all the way around the brain (drawn in as the page opens)
+    [['cat6a', -0.30, 1.05, 0.72, 1], ['fiber', 0.32, 1.11, 0.78, -1]].forEach(([type, tilt, rx, ry, dir], j) => {
+      const pts = [], N = 36, ct = Math.cos(tilt), st = Math.sin(tilt), a0 = -Math.PI / 2 + j;
+      for (let k = 0; k <= N; k++) {
+        const a = a0 + dir * (k / N) * Math.PI * 2.04, ex = Math.cos(a) * rx * R, ey = Math.sin(a) * ry * R;
+        pts.push([B.cx + ex * ct - ey * st, B.cy + ex * st + ey * ct]);
+      }
+      addCable(pts, type, { gate: 'grow', at: B.cy - R * 1.4, z: 40 + j * 4, halo: false });
+    });
+    // 2 · one cable peels off the bundle into each device
+    nodes.forEach((n, i) => {
+      const r = n.r, ex = r.l + 6, ey = r.cy, o = ((i % 5) - 2) * 6.5;
+      const startY = ey - Math.min(120, Math.max(50, (ex - X) * 0.35));
+      const pts = ex - X < 30 ? [[X + o, startY], [X + o, ey - 10], [ex, ey]]
+        : [[X + o, startY], [X + o + 4, startY + (ey - startY) * 0.55], [X + Math.min(60, (ex - X) * 0.4), ey], [ex - Math.min(50, (ex - X) * 0.3), ey], [ex, ey]];
+      addCable(pts, n.type, { gate: 'grow', at: startY, z: 6, node: n.el });
+      if (n.el.matches('.hm-hub--wifi')) F = { r, i };
+    });
+    // 3 · Wi-Fi feeds the four screens around it
+    const stage = D.querySelector('[data-hm-stage]');
+    phoneTo = null;
+    if (stage && F) {
+      const hx = F.r.cx, hy = F.r.cy, hr = F.r.w / 2;
+      const plan = { tv: [['hdmi', 0]], nvr: [['cat6', -1], ['coax', 1]], pc: [['fiber', -1], ['cat6a', 1]] };
+      stage.querySelectorAll('[data-hm-wire]').forEach((d) => {
+        const kind = (d.className.match(/hm-dev--(\w+)/) || [])[1];
+        const panel = d.querySelector('.hm-panel, .hm-phone'); if (!panel) return;
+        const pr = docRect(panel);
+        const cx = Math.max(pr.l, Math.min(pr.r, hx)), cy = Math.max(pr.t, Math.min(pr.b, hy));
+        const dl = cx - pr.l, dr = pr.r - cx, dt = cy - pr.t, db = pr.b - cy, m = Math.min(dl, dr, dt, db);
+        const ep = m === dt ? { x: cx, y: pr.t + 10, nx: 0, ny: -1 } : m === db ? { x: cx, y: pr.b - 10, nx: 0, ny: 1 } : m === dl ? { x: pr.l + 10, y: cy, nx: -1, ny: 0 } : { x: pr.r - 10, y: cy, nx: 1, ny: 0 };
+        if (kind === 'phone') { phoneTo = { x: ep.x, y: ep.y }; return; }
+        (plan[kind] || [['cat6', 0]]).forEach(([type, off]) => {
+          const ex = ep.x + (ep.ny ? 16 * off : 0), ey = ep.y + (ep.nx ? 16 * off : 0);
+          const ang = Math.atan2(ey - hy, ex - hx) + off * 0.25;
+          const sx = hx + Math.cos(ang) * hr * 0.8, sy = hy + Math.sin(ang) * hr * 0.8, bend = Math.min(90, Math.hypot(ex - sx, ey - sy) * 0.5);
+          addCable([[sx, sy], [sx + Math.cos(ang) * bend * 0.5, sy + Math.sin(ang) * bend * 0.5], [ex - ep.nx * bend, ey - ep.ny * bend], [ex, ey]], type, { gate: 'grow', at: hy, z: 4 });
+        });
+      });
+    }
+    if (RM) draw();
+  }
+
+  /* --- frame --- */
+  let t = 0, last = performance.now(), active = true, raf = 0;
+  const mouse = new THREE.Vector2(9, 9), mTarget = new THREE.Vector2(9, 9);
+  W.addEventListener('pointermove', (e) => {
+    if (!B) return;
+    mTarget.set((e.clientX + W.scrollX - B.cx) / R, -(e.clientY + W.scrollY - B.cy) / R);
+  }, { passive: true });
+  function draw() {
+    if (born < 0) born = t;
+    const age = RM ? 99 : t - born;
+    const y = W.scrollY || ROOT.scrollTop || 0;
+    camera.position.set(0, -(y + ch / 2), 1000); camera.updateMatrixWorld();
+    const grow = Math.min(1, age / 1.2);
+    brainMat.uniforms.uIn.value = grow; linkMat.uniforms.uIn.value = grow;
+    brainMat.uniforms.uTime.value = t; linkMat.uniforms.uTime.value = t; airMat.uniforms.uTime.value = t;
+    inMat.uniforms.uTime.value = t; inMat.uniforms.uIn.value = Math.min(1, Math.max(0, (age - 0.6) / 1.4));
+    airMat.uniforms.uIn.value = Math.min(1, Math.max(0, (age - 1.2) / 1.0));
+    mouse.lerp(mTarget, 0.08); brainMat.uniforms.uMouse.value.copy(mouse);
+    spin.rotation.y = -0.7 + Math.sin(t * 0.12) * 0.55;
+    spin.rotation.x = 0.12 + Math.sin(t * 0.3) * 0.05;
+    // the cable head follows the bottom of the screen; on load it first runs out of the brain
+    const intro = Math.min(1, Math.max(0, (age - 0.5) / 1.6));
+    if (age > 1.3 && !ROOT.classList.contains('fx-tags-on')) ROOT.classList.add('fx-tags-on');
+    const reach = y + ch * 0.97;
+    const head = RM ? 1e9 : B.cy + (reach - B.cy) * intro * intro * (3 - 2 * intro);
+    cables.forEach((c) => {
+      const u = c.m.uniforms; u.uTime.value = t;
+      if (c.gate === 'scroll') { u.uHead.value = head; u.uProg.value = 1; }
+      else { u.uHead.value = 1e9; u.uProg.value = RM ? 1 : Math.min(1, Math.max(0, (head - c.at) / 260)); if (c.node && u.uProg.value >= 1 && !c.node.classList.contains('is-live')) c.node.classList.add('is-live'); }
+    });
+    // screen positions for the wireless shader (px, y up)
+    airMat.uniforms.uB.value.x = B.cx - W.scrollX; airMat.uniforms.uB.value.y = ch - (B.cy - y);
+    if (F) {
+      airMat.uniforms.uF.value.set(F.r.cx - W.scrollX, ch - (F.r.cy - y), F.r.w * 0.5);
+      airMat.uniforms.uWifiOn.value = RM ? 1 : Math.min(1, Math.max(0, (head - F.r.cy) / 300));
+      if (phoneTo) {
+        const dx = phoneTo.x - F.r.cx, dy = -(phoneTo.y - F.r.cy), L = Math.hypot(dx, dy) || 1;
+        airMat.uniforms.uTo.value.set(dx / L, dy / L); airMat.uniforms.uDist.value = L + 6;
+      }
+    } else airMat.uniforms.uWifiOn.value = 0;
+    renderer.render(scene, camera);
+  }
+  function loop(now) {
+    raf = 0;
+    const dt = Math.max(0, Math.min((now - last) / 1000, 0.05)); last = Math.max(last, now); t += dt;
+    draw();
+    if (active && !D.hidden) raf = requestAnimationFrame(loop);
+  }
+  const kick = () => { if (!raf && !RM && active && !D.hidden) { last = performance.now(); raf = requestAnimationFrame(loop); } };
+  // only runs while the brain or any of the cable run is on screen
+  const watch = () => { const y = W.scrollY; const on = y < spineEnd + 200; if (on !== active) { active = on; canvas.style.visibility = on ? '' : 'hidden'; } if (RM) draw(); else kick(); };
+  W.addEventListener('scroll', watch, { passive: true });
+  D.addEventListener('visibilitychange', kick);
+  let rq = 0; const relayout = () => { clearTimeout(rq); rq = setTimeout(() => { layout(); watch(); }, 120); };
+  W.addEventListener('resize', relayout, { passive: true });
+  W.addEventListener('load', relayout);
+  if (D.fonts && D.fonts.ready) D.fonts.ready.then(relayout);
+  if ('ResizeObserver' in W) new ResizeObserver(relayout).observe(D.body);
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); ROOT.classList.remove('fx-brain', 'fx-tags-on'); canvas.remove(); tagBox.remove(); });
+  layout();
+  ROOT.classList.add('fx-brain');
+  W.__pietsBrain = { inflow: () => LANES * PER, cables: () => cables.length, R: () => R, frame: () => t, seek: (sec) => { if (born < 0) born = t; t = born + sec; draw(); } }; // QA hook
+  if (RM) draw(); else kick();
+}
+
 /* ---------------- boot ---------------- */
 async function boot() {
   ROOT.classList.add('fx');
@@ -684,6 +1134,7 @@ async function boot() {
   let THREE;
   try { THREE = await import(HERE + 'three-0.160.0.module.min.js'); } catch (e) { ROOT.classList.add('fx-nogl'); return; }
   try { await startBackground(THREE); } catch (e) { ROOT.classList.add('fx-nogl'); }
+  if (BRAIN_HERO) { try { startBrainRun(THREE); } catch (e) { ROOT.classList.remove('fx-brain'); const c = D.getElementById('fx-brain'); if (c) c.remove(); } }
   D.querySelectorAll('.fx-liquid').forEach((el) => { try { startLiquid(THREE, el); } catch (e) { /* static gradient stays */ } });
 }
 if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', boot); else boot();
